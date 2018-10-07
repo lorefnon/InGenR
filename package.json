@@ -1,14 +1,16 @@
 {
   "name": "ingenr",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "",
   "keywords": [],
-  "main": "dist/ingenr.umd.js",
-  "module": "dist/ingenr.es5.js",
-  "typings": "dist/types/ingenr.d.ts",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "files": [
-    "dist"
+    "lib"
   ],
+  "bin": {
+    "ingenr": "./lib/cli.js"
+  },
   "author": "Lorefnon <lorefnon@gmail.com>",
   "repository": {
     "type": "git",
@@ -21,8 +23,9 @@
   "scripts": {
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "prebuild": "rimraf dist",
-    "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src",
-    "start": "rollup -c rollup.config.ts -w",
+    "build:docs": "typedoc --out docs --target es6 --theme minimal --mode file src",
+    "build:tsc": "tsc",
+    "build": "yarn run build:tsc && yarn run build:docs",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:prod": "npm run lint && npm run test -- --coverage --no-cache",
@@ -81,8 +84,16 @@
   "devDependencies": {
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
+    "@types/chalk": "^2.2.0",
+    "@types/debug": "^0.0.31",
+    "@types/dot": "^1.1.2",
+    "@types/fancy-log": "^1.3.0",
+    "@types/glob": "^7.1.1",
     "@types/jest": "^23.3.2",
+    "@types/js-yaml": "^3.11.2",
+    "@types/lodash": "^4.14.116",
     "@types/node": "^10.11.0",
+    "@types/tmp": "^0.0.33",
     "colors": "^1.3.2",
     "commitizen": "^2.10.1",
     "coveralls": "^3.0.2",
@@ -111,5 +122,19 @@
     "tslint-config-standard": "^8.0.1",
     "typedoc": "^0.12.0",
     "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "@oclif/command": "^1.5.2",
+    "@oclif/config": "^1.8.6",
+    "@oclif/errors": "^1.2.1",
+    "chalk": "^2.4.1",
+    "cli-progress": "^2.1.0",
+    "debug": "^4.0.1",
+    "dot": "^1.1.2",
+    "fancy-log": "^1.3.2",
+    "glob": "^7.1.3",
+    "js-yaml": "^3.12.0",
+    "lodash": "^4.17.11",
+    "tmp": "^0.0.33"
   }
 }
