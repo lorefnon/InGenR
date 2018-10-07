@@ -10,6 +10,10 @@ It is heavily inspired by [Crystal Macros]() and [Sinaps](https://github.com/jan
 
 Read more about available features below.
 
+## Development Status
+
+:warning: Early Alpha (Pre-Release)
+
 ## How does it work ?
 
 1. Install ingenr:
@@ -123,3 +127,17 @@ Yes, in the sense that both are text replacement utilities.
 No, in the sense that InGenR is much more explicit and does not try to abstract away the transformations. The generated code is injected right in the source files and is expected to be checked-in.
 
 It is expected that this discourages overuse of macros/templates for things which can be easily achieved through language features.
+
+## Why not write babel plugins or Sweet.js macros instead ?
+
+Writing AST transformations is often more cumbersome than text based templates.
+
+Making them play well with TypeScript (or other type systems) and static analyzers can be difficult.
+
+## What languages are supported ?
+
+InGenR itself is language agnostic and can be used with any language.
+
+However, if your language natively supports compile time macros (eg. Haxe, Scala, Clojure etc.) or higher order polymorphism (eg. Haskell), or you are happy with dynamic metaprogramming (eg. Ruby, Lisp) then this project may not be useful for you.
+
+It is strongly advised that generated code be run through a linter / syntax-checker after generation because InGenR does not guarantee syntactic validity of generated code.
