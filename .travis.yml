@@ -10,7 +10,9 @@ cache:
 notifications:
   email: false
 node_js:
-  - node
+  - 10.12
+  - 9.11
+  - 8.12
 script:
   - npm run test:prod && npm run build
 after_success:
