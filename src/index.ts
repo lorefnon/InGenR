@@ -7,7 +7,7 @@ import { defaultsDeep } from "lodash"
 import { defaultParserOptions, CommentParser } from "./CommentParser"
 import { defaultLocatorOptions, GeneratorLocator } from "./GeneratorLocator"
 import { TemplateProcessor } from "./TemplateProcessor"
-import { ConsoleReporter } from "./ConsoleReporter"
+import { ConsoleReporter, Reporter } from "./ConsoleReporter"
 
 const glob = promisify(_glob)
 const debug = _debug("InGenR:run")
@@ -23,16 +23,27 @@ export type TopLevelOptions = typeof defaultOptions
 
 export async function run(options = defaultOptions) {
   defaultsDeep(options, defaultOptions)
-  debug("Running with options: %O", options)
-  const locator = new GeneratorLocator(options.locator)
-  const reporter = new ConsoleReporter(options.reporter)
+  const files = await glob(options.inputPattern)
+  debug("Running with options: %O on %d files: %O", options, files.length, files)
+  processProject(files, options)
+}
+
+export async function processProject(
+  files: string[],
+  passedOptions?: TopLevelOptions,
+  passedLocator?: GeneratorLocator,
+  passedReporter?: Reporter
+) {
+  const options = passedOptions || defaultOptions
+  const reporter = passedReporter || new ConsoleReporter(options.reporter)
+  const locator = passedLocator || new GeneratorLocator({ ...options.locator, reporter })
   debug("Bootstrapping project")
   await locator.bootstrap()
-  const files = await glob(options.inputPattern)
   log.info(`Processing ${files.length} file(s)`)
   return Promise.all(
     files.map(async (f: string) =>
-      new TemplateProcessor(f, options, { reporter, locator }).process()
+      new TemplateProcessor(f, options!, { reporter, locator }).process()
     )
   )
+  reporter.reportAllWarnings()
 }

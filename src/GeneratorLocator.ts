@@ -3,6 +3,8 @@ import * as _fs from "fs"
 import * as doT from "dot"
 import _debug from "debug"
 import { ParsedBlock } from "./CommentParser"
+import { Reporter } from "./ConsoleReporter"
+import { WarningEntry } from "./warnings"
 
 const debug = _debug("InGenR:GeneratorLocator")
 const fs = _fs.promises
@@ -15,6 +17,7 @@ doT.templateSettings = {
 
 export interface LocatorOptions {
   generatorsDir: string | boolean
+  reporter: Reporter
 }
 
 export const defaultLocatorOptions = {
@@ -26,7 +29,11 @@ type Generator = (input: ParsedBlock) => string
 export class GeneratorLocator {
   private cache = new Map<string, Generator>()
 
-  constructor(private options: LocatorOptions = defaultLocatorOptions) {}
+  constructor(private options: LocatorOptions) {}
+
+  get reporter() {
+    return this.options.reporter
+  }
 
   async bootstrap() {
     const genDir = this.generatorsDir
@@ -47,9 +54,9 @@ export class GeneratorLocator {
     }
   }
 
-  async locate(name: string) {
+  async locate(name: string, filePath: string) {
     debug("Locating template: %s", name)
-    this.validateName(name)
+    if (!this.validateName(name, filePath)) return
     let generator = this.cache.get(name)
     if (generator) return generator
     const genDir = this.generatorsDir
@@ -65,11 +72,16 @@ export class GeneratorLocator {
         if (!e.message || !e.message.match(/cannot find module/i)) {
           throw e
         }
-        console.log(`Failed to require: ${requirable}`)
+        debug(`Failed to require: ${requirable}`)
       }
     }
     if (!generator) {
-      throw new Error(`Generator not found: ${name}`)
+      this.reporter.bufferWarning(filePath, undefined, undefined, [
+        {
+          message: `Failed to resolve generator: ${name}`
+        }
+      ])
+      return
     }
     this.cache.set(name, generator)
     return generator
@@ -81,9 +93,15 @@ export class GeneratorLocator {
     return this.options.generatorsDir
   }
 
-  private validateName(name: string) {
+  private validateName(name: string, filePath: string) {
     if (!name.match(/^([a-zA-Z0-9@_-]+\/?)+$/) || name.charAt(name.length - 1) === "/") {
-      throw new Error(`Invalid template name: ${name}`)
+      this.reporter.bufferWarning(filePath, undefined, undefined, [
+        {
+          message: `Invalid template name: ${name}`
+        }
+      ])
+      return false
     }
+    return true
   }
 }

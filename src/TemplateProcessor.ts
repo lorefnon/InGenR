@@ -105,12 +105,12 @@ export class TemplateProcessor {
       await this.processParsedBlock(data)
     }
     if (warnings && warnings.length > 0) {
-      this.reporter.reportWarning(lineIndex, data, warnings)
+      this.reporter.bufferWarning(this.filePath, lineIndex, data, warnings)
     }
   }
 
   private async processParsedBlock(block: ParsedBlock) {
-    const generate = await this.locator.locate(block.templateName)
+    const generate = await this.locator.locate(block.templateName, this.filePath)
     // tslint:disable-next-line
     const generatedContent = (await generate(block)).replace(/\r\n/gm, "\n")
     debug("Generated Content:", generatedContent)

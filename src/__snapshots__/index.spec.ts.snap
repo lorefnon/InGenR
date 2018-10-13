@@ -1,11 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TemplateProcessor Complains about missing generators 1`] = `
+Array [
+  Object {
+    "filePath": "<project-root>\\\\src\\\\erroneous-template-name.ts",
+    "line": undefined,
+    "lineIndex": undefined,
+    "warnings": Array [
+      Object {
+        "message": "Invalid template name: knex/../../../foo-bar",
+      },
+    ],
+  },
+  Object {
+    "filePath": "<project-root>\\\\src\\\\missing-generator.ts",
+    "line": undefined,
+    "lineIndex": undefined,
+    "warnings": Array [
+      Object {
+        "message": "Failed to resolve generator: knex-dahl",
+      },
+    ],
+  },
+]
+`;
+
 exports[`TemplateProcessor Injects generated content into annotated blocks 1`] = `
-"import foo from \\"foo\\";
+"import foo from \\"foo\\"
 
-const bar = \\"bar\\";
+const bar = \\"bar\\"
 
-/**! InGenR:expand knex-dal
+/*! InGenR:expand knex-dal
  *
  * tableName: users
  * columns:
@@ -14,21 +39,8 @@ const bar = \\"bar\\";
  *   - name: email
  *     type: string
  */
-interface users {
-  name: string;
-  email: string;
-  
-}
+/*! InGenR:end */
 
-const createTable = () =>
-  knex.schema.createTable(\\"users\\", (table) => {
-      table.uuid(\\"id\\").primary();
-      table.string(\\"name\\")
-      table.string(\\"email\\")
-      
-  })
-/**! InGenR:end */
-
-export { foo, bar };
+export { foo, bar }
 "
 `;

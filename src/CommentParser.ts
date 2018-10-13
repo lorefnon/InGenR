@@ -10,7 +10,7 @@ import { WarningEntry, warnInterpolated, warnInvalidArgBody } from "./warnings"
 const debug = _debug("InGenR:CommentParser")
 
 export const defaultParserOptions = {
-  commentStartRegex: "\\/\\*\\*!",
+  commentStartRegex: "\\/\\*!",
   commentEndRegex: "\\*\\/",
   commentLBoundRegEx: "^\\s*\\*?",
   commentRBoundRegEx: "\\*?\\s*$"

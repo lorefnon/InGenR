@@ -2,13 +2,11 @@ import foo from "foo"
 
 const bar = "bar"
 
-/*! InGenR:expand knex-dal
+/*! InGenR:expand knex-dahl
  *
  * tableName: users
  * columns:
  *   - name: name
- *     type: string
- *   - name: email
  *     type: string
  */
 /*! InGenR:end */
