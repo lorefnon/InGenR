@@ -28,15 +28,15 @@ Eg. In `src/data-layer/users.ts`:`
 
 ```
 /**! InGenR:expand knex-dal
- *
- * tableName: users
- * - columns:
- *   - name: name
- *     type: string
- *   - type: email
- *     type: string
- */
-/**! InGenR:end **/
+*
+* tableName: users
+* columns:
+*   - name: name
+*     type: string
+*   - name: email
+*     type: string
+*/
+/**! InGenR:end */
 ```
 
 3. Write your code generator:

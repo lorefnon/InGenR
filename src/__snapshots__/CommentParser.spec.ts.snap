@@ -1,0 +1,188 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Comment Parser parses files with comment blocks 1`] = `
+Array [
+  Object {
+    "data": "",
+    "parserState": "INIT",
+    "type": "LINE",
+  },
+  Object {
+    "data": "            /**! InGenR:expand sample */",
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "LINE",
+  },
+  Object {
+    "data": Object {
+      "blockEndLineIndex": 2,
+      "blockStartLineIndex": 2,
+      "currentContent": Array [],
+      "templateArgs": undefined,
+      "templateName": "sample",
+    },
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "PARSED_BLOCK",
+  },
+  Object {
+    "data": "            /**! InGenR:end */",
+    "parserState": "INIT",
+    "type": "LINE",
+  },
+  Object {
+    "data": "",
+    "parserState": "INIT",
+    "type": "LINE",
+  },
+  Object {
+    "data": "            /**! InGenR:expand knex-dal",
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+  },
+  Object {
+    "data": "            *",
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+  },
+  Object {
+    "data": "            * tableName: users",
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+  },
+  Object {
+    "data": "            * columns:",
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+  },
+  Object {
+    "data": "            *   - name: name",
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+  },
+  Object {
+    "data": "            *     type: string",
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+  },
+  Object {
+    "data": "            *   - name: email",
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+  },
+  Object {
+    "data": "            *     type: string",
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+  },
+  Object {
+    "data": "            */",
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "LINE",
+  },
+  Object {
+    "data": Object {
+      "blockEndLineIndex": 13,
+      "blockStartLineIndex": 13,
+      "currentContent": Array [],
+      "templateArgs": Object {
+        "columns": Array [
+          Object {
+            "name": "name",
+            "type": "string",
+          },
+          Object {
+            "name": "email",
+            "type": "string",
+          },
+        ],
+        "tableName": "users",
+      },
+      "templateName": "knex-dal",
+    },
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "PARSED_BLOCK",
+  },
+  Object {
+    "data": "            /**! InGenR:end */",
+    "parserState": "INIT",
+    "type": "LINE",
+  },
+  Object {
+    "data": "",
+    "parserState": "INIT",
+    "type": "LINE",
+  },
+  Object {
+    "data": "            /**! InGenR:expand products",
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+  },
+  Object {
+    "data": "             *",
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+  },
+  Object {
+    "data": "             * tableName: products",
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+  },
+  Object {
+    "data": "             */",
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "LINE",
+  },
+  Object {
+    "data": Object {
+      "blockEndLineIndex": 19,
+      "blockStartLineIndex": 19,
+      "currentContent": Array [],
+      "templateArgs": Object {
+        "tableName": "products",
+      },
+      "templateName": "products",
+    },
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "PARSED_BLOCK",
+  },
+  Object {
+    "data": "            /**! InGenR:end */",
+    "parserState": "INIT",
+    "type": "LINE",
+  },
+  Object {
+    "data": "        ",
+    "parserState": "INIT",
+    "type": "LINE",
+  },
+]
+`;
+
+exports[`Comment Parser parses files with no comment blocks 1`] = `
+Array [
+  Object {
+    "data": "",
+    "parserState": "INIT",
+    "type": "LINE",
+  },
+  Object {
+    "data": "            import express from \\"express\\";",
+    "parserState": "INIT",
+    "type": "LINE",
+  },
+  Object {
+    "data": "            const app = express();",
+    "parserState": "INIT",
+    "type": "LINE",
+  },
+  Object {
+    "data": "            app.listen()",
+    "parserState": "INIT",
+    "type": "LINE",
+  },
+  Object {
+    "data": "        ",
+    "parserState": "INIT",
+    "type": "LINE",
+  },
+]
+`;
