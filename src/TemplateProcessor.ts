@@ -111,6 +111,9 @@ export class TemplateProcessor {
 
   private async processParsedBlock(block: ParsedBlock) {
     const generate = await this.locator.locate(block.templateName, this.filePath)
+    if (!generate) {
+      return
+    }
     // tslint:disable-next-line
     const generatedContent = (await generate(block)).replace(/\r\n/gm, "\n")
     debug("Generated Content:", generatedContent)
