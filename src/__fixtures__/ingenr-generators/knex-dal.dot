@@ -1,0 +1,11 @@
+interface {{= it.interfaceName || it.tableName }} {
+  {{~ it.columns :c}}{{= c.fieldName || c.name }}: {{= c.tsType || c.type }};
+  {{~}}
+}
+
+const createTable = () =>
+  knex.schema.createTable("{{= it.tableName }}", (table) => {
+      table.uuid("id").primary();
+      {{~ it.columns :c}}table.{{= c.colType || c.type}}("{{= c.columnName || c.name }}")
+      {{~}}
+  })

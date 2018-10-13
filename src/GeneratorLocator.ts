@@ -1,10 +1,10 @@
-import * as path from 'path'
-import * as _fs from 'fs'
-import * as doT from 'dot'
-import _debug from 'debug'
-import { ParsedBlock } from './CommentParser'
+import * as path from "path"
+import * as _fs from "fs"
+import * as doT from "dot"
+import _debug from "debug"
+import { ParsedBlock } from "./CommentParser"
 
-const debug = _debug('InGenR:GeneratorLocator')
+const debug = _debug("InGenR:GeneratorLocator")
 const fs = _fs.promises
 
 // @ts-ignore
@@ -18,7 +18,7 @@ export interface LocatorOptions {
 }
 
 export const defaultLocatorOptions = {
-  generatorsDir: 'ingenr-generators'
+  generatorsDir: "ingenr-generators"
 }
 
 type Generator = (input: ParsedBlock) => string
@@ -35,19 +35,20 @@ export class GeneratorLocator {
       const compilation: { [index: string]: (obj: any) => string } = (doT as any).process({
         path: genDir
       })
+      /* istanbul ignore next */
       for (const [key, generate] of Object.entries(compilation)) {
-        debug('Caching generator for %s', key)
+        debug("Caching generator for %s", key)
         this.cache.set(key, (input: ParsedBlock) => generate(input.templateArgs))
       }
     } catch (e) {
-      if (e.code !== 'ENOENT') {
+      if (e.code !== "ENOENT") {
         throw e
       }
     }
   }
 
   async locate(name: string) {
-    debug('Locating template: %s', name)
+    debug("Locating template: %s", name)
     this.validateName(name)
     let generator = this.cache.get(name)
     if (generator) return generator
@@ -81,7 +82,7 @@ export class GeneratorLocator {
   }
 
   private validateName(name: string) {
-    if (!name.match(/^([a-zA-Z0-9@_-]+\/?)+$/) || name.charAt(name.length - 1) === '/') {
+    if (!name.match(/^([a-zA-Z0-9@_-]+\/?)+$/) || name.charAt(name.length - 1) === "/") {
       throw new Error(`Invalid template name: ${name}`)
     }
   }

@@ -1,4 +1,5 @@
-import * as fs from "fs"
+import * as FS from "fs"
+import * as fs from "fs-extra"
 import * as log from "fancy-log"
 import _debug from "debug"
 import { file as getTmpFile } from "tmp"
@@ -7,30 +8,34 @@ import { CommentParser, ParsedBlock } from "./CommentParser"
 import { TopLevelOptions } from "."
 import { WriteStream } from "tty"
 import { ConsoleReporter, Reporter } from "./ConsoleReporter"
+import { EventEmitter } from "stream"
 
 const debug = _debug("InGenR:TemplateProcessor")
 
 interface TmpFileHandle {
   filePath: string
   fd: number
-  clean(): void
 }
 
 interface TemplateProcessorHelpers {
   reporter: Reporter
   locator: GeneratorLocator
-  fileSystem?: typeof fs
 }
 
 const getTmpFileAsync = () =>
   new Promise<TmpFileHandle>((resolve, reject) => {
-    getTmpFile({ keep: true }, (err, filePath, fd, clean) => {
+    getTmpFile({ keep: true }, (err, filePath, fd) => {
       if (err) {
         reject(err)
       } else {
-        resolve({ filePath, fd, clean })
+        resolve({ filePath, fd })
       }
     })
+  })
+
+const waitForEvent = (stream: EventEmitter, event: string) =>
+  new Promise((resolve, reject) => {
+    stream.on(event, resolve)
   })
 
 export class TemplateProcessor {
@@ -41,32 +46,42 @@ export class TemplateProcessor {
   private commentParser?: CommentParser
   private reporter: Reporter
   private locator: GeneratorLocator
-  private fs: typeof fs
 
   constructor(
     private filePath: string,
     private options: TopLevelOptions,
-    { reporter, locator, fileSystem = fs }: TemplateProcessorHelpers
+    { reporter, locator }: TemplateProcessorHelpers
   ) {
     this.reporter = reporter
     this.locator = locator
-    this.fs = fileSystem
   }
 
   async process() {
-    this.readStream = this.fs.createReadStream(this.filePath, { encoding: "utf8" })
+    this.readStream = fs.createReadStream(this.filePath, { encoding: "utf8" })
+    const readEndP = waitForEvent(this.readStream, "close")
     this.tmpFile = await getTmpFileAsync()
     this.didChange = false
-    this.writeStream = this.fs.createWriteStream(this.filePath)
+    this.writeStream = fs.createWriteStream(this.tmpFile.filePath)
+    const writeEndP = waitForEvent(this.writeStream, "close")
     this.commentParser = new CommentParser(this.readStream, this.options.parser)
     const promise = this.commentParser.parse()
     try {
       await this.processComments()
       await promise
     } catch (e) {
-      log.error(`Failed to process file: ${this.filePath}`)
-      this.tmpFile.clean()
-      throw e
+      console.error(`Failed to process file: ${this.filePath}`)
+      // await fs.remove(this.tmpFile.filePath);
+      // throw e
+    }
+    this.writeStream!.end()
+    await Promise.all([readEndP, writeEndP])
+    while (true) {
+      try {
+        await fs.rename(this.tmpFile!.filePath, this.filePath)
+        break
+      } catch (e) {
+        console.error(e)
+      }
     }
   }
 
@@ -85,7 +100,7 @@ export class TemplateProcessor {
   private async processItem({ type, lineIndex, data, didProcess, warnings }: any) {
     debug(`didProcess: ${didProcess} lineIndex: ${lineIndex} filePath: ${this.filePath}`)
     if (type === "LINE") {
-      this.writeStream!.write(`${data}\n`)
+      await this.write(`${data}\n`)
     } else if (type === "PARSED_BLOCK") {
       await this.processParsedBlock(data)
     }
@@ -104,11 +119,22 @@ export class TemplateProcessor {
       debug("Previous content:", prevGeneratedContent)
     }
     if (generatedContent === prevGeneratedContent) {
-      this.writeStream!.write(prevGeneratedContent)
+      await this.write(prevGeneratedContent)
     } else {
       debug("Encountered change")
       this.didChange = true
-      this.writeStream!.write(generatedContent)
+      await this.write(generatedContent)
     }
+  }
+
+  private write(content: string) {
+    const stream = this.writeStream!
+    return new Promise((resolve, reject) => {
+      if (!stream.write(content, "utf8")) {
+        stream.once("drain", () => resolve(true))
+      } else {
+        process.nextTick(() => resolve(true))
+      }
+    })
   }
 }
