@@ -360,6 +360,12 @@
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
 
+"@types/mock-fs@^3.6.30":
+  version "3.6.30"
+  resolved "https://registry.yarnpkg.com/@types/mock-fs/-/mock-fs-3.6.30.tgz#4d812541e87b23577261a5aa95f704dd3d01e410"
+  dependencies:
+    "@types/node" "*"
+
 "@types/node@*", "@types/node@^10.11.4":
   version "10.11.4"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.11.4.tgz#e8bd933c3f78795d580ae41d86590bfc1f4f389d"
@@ -2026,6 +2032,10 @@ fast-deep-equal@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-1.1.0.tgz#c053477817c86b51daa853c81e059b733d023614"
 
+fast-extend@0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/fast-extend/-/fast-extend-0.0.2.tgz#f5ec42cf40b9460f521a6387dfb52deeed671dbd"
+
 fast-glob@^2.0.2:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-2.2.3.tgz#d09d378e9ef6b0076a0fa1ba7519d9d4d9699c28"
@@ -2218,6 +2228,10 @@ fs-minipass@^1.2.5:
   resolved "https://registry.yarnpkg.com/fs-minipass/-/fs-minipass-1.2.5.tgz#06c277218454ec288df77ada54a03b8702aacb9d"
   dependencies:
     minipass "^2.2.1"
+
+fs-monkey@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/fs-monkey/-/fs-monkey-0.3.3.tgz#7960bb2b1fa2653731b9d0e2e84812a7e8b3664a"
 
 fs-vacuum@^1.2.10, fs-vacuum@~1.2.10:
   version "1.2.10"
@@ -4030,6 +4044,13 @@ mem@^4.0.0:
     mimic-fn "^1.0.0"
     p-is-promise "^1.1.0"
 
+memfs@^2.10.1:
+  version "2.10.1"
+  resolved "https://registry.yarnpkg.com/memfs/-/memfs-2.10.1.tgz#4f10c96c3e377fc43494cc3e010bc24ab103af07"
+  dependencies:
+    fast-extend "0.0.2"
+    fs-monkey "^0.3.3"
+
 meow@5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/meow/-/meow-5.0.0.tgz#dfc73d63a9afc714a5e371760eb5c88b91078aa4"
@@ -4206,6 +4227,10 @@ mkdirp@0.x, mkdirp@0.x.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp
   resolved "http://registry.npmjs.org/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   dependencies:
     minimist "0.0.8"
+
+mock-fs@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/mock-fs/-/mock-fs-4.7.0.tgz#9f17e219cacb8094f4010e0a8c38589e2b33c299"
 
 modify-values@^1.0.0:
   version "1.0.1"
