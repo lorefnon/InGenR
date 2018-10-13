@@ -1,14 +1,12 @@
 [![InGenR](https://raw.githubusercontent.com/lorefnon/InGenR/master/assets/banner.png)](https://github.com/lorefnon/InGenR)
 
-InGenR is a generic utility for inline code generation.
+InGenR (pronounced in-gen-r) is a generic utility for inline code generation.
 
 When working with large codebases, esp. those involving (one or more) type systems it is often the case that reusing code (while retaining end-to-end type-safety) becomes difficult and repetitive boilerplate is required in some cases to satisfy the type system. Features like Type Classes and higher kinded polymorphism largely alleviate this problem, but if your language of choice doesn't have this feature, then you are pretty much stuck.
 
-InGenR aims to be a simple generic utility that solves this through a much simpler and crude approach: code generation.
+InGenR aims to be a simple generic utility that solves this through a much simpler and crude approach: code generation. For many use cases this is a much more practical and simple solution.
 
 It is heavily inspired by [Crystal Macros]() and [Sinaps](https://github.com/janestreet/cinaps).
-
-Read more about available features below.
 
 ## Development Status
 
@@ -24,7 +22,7 @@ Read more about available features below.
 npm install -g ingenr
 ```
 
-2. Somewhere in your source file, add annotated comment blocks specifying a code generator:
+2. Somewhere in your source file, add InGenR directives in comment blocks:
 
 Eg. In `src/data-layer/users.ts`:`
 
@@ -40,6 +38,8 @@ Eg. In `src/data-layer/users.ts`:`
 */
 /**! InGenR:end */
 ```
+
+An InGenR directive specifies the name of generator (knex-dal) and arguments passed to the generator (in YAML or JSON formats).
 
 3. Write your code generator:
 
@@ -61,7 +61,7 @@ const createTable = () =>
     })
 ```
 
-Simple code generators can be implemented as DoT templates. More complex generators can be implemented as plain javascript modules.
+Simple code generators can be implemented as [DoT templates](https://github.com/olado/doT). More complex generators can be implemented as  javascript modules (which export a generator function as the default export).
 
 4. Run the generator:
 
