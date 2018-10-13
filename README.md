@@ -6,7 +6,7 @@ When working with large codebases, esp. those involving (one or more) type syste
 
 InGenR aims to be a simple generic utility that solves this through a much simpler and crude approach: code generation. For many use cases this is a much more practical and simple solution.
 
-It is heavily inspired by [Crystal Macros]() and [Sinaps](https://github.com/janestreet/cinaps).
+It is heavily inspired by [Crystal Macros](https://crystal-lang.org/docs/syntax_and_semantics/macros.html) and [Sinaps](https://github.com/janestreet/cinaps).
 
 ## Development Status
 
@@ -114,7 +114,7 @@ InGenR does not modify any code outside of annotated expand blocks. It is safe t
 
 Having generated code live along-side source code in same file often simplifies use cases where expansions are desirable in nested scopes, within class declarations etc.
 
-improves the readability and conveys the intent better. If you want the generated code to reside in dedicated files separate from your source directory, you are more than welcome to do so.
+For small templates (primary use case) it also improves the readability and conveys the intent better. If you want the generated code to reside in dedicated files separate from your source directory, you are more than welcome to do so.
 
 ## Is InGenR type-safe / hygenic ?
 
