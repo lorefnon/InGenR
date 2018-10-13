@@ -27,7 +27,7 @@ npm install -g ingenr
 Eg. In `src/data-layer/users.ts`:`
 
 ```
-/**! InGenR:expand knex-dal
+/*! InGenR:expand knex-dal
 *
 * tableName: users
 * columns:
@@ -36,7 +36,7 @@ Eg. In `src/data-layer/users.ts`:`
 *   - name: email
 *     type: string
 */
-/**! InGenR:end */
+/*! InGenR:end */
 ```
 
 An InGenR directive specifies the name of generator (knex-dal) and arguments passed to the generator (in YAML or JSON formats).
@@ -74,7 +74,7 @@ InGenR will find all the files with annotated generator blocks like the above, a
 So after running this, `src/data-layer/users.ts` will contain:
 
 ```
-/**! InGenR:expand knex-dal
+/*! InGenR:expand knex-dal
  *
  * tableName: users
  * - columns:
@@ -95,7 +95,7 @@ const createTable = () =>
         table.string("email")
     })
 
-/**! InGenR:end **/
+/*! InGenR:end */
 ```
 
 5. (Optional) Share your generator as a resuable package:
