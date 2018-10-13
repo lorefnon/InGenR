@@ -1,4 +1,4 @@
-# InGenR
+[![InGenR](https://raw.githubusercontent.com/lorefnon/InGenR/master/assets/banner.png)](https://github.com/lorefnon/InGenR)
 
 InGenR is a generic utility for inline code generation.
 
@@ -13,6 +13,8 @@ Read more about available features below.
 ## Development Status
 
 :warning: Early Alpha (Pre-Release)
+
+[![Build Status](https://travis-ci.org/lorefnon/InGenR.svg?branch=master)](https://travis-ci.org/lorefnon/InGenR)
 
 ## How does it work ?
 
