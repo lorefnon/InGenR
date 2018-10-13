@@ -28,7 +28,7 @@
     "build": "yarn run build:tsc && yarn run build:docs",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:prod": "yarn run lint && yarn run test -- --coverage --no-cache",
+    "test:prod": "yarn run lint && yarn run test -- --no-cache",
     "deploy-docs": "ts-node tools/gh-pages-publish",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "commit": "git-cz",
