@@ -3,7 +3,7 @@
 exports[`TemplateProcessor Complains about missing generators 1`] = `
 Array [
   Object {
-    "filePath": "<project-root>\\\\src\\\\erroneous-template-name.ts",
+    "filePath": "<project-root>/src/erroneous-template-name.ts",
     "line": undefined,
     "lineIndex": undefined,
     "warnings": Array [
@@ -13,7 +13,7 @@ Array [
     ],
   },
   Object {
-    "filePath": "<project-root>\\\\src\\\\missing-generator.ts",
+    "filePath": "<project-root>/src/missing-generator.ts",
     "line": undefined,
     "lineIndex": undefined,
     "warnings": Array [

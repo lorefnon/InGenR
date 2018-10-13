@@ -56,7 +56,9 @@ describe("TemplateProcessor", () => {
         Array.from(reporter.warnings.values()).map(warnings =>
           warnings.map(warning => ({
             ...warning,
-            filePath: warning.filePath.replace(projDir!, "<project-root>")
+            filePath: warning.filePath
+              .replace(projDir!, "<project-root>")
+              .replace(/\\/g, "/")
           }))
         )
       ),
