@@ -25,7 +25,7 @@ export async function run(options = defaultOptions) {
   defaultsDeep(options, defaultOptions)
   const files = await glob(options.inputPattern)
   debug("Running with options: %O on %d files: %O", options, files.length, files)
-  processProject(files, options)
+  await processProject(files, options)
 }
 
 export async function processProject(
@@ -42,7 +42,7 @@ export async function processProject(
   log.info(`Processing ${files.length} file(s)`)
   return Promise.all(
     files.map(async (f: string) =>
-      new TemplateProcessor(f, options!, { reporter, locator }).process()
+      new TemplateProcessor(f, options, { reporter, locator }).process()
     )
   )
   reporter.reportAllWarnings()
