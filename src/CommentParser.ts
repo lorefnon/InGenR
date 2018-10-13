@@ -121,15 +121,14 @@ export class CommentParser extends EventEmitter {
   }
 
   private checkUnprocessedDirectives(line: string, warnings: WarningEntry[]) {
-    let match
-    if ((match = line.match(/InGenR:\S+/))) {
-      warnings.push({
-        index: match.index,
-        message:
-          `Potentially unprocessed InGenR directive: ${match[0]}.\n` +
-          `If you expected this directive to be processed please recheck the syntax`
-      })
-    }
+    const match = line.match(/InGenR:\S+/)
+    if (!match) return
+    warnings.push({
+      index: match.index,
+      message:
+        `Potentially unprocessed InGenR directive: ${match[0]}.\n` +
+        `If you expected this directive to be processed please recheck the syntax`
+    })
   }
 
   private checkBlockStart(lineIndex: number, line: string, warnings: WarningEntry[]) {

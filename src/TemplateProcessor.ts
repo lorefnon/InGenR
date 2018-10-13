@@ -73,11 +73,11 @@ export class TemplateProcessor {
       // await fs.remove(this.tmpFile.filePath);
       // throw e
     }
-    this.writeStream!.end()
+    this.writeStream.end()
     await Promise.all([readEndP, writeEndP])
     while (true) {
       try {
-        await fs.rename(this.tmpFile!.filePath, this.filePath)
+        await fs.rename(this.tmpFile.filePath, this.filePath)
         break
       } catch (e) {
         console.error(e)
@@ -92,7 +92,7 @@ export class TemplateProcessor {
         promise = promise.then(() => this.processItem(item)).catch(reject)
       })
       this.commentParser!.on("close", () => {
-        promise.then(() => resolve(true))
+        promise.then(() => resolve(true)).catch(reject)
       })
     })
   }
@@ -111,6 +111,7 @@ export class TemplateProcessor {
 
   private async processParsedBlock(block: ParsedBlock) {
     const generate = await this.locator.locate(block.templateName)
+    // tslint:disable-next-line
     const generatedContent = (await generate(block)).replace(/\r\n/gm, "\n")
     debug("Generated Content:", generatedContent)
     let prevGeneratedContent
