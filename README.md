@@ -12,7 +12,7 @@ It is heavily inspired by [Crystal Macros](https://crystal-lang.org/docs/syntax_
 
 :warning: Early Alpha (Pre-Release)
 
-[![Build Status](https://travis-ci.org/lorefnon/InGenR.svg?branch=master)](https://travis-ci.org/lorefnon/InGenR)
+[![Build Status](https://travis-ci.org/lorefnon/InGenR.svg?branch=master)](https://travis-ci.org/lorefnon/InGenR) [![Greenkeeper badge](https://badges.greenkeeper.io/lorefnon/InGenR.svg)](https://greenkeeper.io/)
 
 ## How does it work ?
 
