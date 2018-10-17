@@ -1,19 +1,34 @@
 #!/usr/bin/env node
 
-import { Command, flags } from "@oclif/command"
-import { run } from "."
-// @ts-ignore
-import handleError from "@oclif/errors/handle"
+import * as minimist from "minimist"
 
-export class CLI extends Command {
-  static flags = {
-    version: flags.version(),
-    help: flags.help(),
-    input: flags.string({
-      char: "i"
-    })
+import { showHelp, showVersionInfo, runWithDiscoveredConfig } from "./commands";
+
+const argv = minimist(process.argv.slice(2), {
+  boolean: true,
+  string: 'input',
+  alias: {
+    r: 'run',
+    h: 'help',
+    v: 'version'
   }
-  run = run
-}
+})
 
-CLI.run().catch(handleError)
+;(async () => {
+  const subCommand = argv._[0]
+    if (argv.help || subCommand === 'help') {
+      showHelp()
+      return
+    }
+    if (argv.version || subCommand === 'version') {
+      showVersionInfo()
+      return
+    }
+    if (subCommand === 'run') {
+      await runWithDiscoveredConfig(argv._)
+      return
+    }
+    console.log('This does not look like a correct usage.')
+  showHelp()
+})()
+

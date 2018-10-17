@@ -116,9 +116,7 @@ export class TemplateProcessor {
     }
     let targetStream = this.writeStream!
     let isExternalTarget = false
-    console.log('directive =>', directive)
     if (directive.directiveArgs && directive.directiveArgs.targetFilePath) {
-      console.log('[2]')
       const targetFilePath = path.resolve(path.dirname(this.filePath), directive.directiveArgs.targetFilePath)
       targetStream = fs.createWriteStream(targetFilePath)
       isExternalTarget = true

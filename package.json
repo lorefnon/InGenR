@@ -1,8 +1,12 @@
 {
   "name": "ingenr",
   "version": "0.3.0",
-  "description": "",
-  "keywords": [],
+  "description": "Pragmatic and flexible code generation utility",
+  "keywords": [
+    "code-generation",
+    "macro",
+    "template"
+  ],
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -83,6 +87,7 @@
     "@commitlint/config-conventional": "^7.1.2",
     "@types/bufferstream": "^0.6.35",
     "@types/chalk": "^2.2.0",
+    "@types/cosmiconfig": "^5.0.3",
     "@types/debug": "^0.0.31",
     "@types/dot": "^1.1.2",
     "@types/fancy-log": "^1.3.0",
@@ -91,6 +96,7 @@
     "@types/jest": "^23.3.4",
     "@types/js-yaml": "^3.11.2",
     "@types/lodash": "^4.14.116",
+    "@types/minimist": "^1.2.0",
     "@types/node": "^10.11.4",
     "@types/tmp": "^0.0.33",
     "colors": "^1.3.2",
@@ -129,6 +135,7 @@
     "@oclif/plugin-help": "^2.1.3",
     "chalk": "^2.4.1",
     "cli-progress": "^2.1.0",
+    "cosmiconfig": "^5.0.6",
     "debug": "^4.1.0",
     "dot": "^1.1.2",
     "fancy-log": "^1.3.2",
@@ -136,6 +143,7 @@
     "glob": "^7.1.3",
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.11",
+    "minimist": "^1.2.0",
     "tmp": "^0.0.33"
   },
   "husky": {

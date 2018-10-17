@@ -21,11 +21,11 @@ export const defaultOptions = {
 
 export type TopLevelOptions = typeof defaultOptions
 
-export async function run(options = defaultOptions) {
-  defaultsDeep(options, defaultOptions)
-  const files = await glob(options.inputPattern)
-  debug("Running with options: %O on %d files: %O", options, files.length, files)
-  await processProject(files, options)
+export async function run(options: Partial<TopLevelOptions> = defaultOptions) {
+  const finalOptions: TopLevelOptions = defaultsDeep(options, defaultOptions)
+  const files = await glob(finalOptions.inputPattern)
+  debug("Running with options: %O on %d files: %O", finalOptions, files.length, files)
+  await processProject(files, finalOptions)
 }
 
 export async function processProject(

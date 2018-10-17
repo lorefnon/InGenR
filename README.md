@@ -1,6 +1,6 @@
 [![InGenR](https://raw.githubusercontent.com/lorefnon/InGenR/master/assets/banner.png)](https://github.com/lorefnon/InGenR)
 
-InGenR (pronounced in-gen-r) is a generic utility for inline code generation.
+InGenR (pronounced in-gen-are) is a generic utility for inline code generation.
 
 When working with large codebases, esp. those involving (one or more) type systems it is often the case that reusing code (while retaining end-to-end type-safety) becomes difficult and repetitive boilerplate is required in some cases to satisfy the type system. Features like Type Classes and higher kinded polymorphism largely alleviate this problem, but if your language of choice doesn't have this feature, then you are pretty much stuck.
 
