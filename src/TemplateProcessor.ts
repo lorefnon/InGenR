@@ -1,10 +1,9 @@
-import * as FS from "fs"
 import * as fs from "fs-extra"
-import * as log from "fancy-log"
+import * as path from "path"
 import _debug from "debug"
 import { file as getTmpFile } from "tmp"
 import { GeneratorLocator } from "./GeneratorLocator"
-import { CommentParser, ParsedBlock } from "./CommentParser"
+import { CommentParser, Directive } from "./CommentParser"
 import { TopLevelOptions } from "."
 import { WriteStream } from "tty"
 import { ConsoleReporter, Reporter } from "./ConsoleReporter"
@@ -109,30 +108,40 @@ export class TemplateProcessor {
     }
   }
 
-  private async processParsedBlock(block: ParsedBlock) {
-    const generate = await this.locator.locate(block.templateName, this.filePath)
+  private async processParsedBlock(directive: Directive) {
+    debug("Processing directive", directive)
+    const generate = await this.locator.locate(directive.templateName, this.filePath)
     if (!generate) {
       return
     }
+    let targetStream = this.writeStream!
+    let isExternalTarget = false
+    console.log('directive =>', directive)
+    if (directive.directiveArgs && directive.directiveArgs.targetFilePath) {
+      console.log('[2]')
+      const targetFilePath = path.resolve(path.dirname(this.filePath), directive.directiveArgs.targetFilePath)
+      targetStream = fs.createWriteStream(targetFilePath)
+      isExternalTarget = true
+    }
     // tslint:disable-next-line
-    const generatedContent = (await generate(block)).replace(/\r\n/gm, "\n")
+    const generatedContent = (await generate(directive)).replace(/\r\n/gm, "\n")
     debug("Generated Content:", generatedContent)
     let prevGeneratedContent
-    if (block.currentContent) {
-      prevGeneratedContent = block.currentContent.join("\n")
+    if (directive.currentContent) {
+      prevGeneratedContent = directive.currentContent.join("\n")
       debug("Previous content:", prevGeneratedContent)
     }
     if (generatedContent === prevGeneratedContent) {
-      await this.write(prevGeneratedContent)
+      await this.write(prevGeneratedContent, targetStream)
     } else {
       debug("Encountered change")
       this.didChange = true
-      await this.write(generatedContent)
+      await this.write(generatedContent, targetStream)
     }
+    if (isExternalTarget) targetStream.close()
   }
 
-  private write(content: string) {
-    const stream = this.writeStream!
+  private write(content: string, stream = this.writeStream!) {
     return new Promise((resolve, reject) => {
       if (!stream.write(content, "utf8")) {
         stream.once("drain", () => resolve(true))

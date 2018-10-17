@@ -4,7 +4,6 @@ import * as tmp from "tmp"
 import { sortBy, flatten } from "lodash"
 import { run, processProject } from "."
 import { MockReporter } from "./MockReporter"
-import { FileWarning } from "./ConsoleReporter"
 
 const populateFixtures = async (projDir: string, filePaths: string[]) => {
   for (const filePath of filePaths) {
@@ -24,9 +23,15 @@ const getTmpDir = () =>
     })
   })
 
-describe("TemplateProcessor", () => {
+describe("InGenR", () => {
   let projDir: string | null = null
   let originalCwd: string | null = null
+
+  const readFromProjDir = (filePath: string) => 
+    fs.readFile(path.join(projDir!, filePath), {
+      encoding: "utf8"
+    })
+
   beforeEach(async () => {
     originalCwd = process.cwd()
     projDir = await getTmpDir()
@@ -35,16 +40,14 @@ describe("TemplateProcessor", () => {
   afterEach(async () => {
     process.chdir(originalCwd!)
     if (projDir) {
-      fs.remove(projDir)
+      // fs.remove(projDir)
       projDir = null
     }
   })
   it("Injects generated content into annotated blocks", async () => {
     await populateFixtures(projDir!, ["src/index.ts", "ingenr-generators/knex-dal.dot"])
-    const postProcessedContents = await fs.readFile(path.join(projDir!, "src/index.ts"), {
-      encoding: "utf8"
-    })
-    expect(postProcessedContents).toMatchSnapshot()
+    await run()
+    expect(await readFromProjDir("src/index.ts")).toMatchSnapshot()
   })
   it("Complains about missing generators", async () => {
     const srcFiles = ["src/index.ts", "src/missing-generator.ts", "src/erroneous-template-name.ts"]
@@ -65,5 +68,15 @@ describe("TemplateProcessor", () => {
       "filePath"
     )
     expect(strippedWarnings).toMatchSnapshot()
+  })
+  it.only("supports external template targets", async () => {
+    await populateFixtures(projDir!, ["src/index.ts", "src/external-target.ts", "ingenr-generators/knex-dal.dot"])
+    await run()
+    const postProcessedContents = {
+      index: await readFromProjDir("src/index.ts"),
+      externalTarget: await readFromProjDir("src/external-target.ts"),
+      externalTargetGenerated: await readFromProjDir("src/users-table.ts")
+    };
+    expect(postProcessedContents).toMatchSnapshot()
   })
 })

@@ -2,7 +2,7 @@ import * as path from "path"
 import * as _fs from "fs"
 import * as doT from "dot"
 import _debug from "debug"
-import { ParsedBlock } from "./CommentParser"
+import { Directive } from "./CommentParser"
 import { Reporter } from "./ConsoleReporter"
 import { WarningEntry } from "./warnings"
 
@@ -24,7 +24,7 @@ export const defaultLocatorOptions = {
   generatorsDir: "ingenr-generators"
 }
 
-type Generator = (input: ParsedBlock) => string
+type Generator = (input: Directive) => string
 
 export class GeneratorLocator {
   private cache = new Map<string, Generator>()
@@ -45,7 +45,7 @@ export class GeneratorLocator {
       /* istanbul ignore next */
       for (const [key, generate] of Object.entries(compilation)) {
         debug("Caching generator for %s", key)
-        this.cache.set(key, (input: ParsedBlock) => generate(input.templateArgs))
+        this.cache.set(key, (input: Directive) => generate(input.templateArgs))
       }
     } catch (e) {
       if (e.code !== "ENOENT") {

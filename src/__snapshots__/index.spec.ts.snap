@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TemplateProcessor Complains about missing generators 1`] = `
+exports[`InGenR Complains about missing generators 1`] = `
 Array [
   Object {
     "filePath": "<project-root>/src/erroneous-template-name.ts",
@@ -25,7 +25,7 @@ Array [
 ]
 `;
 
-exports[`TemplateProcessor Injects generated content into annotated blocks 1`] = `
+exports[`InGenR Injects generated content into annotated blocks 1`] = `
 "import foo from \\"foo\\"
 
 const bar = \\"bar\\"
@@ -39,8 +39,89 @@ const bar = \\"bar\\"
  *   - name: email
  *     type: string
  */
+interface users {
+  name: string;
+  email: string;
+  
+}
+
+const createTable = () =>
+  knex.schema.createTable(\\"users\\", (table) => {
+      table.uuid(\\"id\\").primary();
+      table.string(\\"name\\")
+      table.string(\\"email\\")
+      
+  })
 /*! InGenR:end */
 
 export { foo, bar }
 "
+`;
+
+exports[`InGenR supports external template targets 1`] = `
+Object {
+  "externalTarget": "import foo from \\"foo\\"
+
+const bar = \\"bar\\"
+
+/*! InGenR:expand knex-dal
+ *
+ * targetFilePath: users-table.ts
+ * ---
+ * tableName: users
+ * columns:
+ *   - name: name
+ *     type: string
+ *   - name: email
+ *     type: string
+ */
+/*! InGenR:end */
+
+export { foo, bar }
+",
+  "externalTargetGenerated": "interface users {
+  name: string;
+  email: string;
+  
+}
+
+const createTable = () =>
+  knex.schema.createTable(\\"users\\", (table) => {
+      table.uuid(\\"id\\").primary();
+      table.string(\\"name\\")
+      table.string(\\"email\\")
+      
+  })
+",
+  "index": "import foo from \\"foo\\"
+
+const bar = \\"bar\\"
+
+/*! InGenR:expand knex-dal
+ *
+ * tableName: users
+ * columns:
+ *   - name: name
+ *     type: string
+ *   - name: email
+ *     type: string
+ */
+interface users {
+  name: string;
+  email: string;
+  
+}
+
+const createTable = () =>
+  knex.schema.createTable(\\"users\\", (table) => {
+      table.uuid(\\"id\\").primary();
+      table.string(\\"name\\")
+      table.string(\\"email\\")
+      
+  })
+/*! InGenR:end */
+
+export { foo, bar }
+",
+}
 `;

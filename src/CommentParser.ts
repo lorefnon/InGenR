@@ -23,16 +23,19 @@ interface Matchers {
   commentEndRegex: RegExp
 }
 
-export interface ParsedBlock {
+export interface Directive {
   templateName: string
   templateArgs: any
+  directiveArgs: {
+    targetFilePath: string
+  } | undefined
   blockStartLineIndex: number
   blockEndLineIndex: number
   currentContent?: string[]
   compiledContent?: string
 }
 
-export interface CandidateBlock extends Partial<ParsedBlock> {
+export interface CandidateBlock extends Partial<Directive> {
   argsLines: string[]
   contentLines: string[]
 }
@@ -173,8 +176,9 @@ export class CommentParser extends EventEmitter {
       return
     }
     let templateArgs
+    let directiveArgs
     try {
-      templateArgs = this.parseTemplateArgs()
+      ({templateArgs, directiveArgs} = this.parseArgs())
     } catch (e) {
       warnings.push({
         message: "Failed to parse template arguments. This directive will be discarded."
@@ -186,6 +190,7 @@ export class CommentParser extends EventEmitter {
       data: {
         templateName: this.currentCandidate!.templateName!,
         templateArgs,
+        directiveArgs,
         blockStartLineIndex: this.currentCandidate!.blockStartLineIndex!,
         blockEndLineIndex: lineIndex,
         currentContent: this.currentCandidate!.contentLines
@@ -195,10 +200,29 @@ export class CommentParser extends EventEmitter {
     this.currentCandidate = null
   }
 
-  private parseTemplateArgs() {
-    const argsBody = this.currentCandidate!.argsLines.join("\n")
-    debug("Loading as yaml: %s", argsBody)
-    return yaml.safeLoad(argsBody)
+  private parseArgs() {
+    const {argsLines} = this.currentCandidate!
+    const separatorIndex = argsLines.findIndex(line => line.trim() === "---")
+    let templateArgsBody: string | undefined
+    let directiveArgsBody: string | undefined
+    if (separatorIndex >= 0) {
+      directiveArgsBody = argsLines.slice(0, separatorIndex).join("\n")
+      templateArgsBody = argsLines.slice(separatorIndex + 1).join("\n")
+    } else {
+      templateArgsBody = argsLines.join("\n")
+    }
+    const result = {
+      templateArgs: this.parseArgsBody(templateArgsBody),
+      directiveArgs: this.parseArgsBody(directiveArgsBody)
+    }
+    debug("parsed directive args:", result)
+    return result
+  }
+
+  private parseArgsBody(body: string | undefined) {
+    if (!body) return null
+    debug("Loading as yaml: %s", body)
+    return yaml.safeLoad(body)
   }
 
   parse(): Promise<void> {
