@@ -3,7 +3,7 @@ import * as path from "path"
 import _debug from "debug"
 import { file as getTmpFile } from "tmp"
 import { GeneratorLocator } from "./GeneratorLocator"
-import { CommentParser, Directive } from "./CommentParser"
+import { CommentParser, Directive, TemplateInvocation } from "./CommentParser"
 import { TopLevelOptions } from "."
 import { WriteStream } from "tty"
 import { ConsoleReporter, Reporter } from "./ConsoleReporter"
@@ -100,29 +100,32 @@ export class TemplateProcessor {
     debug(`didProcess: ${didProcess} lineIndex: ${lineIndex} filePath: ${this.filePath}`)
     if (type === "LINE") {
       await this.write(`${data}\n`)
-    } else if (type === "PARSED_BLOCK") {
-      await this.processParsedBlock(data)
+    } else if (type === "DIRECTIVE") {
+      await this.processDirective(data)
     }
     if (warnings && warnings.length > 0) {
       this.reporter.bufferWarning(this.filePath, lineIndex, data, warnings)
     }
   }
 
-  private async processParsedBlock(directive: Directive) {
-    debug("Processing directive", directive)
-    const generate = await this.locator.locate(directive.templateName, this.filePath)
+  private async processTemplateInvocation(tmpl: TemplateInvocation, directive: Directive) {
+    const generate = await this.locator.locate(tmpl.name, this.filePath)
     if (!generate) {
+      debug("Failed to locate:", tmpl.name)
       return
     }
     let targetStream = this.writeStream!
     let isExternalTarget = false
-    if (directive.directiveArgs && directive.directiveArgs.targetFilePath) {
-      const targetFilePath = path.resolve(path.dirname(this.filePath), directive.directiveArgs.targetFilePath)
+    if (directive.args && directive.args.targetFilePath) {
+      const targetFilePath = path.resolve(
+        path.dirname(this.filePath),
+        directive.args.targetFilePath
+      )
       targetStream = fs.createWriteStream(targetFilePath)
       isExternalTarget = true
     }
     // tslint:disable-next-line
-    const generatedContent = (await generate(directive)).replace(/\r\n/gm, "\n")
+    const generatedContent = await this.postProcessGeneratedContent(await generate(tmpl))
     debug("Generated Content:", generatedContent)
     let prevGeneratedContent
     if (directive.currentContent) {
@@ -137,6 +140,21 @@ export class TemplateProcessor {
       await this.write(generatedContent, targetStream)
     }
     if (isExternalTarget) targetStream.close()
+  }
+
+  private async postProcessGeneratedContent(content: string) {
+    content = content.replace(/\r\n/gm, "\n")
+    if (content.charAt(content.length - 1) !== "\n") {
+      content = content + "\n"
+    }
+    return content
+  }
+
+  private async processDirective(directive: Directive) {
+    debug("Processing directive", directive)
+    for (const tmpl of directive.templates) {
+      await this.processTemplateInvocation(tmpl, directive)
+    }
   }
 
   private write(content: string, stream = this.writeStream!) {

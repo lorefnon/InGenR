@@ -17,20 +17,26 @@ export const defaultParserOptions = {
 }
 
 interface Matchers {
-  blockStartRegex: RegExp
-  blockEndRegex: RegExp
+  directiveStartRegex: RegExp
+  directiveEndRegex: RegExp
   blockArgsBodyLineRegex: RegExp
   commentEndRegex: RegExp
 }
 
+export interface TemplateInvocation {
+  name: string
+  args?: any
+}
+
 export interface Directive {
-  templateName: string
-  templateArgs: any
-  directiveArgs: {
-    targetFilePath: string
-  } | undefined
-  blockStartLineIndex: number
-  blockEndLineIndex: number
+  templates: TemplateInvocation[]
+  args:
+    | {
+        targetFilePath: string
+      }
+    | undefined
+  startLineIndex: number
+  endLineIndex: number
   currentContent?: string[]
   compiledContent?: string
 }
@@ -52,12 +58,12 @@ export class CommentParser extends EventEmitter {
   constructor(public inputStream: Readable, private parseOptions = defaultParserOptions) {
     super()
     this.matchers = {
-      blockStartRegex: new RegExp(
-        `${parseOptions.commentStartRegex}\\s+InGenR:expand\\s+(\\S*)\\s*($|${
+      directiveStartRegex: new RegExp(
+        `${parseOptions.commentStartRegex}\\s+InGenR:expand\\s+(.*)\\s*($|${
           parseOptions.commentEndRegex
         })`
       ),
-      blockEndRegex: new RegExp(
+      directiveEndRegex: new RegExp(
         `${parseOptions.commentStartRegex}\\s+InGenR:end\\s*${parseOptions.commentEndRegex}`
       ),
       blockArgsBodyLineRegex: new RegExp(
@@ -71,8 +77,8 @@ export class CommentParser extends EventEmitter {
   get parserState() {
     if (!this.currentCandidate) {
       return ParserState.INIT
-    } else if (isNumber(this.currentCandidate.blockStartLineIndex)) {
-      if (isNumber(this.currentCandidate.blockEndLineIndex)) {
+    } else if (isNumber(this.currentCandidate.startLineIndex)) {
+      if (isNumber(this.currentCandidate.endLineIndex)) {
         throw new Error("Invalid state encountered")
       }
       return ParserState.IN_GENERATED_BLOCK
@@ -135,27 +141,30 @@ export class CommentParser extends EventEmitter {
   }
 
   private checkBlockStart(lineIndex: number, line: string, warnings: WarningEntry[]) {
-    const match = line.match(this.matchers.blockStartRegex)
+    const match = line.match(this.matchers.directiveStartRegex)
     if (!match || !match[1]) return
     if (match[0].trim().length !== line.trim().length) {
       warnings.push(warnInterpolated(match.index))
       return
     }
+
     this.currentCandidate = {
-      templateName: match[1],
+      templates: match[1].split(",").map(str => ({
+        name: str.trim()
+      })),
       argsLines: [],
       contentLines: []
     }
     if (match[2]) {
       // Closes on the same line
-      this.currentCandidate.blockStartLineIndex = lineIndex + 1
+      this.currentCandidate.startLineIndex = lineIndex + 1
     }
   }
 
   private accumulateArgs(lineIndex: number, line: string, warnings: WarningEntry[]) {
     const match = line.match(this.matchers.blockArgsBodyLineRegex)
     if (line.match(this.matchers.commentEndRegex)) {
-      this.currentCandidate!.blockStartLineIndex = lineIndex + 1
+      this.currentCandidate!.startLineIndex = lineIndex + 1
       return
     }
     if (match) {
@@ -166,7 +175,7 @@ export class CommentParser extends EventEmitter {
   }
 
   private checkGeneratedEnd(lineIndex: number, line: string, warnings: WarningEntry[]) {
-    const match = line.match(this.matchers.blockEndRegex)
+    const match = line.match(this.matchers.directiveEndRegex)
     if (!match) {
       this.currentCandidate!.contentLines.push(line)
       return
@@ -175,10 +184,10 @@ export class CommentParser extends EventEmitter {
       warnings.push(warnInterpolated(match.index))
       return
     }
-    let templateArgs
-    let directiveArgs
+    let templateArgs: any
+    let directiveArgs: any
     try {
-      ({templateArgs, directiveArgs} = this.parseArgs())
+      ;({ templateArgs, directiveArgs } = this.parseArgs())
     } catch (e) {
       warnings.push({
         message: "Failed to parse template arguments. This directive will be discarded."
@@ -186,13 +195,15 @@ export class CommentParser extends EventEmitter {
       return
     }
     this.emit("item", {
-      type: "PARSED_BLOCK",
+      type: "DIRECTIVE",
       data: {
-        templateName: this.currentCandidate!.templateName!,
-        templateArgs,
-        directiveArgs,
-        blockStartLineIndex: this.currentCandidate!.blockStartLineIndex!,
-        blockEndLineIndex: lineIndex,
+        templates: this.currentCandidate!.templates!.map(t => ({
+          ...t,
+          args: templateArgs
+        })),
+        args: directiveArgs,
+        startLineIndex: this.currentCandidate!.startLineIndex!,
+        endLineIndex: lineIndex,
         currentContent: this.currentCandidate!.contentLines
       },
       parserState: this.parserState
@@ -201,7 +212,7 @@ export class CommentParser extends EventEmitter {
   }
 
   private parseArgs() {
-    const {argsLines} = this.currentCandidate!
+    const { argsLines } = this.currentCandidate!
     const separatorIndex = argsLines.findIndex(line => line.trim() === "---")
     let templateArgsBody: string | undefined
     let directiveArgsBody: string | undefined

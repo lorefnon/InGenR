@@ -2,7 +2,7 @@ import * as path from "path"
 import * as _fs from "fs"
 import * as doT from "dot"
 import _debug from "debug"
-import { Directive } from "./CommentParser"
+import { Directive, TemplateInvocation } from "./CommentParser"
 import { Reporter } from "./ConsoleReporter"
 import { WarningEntry } from "./warnings"
 
@@ -24,7 +24,7 @@ export const defaultLocatorOptions = {
   generatorsDir: "ingenr-generators"
 }
 
-type Generator = (input: Directive) => string
+export type Generator = (input: TemplateInvocation) => string
 
 export class GeneratorLocator {
   private cache = new Map<string, Generator>()
@@ -45,7 +45,7 @@ export class GeneratorLocator {
       /* istanbul ignore next */
       for (const [key, generate] of Object.entries(compilation)) {
         debug("Caching generator for %s", key)
-        this.cache.set(key, (input: Directive) => generate(input.templateArgs))
+        this.cache.set(key, (input: TemplateInvocation) => generate(input.args))
       }
     } catch (e) {
       if (e.code !== "ENOENT") {
@@ -65,15 +65,8 @@ export class GeneratorLocator {
       requirables.unshift(path.resolve(genDir, name))
     }
     for (const requirable of requirables) {
-      try {
-        const required = require(requirable)
-        generator = required.default || required
-      } catch (e) {
-        if (!e.message || !e.message.match(/cannot find module/i)) {
-          throw e
-        }
-        debug(`Failed to require: ${requirable}`)
-      }
+      generator = this.requireModule(requirable)
+      if (generator) break
     }
     if (!generator) {
       this.reporter.bufferWarning(filePath, undefined, undefined, [
@@ -85,6 +78,19 @@ export class GeneratorLocator {
     }
     this.cache.set(name, generator)
     return generator
+  }
+
+  protected requireModule(requirable: string) {
+    try {
+      const required = require(requirable)
+      return required.default || required
+    } catch (e) {
+      if (!e.message || !e.message.match(/cannot find module/i)) {
+        throw e
+      }
+      debug(`Failed to require: ${requirable}`)
+    }
+    return null
   }
 
   private get generatorsDir() {

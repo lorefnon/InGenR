@@ -4,6 +4,7 @@ import * as tmp from "tmp"
 import { sortBy, flatten } from "lodash"
 import { run, processProject } from "."
 import { MockReporter } from "./MockReporter"
+import { MockLocator } from "./MockLocator"
 
 const populateFixtures = async (projDir: string, filePaths: string[]) => {
   for (const filePath of filePaths) {
@@ -27,7 +28,7 @@ describe("InGenR", () => {
   let projDir: string | null = null
   let originalCwd: string | null = null
 
-  const readFromProjDir = (filePath: string) => 
+  const readFromProjDir = (filePath: string) =>
     fs.readFile(path.join(projDir!, filePath), {
       encoding: "utf8"
     })
@@ -54,29 +55,47 @@ describe("InGenR", () => {
     await populateFixtures(projDir!, [...srcFiles, "ingenr-generators/knex-dal.dot"])
     const reporter = new MockReporter()
     await processProject(srcFiles.map(p => path.join(projDir!, p)), undefined, undefined, reporter)
-    const strippedWarnings = sortBy(
-      flatten(
-        Array.from(reporter.warnings.values()).map(warnings =>
-          warnings.map(warning => ({
-            ...warning,
-            filePath: warning.filePath
-              .replace(projDir!, "<project-root>")
-              .replace(/\\/g, "/")
-          }))
-        )
-      ),
-      "filePath"
-    )
-    expect(strippedWarnings).toMatchSnapshot()
+    expect(reporter.stripWarnings(projDir!)).toMatchSnapshot()
   })
-  it.only("supports external template targets", async () => {
-    await populateFixtures(projDir!, ["src/index.ts", "src/external-target.ts", "ingenr-generators/knex-dal.dot"])
+  it("supports external template targets", async () => {
+    await populateFixtures(projDir!, [
+      "src/index.ts",
+      "src/external-target.ts",
+      "ingenr-generators/knex-dal.dot"
+    ])
     await run()
     const postProcessedContents = {
       index: await readFromProjDir("src/index.ts"),
       externalTarget: await readFromProjDir("src/external-target.ts"),
       externalTargetGenerated: await readFromProjDir("src/users-table.ts")
-    };
+    }
     expect(postProcessedContents).toMatchSnapshot()
+  })
+  it("supports multiple targets and generator modules", async () => {
+    const srcFiles = ["src/multiple-targets.ts"]
+    await populateFixtures(projDir!, srcFiles)
+    const mockReporter = new MockReporter()
+    const mockLocator = new MockLocator({
+      reporter: mockReporter,
+      generatorsDir: true
+    })
+    mockLocator.mockGenerators.set("pg-dal", {
+      default: () => `hello world`
+    })
+    mockLocator.mockGenerators.set(
+      path.join(projDir!, "ingenr-generators", "sqlite-dal"),
+      () => `lorem ipsum`
+    )
+    await processProject(
+      srcFiles.map(p => path.join(projDir!, p)),
+      undefined,
+      mockLocator,
+      mockReporter
+    )
+    const snapshot = {
+      src: await readFromProjDir("src/multiple-targets.ts"),
+      warnings: mockReporter.stripWarnings(projDir!)
+    }
+    expect(snapshot).toMatchSnapshot()
   })
 })

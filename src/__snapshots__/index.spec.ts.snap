@@ -125,3 +125,28 @@ export { foo, bar }
 ",
 }
 `;
+
+exports[`InGenR supports multiple targets and generator modules 1`] = `
+Object {
+  "src": "import foo from \\"foo\\"
+
+const bar = \\"bar\\"
+
+/*! InGenR:expand pg-dal,sqlite-dal
+ *
+ * tableName: users
+ * columns:
+ *   - name: name
+ *     type: string
+ *   - name: email
+ *     type: string
+ */
+hello world
+lorem ipsum
+/*! InGenR:end */
+
+export { foo, bar }
+",
+  "warnings": Array [],
+}
+`;
