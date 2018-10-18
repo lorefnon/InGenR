@@ -12,8 +12,11 @@ It is heavily inspired by [Crystal Macros](https://crystal-lang.org/docs/syntax_
 
 :warning: Early Alpha (Pre-Release)
 
-[![Build Status](https://travis-ci.org/lorefnon/InGenR.svg?branch=master)](https://travis-ci.org/lorefnon/InGenR) [![Greenkeeper badge](https://badges.greenkeeper.io/lorefnon/InGenR.svg)](https://greenkeeper.io/) 
-[![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/lorefnon/InGenR/blob/master/LICENSE) [![Join the chat at https://gitter.im/InGenR/Lobby](https://badges.gitter.im/InGenR/Lobby.svg)](https://gitter.im/InGenR/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/lorefnon/InGenR.svg?branch=master)](https://travis-ci.org/lorefnon/InGenR) 
+[![SonarCloud badge](https://sonarcloud.io/api/project_badges/measure?project=lorefnon_InGenR&metric=alert_status)](https://sonarcloud.io/dashboard?id=lorefnon_InGenR)
+[![Greenkeeper badge](https://badges.greenkeeper.io/lorefnon/InGenR.svg)](https://greenkeeper.io/) 
+[![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/lorefnon/InGenR/blob/master/LICENSE) 
+[![Join the chat at https://gitter.im/InGenR/Lobby](https://badges.gitter.im/InGenR/Lobby.svg)](https://gitter.im/InGenR/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 ## How does it work ?
