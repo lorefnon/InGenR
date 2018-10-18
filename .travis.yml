@@ -1,4 +1,5 @@
 language: node_js
+dist: trusty
 branches:
   only:
     - master
@@ -14,8 +15,13 @@ node_js:
   - 9.11
   - 8.12
 script:
+  - sonar-scanner
   - npm run test:prod && npm run build
 after_success:
   - npm run report-coverage
   - npm run deploy-docs
   - npm run semantic-release
+addons:
+  sonarcloud:
+    organization: lorefnon-github
+
