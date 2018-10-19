@@ -1,6 +1,6 @@
 [![InGenR](https://raw.githubusercontent.com/lorefnon/InGenR/master/assets/banner.png)](https://github.com/lorefnon/InGenR)
 
-**InGenR (pronounced *in-gen-are*) is a generic utility for inline code generation.**
+## InGenR (pronounced *in-gen-are*) is a generic utility for inline code generation.
 
 When working with large codebases, esp. those involving (one or more) type systems it is often the case that reusing code (while retaining end-to-end type-safety) becomes difficult and repetitive boilerplate is required in some cases to satisfy the type system. 
 
@@ -20,17 +20,23 @@ InGenR aims to be a simple generic utility that solves this through a much simpl
 
   :sunny: Utilities to ensure generated code doesn't look malformatted, incorrectly indented or out of place in your code. (**TODO**)
 
+---
+
   It is heavily inspired by [Crystal Macros](https://crystal-lang.org/docs/syntax_and_semantics/macros.html) and [Sinaps](https://github.com/janestreet/cinaps).
 
 ## Development Status
 
 :warning: Beta :hatched_chick:
 
+---
+
 [![Build Status](https://travis-ci.org/lorefnon/InGenR.svg?branch=master)](https://travis-ci.org/lorefnon/InGenR) 
 [![SonarCloud badge](https://sonarcloud.io/api/project_badges/measure?project=lorefnon_InGenR&metric=alert_status)](https://sonarcloud.io/dashboard?id=lorefnon_InGenR)
 [![Greenkeeper badge](https://badges.greenkeeper.io/lorefnon/InGenR.svg)](https://greenkeeper.io/) 
 [![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/lorefnon/InGenR/blob/master/LICENSE) 
 [![Join the chat at https://gitter.im/InGenR/Lobby](https://badges.gitter.im/InGenR/Lobby.svg)](https://gitter.im/InGenR/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+---
 
 ## How does it work ?
 
@@ -132,6 +138,8 @@ InGenR aims to be a simple generic utility that solves this through a much simpl
     Note that running the generator again will have no effect. InGenR checks the contents within the `InGenR:expand` and `InGenR:end` blocks and if the content matches what the generator would have generated, nothing will happen. If there is a mismatch - either because the template (or its arguments) have changed or the generated content has been edited manually, InGenR will replace the content within the block entirely.
 
     You can commit the generated code, and verify the correctness of generated code through any linters, type checkers etc. that you are already familiar with.
+    
+---
 
 ## :gem: Features
 
@@ -181,6 +189,8 @@ It is sometimes convenient to invoke multiple generators with the same set of ar
 /*! InGenR:end */
 ```
 
+---
+
 ## Caveats
 
 - To be safe, ensure that your files are checked in before running the generator. While InGenR is in beta, we don't recommend running it in pre-commit hooks or as a part of automated pipelines. 
@@ -191,9 +201,13 @@ It is sometimes convenient to invoke multiple generators with the same set of ar
 
 - InGenR doesn't sanitize the input, or validate the output because doing this in a way that works across languages is hard. Please make sure that you review the inputs that are passed to the templates and validate the outputs through a linter or type-checker.
 
+---
+
 ## Contributing
 
 We welcome your contributions. Read more [here](https://github.com/lorefnon/InGenR/blob/master/contributing/README.md).
+
+---
 
 ## FAQs
 
