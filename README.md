@@ -8,11 +8,14 @@ Features like [Higher kinded polymorphism](https://sidburn.github.io/blog/2016/0
 
 InGenR aims to be a simple generic utility that solves this through a much simpler and crude approach: **code generation**. For many use cases this is a much more practical and simple solution. You can [get started](#how-does-it-work-) in a matter of seconds.  available [features](#features).
 
-** :sparkles: InGenR puts a very high emphasis on DX:**
+**:sparkles: InGenR puts a very high emphasis on DX:**
 
 :sunny: Clear unambiguous error messages.
+
 :sunny: There is a small clear set of rules - no complex DSLs to learn, no surprises, no magic.
+
 :sunny: Plays well with the tools (linters, type-checkers, loaders, etc.) which you already have in place.
+
 :sunny: Utilities to ensure generated code doesn't look malformatted, incorrectly indented or out of place in your code. (**TODO**)
 
 It is heavily inspired by [Crystal Macros](https://crystal-lang.org/docs/syntax_and_semantics/macros.html) and [Sinaps](https://github.com/janestreet/cinaps).
@@ -29,104 +32,104 @@ It is heavily inspired by [Crystal Macros](https://crystal-lang.org/docs/syntax_
 
 ## How does it work ?
 
-1. Add InGenR directives to your source files in comment blocks:
+1. **Add InGenR directives to your source files in comment blocks:**
 
-Eg. In `src/data-layer/users.ts`:`
+  Eg. In `src/data-layer/users.ts`:`
 
-```
-/*! InGenR:expand knex-dal
-*
-* tableName: users
-* columns:
-*   - name: name
-*     type: string
-*   - name: email
-*     type: string
-*/
-/*! InGenR:end */
-```
+  ```
+  /*! InGenR:expand knex-dal
+  *
+  * tableName: users
+  * columns:
+  *   - name: name
+  *     type: string
+  *   - name: email
+  *     type: string
+  */
+  /*! InGenR:end */
+  ```
 
-An InGenR directive specifies the name of generator (knex-dal) and arguments passed to the generator (in YAML or JSON formats).
+  An InGenR directive specifies the name of generator (knex-dal) and arguments passed to the generator (in YAML or JSON formats).
 
-2. Write/install your code generator:
+2. **Write/install your code generator:**
 
-The code generator specified by your directive (here `knex-dal`) can either reside locally (in a `<project-root>/ingenr-generators` directory) or in an npm package.
+  The code generator specified by your directive (here `knex-dal`) can either reside locally (in a `<project-root>/ingenr-generators` directory) or in an npm package.
 
-A generator can be a simple doT template, eg. In `ingenr-generators/knex-dal.dot`:
+  A generator can be a simple doT template, eg. In `ingenr-generators/knex-dal.dot`:
 
-```
-interface {{= it.interfaceName || it.tableName }} {
-    {{~ it.columns :c}}
-    {{= c.fieldName || c.name }}: {{= c.tsType || c.type }};
-    {{~}}
-}
+  ```
+  interface {{= it.interfaceName || it.tableName }} {
+      {{~ it.columns :c}}
+      {{= c.fieldName || c.name }}: {{= c.tsType || c.type }};
+      {{~}}
+  }
 
-const createTable = () =>
-    knex.schema.createTable("{{= it.tableName }}", (table) => {
-        table.uuid("id").primary();
-        {{~ it.columns :c}}
-        table.{{= c.colType || c.type}}("{{= c.columnName || c.name }}")
-        {{~}}
-    })
-```
+  const createTable = () =>
+      knex.schema.createTable("{{= it.tableName }}", (table) => {
+          table.uuid("id").primary();
+          {{~ it.columns :c}}
+          table.{{= c.colType || c.type}}("{{= c.columnName || c.name }}")
+          {{~}}
+      })
+  ```
 
-Or a plain javascript module, eg. in `ingenr-generators/knex-dal.js`:
+  Or a plain javascript module, eg. in `ingenr-generators/knex-dal.js`:
 
-```js
-export default async () => {
-    const result = await getListOfRowsFromDB();
-    return result.toJSON();
-}
-```
+  ```js
+  export default async () => {
+      const result = await getListOfRowsFromDB();
+      return result.toJSON();
+  }
+  ```
 
-Note that our generator can be asynchronous and can do anything that is possible through node.js eg. connect to databases, connect to external resources, use your favorite templating library etc. This is powerful :sunglasses: because you can use any language that compiles to javascript and typecheck or test your generators  
+  Note that our generator can be asynchronous and can do anything that is possible through node.js eg. connect to databases, connect to external resources, use your favorite templating library etc. This is powerful :sunglasses: because you can use any language that compiles to javascript and typecheck or test your generators  
 
-See [configuration](#configuration) below to change the location of the directory where InGenR will look for generators.
+  See [configuration](#configuration) below to change the location of the directory where InGenR will look for generators.
 
-Also this generator doesn't have to be local to your project. If a local generator was not found InGenR will try to require `knex-dal`. This means that you can create and share your generators through npm modules and use them across projects.
+  Also this generator doesn't have to be local to your project. If a local generator was not found InGenR will try to require `knex-dal`. This means that you can create and share your generators through npm modules and use them across projects.
 
-3. Run the generator:
+3. **Run the generator:**
 
-```
-$ npx ingenr run ./src/**/*
-```
+  ```
+  $ npx ingenr run ./src/**/*
+  ```
 
-Don't already have npx ? Read more [here](https://www.npmjs.com/package/npx). 
+  Don't already have npx ? Read more [here](https://www.npmjs.com/package/npx). 
 
-InGenR will find all the files with InGenR directives like the above, and expand them in place.
+  InGenR will find all the files with InGenR directives like the above, and expand them in place.
 
-So after running this, `src/data-layer/users.ts` will contain:
+  So after running this, `src/data-layer/users.ts` will contain:
 
-```
-/*! InGenR:expand knex-dal
- *
- * tableName: users
- * - columns:
- *   - name: name
- *     type: string
- *   - type: email
- *     type: string
- */
-interface IUser {
-    user: string;
-    email: string;
-}
+  ```
+  /*! InGenR:expand knex-dal
+   *
+   * tableName: users
+   * - columns:
+   *   - name: name
+   *     type: string
+   *   - type: email
+   *     type: string
+   */
+  interface IUser {
+      user: string;
+      email: string;
+  }
 
-const createTable = () =>
-    knex.schema.createTable("users", (table) => {
-        table.uuid("id").primary();
-        table.string("user")
-        table.string("email")
-    })
+  const createTable = () =>
+      knex.schema.createTable("users", (table) => {
+          table.uuid("id").primary();
+          table.string("user")
+          table.string("email")
+      })
 
-/*! InGenR:end */
-```
+  /*! InGenR:end */
+  ```
 
-The result of the generator will be injected right into the source file between the InGenR directive comment blocks.
+  The result of the generator will be injected right into the source file between the InGenR directive comment blocks.
 
-Note that running the generator again will have no effect. InGenR checks the contents within the `InGenR:expand` and `InGenR:end` blocks and if the content matches what the generator would have generated, nothing will happen. If there is a mismatch - either because the template (or its arguments) have changed or the generated content has been edited manually, InGenR will replace the content within the block entirely.
+  Note that running the generator again will have no effect. InGenR checks the contents within the `InGenR:expand` and `InGenR:end` blocks and if the content matches what the generator would have generated, nothing will happen. If there is a mismatch - either because the template (or its arguments) have changed or the generated content has been edited manually, InGenR will replace the content within the block entirely.
 
-You can commit the generated code, and verify the correctness of generated code through any linters, type checkers etc. that you are already familiar with.
+  You can commit the generated code, and verify the correctness of generated code through any linters, type checkers etc. that you are already familiar with.
 
 ## Features
 
