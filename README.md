@@ -133,9 +133,13 @@ InGenR aims to be a simple generic utility that solves this through a much simpl
 
 ## :gem: Features
 
-### In place or external templates: 
+The usage outlined above is pretty much all you need to use and get productive with InGenR. 
 
-While most of the use cases are served well through in place expansion, in some cases (eg. when you are dealing with multiple languages) it is desirable that the template expands into new files. 
+A few additional advanced features are summarized below:
+
+### In place expansion or external targets: 
+
+Most of the use cases are served well through in place expansion (result of template is injected within the source file where the directive is present). However, in some cases (eg. when you are dealing with multiple languages, your framework expects a specific directory structure etc.) it is desirable that the directives expand into new files. 
 
 This is possible by specifying `targetFilePath` (relative to path of current file):
 
@@ -158,9 +162,9 @@ This will populate users-table.ts file with the result of the generator.
 
 Note that the arguments before `---` are arguments to the directive itself, where as the arguments after `---` are passed on to the generator.
 
-### Multiple targets:
+### Running multiple generators with same arguments
 
-It is sometimes convenient to invoke multiple generators with the same set of arguments in a single directive: 
+It is sometimes convenient to invoke multiple generators with the same set of arguments in a single directive. For this we can provide a comma separated list of generator names. 
 
 ```
 /*! InGenR:expand foo, bar
@@ -177,7 +181,7 @@ It is sometimes convenient to invoke multiple generators with the same set of ar
 
 ## Caveats
 
-- To be safe ensure that your files are checked in before running the generator. While InGenR is in beta, we don't recommend running it in pre-commit hooks or as a part of automated pipelines. 
+- To be safe, ensure that your files are checked in before running the generator. While InGenR is in beta, we don't recommend running it in pre-commit hooks or as a part of automated pipelines. 
 
   Please [report](https://github.com/lorefnon/InGenR/issues) any bugs or unexpected behavior that you encounter.
 
