@@ -1,5 +1,7 @@
 We're really glad you're reading this, because we need volunteer developers to help this project come to fruition. 👏
 
+Like all projects InGenR can have bugs and can benefit from enhancements.
+
 ## Goals
 
 InGenR is built around following goals:
