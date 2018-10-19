@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConsoleReporter works as expected 1`] = `
+Array [
+  Object {
+    "args": Array [
+      "[94m/tmp/foo.js: 2 warnings[39m",
+    ],
+    "type": "log",
+  },
+  Object {
+    "args": Array [
+      "[90mL:11 : [39m[94mlorem ipsum dolor sit amet[39m",
+    ],
+    "type": "log",
+  },
+  Object {
+    "args": Array [
+      "[31m       ^ something failed[39m",
+    ],
+    "type": "log",
+  },
+  Object {
+    "args": Array [
+      "[90mL:11 : [39m[94mlorem ipsum dolor sit amet[39m",
+    ],
+    "type": "log",
+  },
+  Object {
+    "args": Array [
+      "[31m                 ^ something else failed[39m",
+    ],
+    "type": "log",
+  },
+  Object {
+    "args": Array [
+      "[94m/tmp/bar.js: 1 warnings[39m",
+    ],
+    "type": "log",
+  },
+  Object {
+    "args": Array [
+      "[31m something failed[39m",
+    ],
+    "type": "log",
+  },
+  Object {
+    "args": Array [
+      [Error: Something Failed],
+    ],
+    "type": "error",
+  },
+]
+`;

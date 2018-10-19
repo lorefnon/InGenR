@@ -72,7 +72,7 @@
         "statements": 95
       }
     },
-    "collectCoverage": false
+    "collectCoverage": true
   },
   "prettier": {
     "semi": false

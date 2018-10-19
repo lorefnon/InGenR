@@ -40,7 +40,7 @@ export async function processProject(
   debug("Bootstrapping project")
   await locator.bootstrap()
   log.info(`Processing ${files.length} file(s)`)
-  return Promise.all(
+  await Promise.all(
     files.map(async (f: string) =>
       new TemplateProcessor(f, options, { reporter, locator }).process()
     )

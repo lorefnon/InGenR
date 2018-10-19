@@ -63,25 +63,22 @@ export class TemplateProcessor {
     this.writeStream = fs.createWriteStream(this.tmpFile.filePath)
     const writeEndP = waitForEvent(this.writeStream, "close")
     this.commentParser = new CommentParser(this.readStream, this.options.parser)
-    const promise = this.commentParser.parse()
+    let didParse = false;
+    const parseCompletionPromise = this.commentParser.parse().then(() => {
+      didParse = true
+    })
     try {
       await this.processComments()
-      await promise
+      await parseCompletionPromise
     } catch (e) {
+      debug('Processing error:', e)
       console.error(`Failed to process file: ${this.filePath}`)
-      // await fs.remove(this.tmpFile.filePath);
-      // throw e
+      fs.remove(this.tmpFile.filePath);
     }
     this.writeStream.end()
     await Promise.all([readEndP, writeEndP])
-    while (true) {
-      try {
-        await fs.rename(this.tmpFile.filePath, this.filePath)
-        break
-      } catch (e) {
-        console.error(e)
-      }
-    }
+    if (!didParse) return
+    await fs.rename(this.tmpFile.filePath, this.filePath)
   }
 
   private async processComments() {
