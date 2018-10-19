@@ -10,15 +10,15 @@ InGenR aims to be a simple generic utility that solves this through a much simpl
 
 **:sparkles: InGenR puts a very high emphasis on DX:**
 
-:sunny: Clear unambiguous error messages.
+  :sunny: Clear unambiguous error messages.
 
-:sunny: There is a small clear set of rules - no complex DSLs to learn, no surprises, no magic.
+  :sunny: There is a small clear set of rules - no complex DSLs to learn, no surprises, no magic.
 
-:sunny: Plays well with the tools (linters, type-checkers, loaders, etc.) which you already have in place.
+  :sunny: Plays well with the tools (linters, type-checkers, loaders, etc.) which you already have in place.
 
-:sunny: Utilities to ensure generated code doesn't look malformatted, incorrectly indented or out of place in your code. (**TODO**)
+  :sunny: Utilities to ensure generated code doesn't look malformatted, incorrectly indented or out of place in your code. (**TODO**)
 
-It is heavily inspired by [Crystal Macros](https://crystal-lang.org/docs/syntax_and_semantics/macros.html) and [Sinaps](https://github.com/janestreet/cinaps).
+  It is heavily inspired by [Crystal Macros](https://crystal-lang.org/docs/syntax_and_semantics/macros.html) and [Sinaps](https://github.com/janestreet/cinaps).
 
 ## Development Status
 
@@ -179,7 +179,7 @@ It is sometimes convenient to invoke multiple generators with the same set of ar
 
 - To be safe ensure that your files are checked in before running the generator. While InGenR is in beta, we don't recommend running it in pre-commit hooks or as a part of automated pipelines. 
 
-Please report any bugs or unexpected behavior your encounter as an issue.
+  Please [report](https://github.com/lorefnon/InGenR/issues) any bugs or unexpected behavior that you encounter.
 
 - InGenR does not run the generators in a sandboxed environment. If you are using external generators, make sure you trust their authors.
 
