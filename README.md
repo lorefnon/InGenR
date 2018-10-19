@@ -1,14 +1,16 @@
 [![InGenR](https://raw.githubusercontent.com/lorefnon/InGenR/master/assets/banner.png)](https://github.com/lorefnon/InGenR)
 
-InGenR (pronounced *in-gen-are*) is a generic utility for inline code generation.
+**InGenR (pronounced *in-gen-are*) is a generic utility for inline code generation.**
 
 When working with large codebases, esp. those involving (one or more) type systems it is often the case that reusing code (while retaining end-to-end type-safety) becomes difficult and repetitive boilerplate is required in some cases to satisfy the type system. 
 
 Features like [Higher kinded polymorphism](https://sidburn.github.io/blog/2016/03/24/higher-kinded-polymorphism) largely alleviate this problem, but if your language of choice doesn't have such features, then you are pretty much stuck. It is not always feasible or practical to switch to a language with an advanced type system to eliminate redundancy in some parts of your application.
 
-InGenR aims to be a simple generic utility that solves this through a much simpler and crude approach: **code generation**. For many use cases this is a much more practical and simple solution. You can [get started](#how-does-it-work-) in a matter of seconds.  available [features](#features).
+InGenR aims to be a simple generic utility that solves this through a much simpler and crude approach: **code generation**. For many use cases this is a much more practical and simple solution. You can [get started](#how-does-it-work-) in a matter of seconds, or browse  available [features](#features).
 
-**:sparkles: InGenR puts a very high emphasis on DX:**
+---
+
+## :sparkles: InGenR deeply cares about the developer experience:
 
   :sunny: Clear unambiguous error messages.
 
@@ -36,7 +38,7 @@ InGenR aims to be a simple generic utility that solves this through a much simpl
 
     Eg. In `src/data-layer/users.ts`:`
 
-    ```
+    ```typescript
     /*! InGenR:expand knex-dal
     *
     * tableName: users
@@ -57,7 +59,7 @@ InGenR aims to be a simple generic utility that solves this through a much simpl
 
     A generator can be a simple doT template, eg. In `ingenr-generators/knex-dal.dot`:
 
-    ```
+    ```dot
     interface {{= it.interfaceName || it.tableName }} {
         {{~ it.columns :c}}
         {{= c.fieldName || c.name }}: {{= c.tsType || c.type }};
@@ -90,7 +92,7 @@ InGenR aims to be a simple generic utility that solves this through a much simpl
 
 3. **Run the generator:**
 
-    ```
+    ```sh
     $ npx ingenr run ./src/**/*
     ```
 
@@ -100,7 +102,7 @@ InGenR aims to be a simple generic utility that solves this through a much simpl
 
     So after running this, `src/data-layer/users.ts` will contain:
 
-    ```
+    ```typescript
     /*! InGenR:expand knex-dal
      *
      * tableName: users
@@ -143,7 +145,7 @@ Most of the use cases are served well through in place expansion (result of temp
 
 This is possible by specifying `targetFilePath` (relative to path of current file):
 
-```
+```typescript
 /*! InGenR:expand knex-dal
  *
  * targetFilePath: users-table.ts
@@ -166,7 +168,7 @@ Note that the arguments before `---` are arguments to the directive itself, wher
 
 It is sometimes convenient to invoke multiple generators with the same set of arguments in a single directive. For this we can provide a comma separated list of generator names. 
 
-```
+```typescript
 /*! InGenR:expand foo, bar
  *
  * tableName: users
