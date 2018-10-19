@@ -235,7 +235,7 @@ However, if your language natively supports compile time macros (eg. Haxe, Scala
 
 It is strongly advised that generated code be run through a linter / syntax-checker after generation because InGenR does not guarantee syntactic validity of generated code.
 
-### At some point I have realized that InGenR is not for me. Am I locked in ? 
+### If at some point I realize that InGenR is not for me. Am I locked in ? 
 
 Not at all. Run InGenR once and after your code has been generated, feel free to just remove all (or some) InGenR directives.
 You are now free to edit and modify the generated code manually.
