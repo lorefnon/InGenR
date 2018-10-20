@@ -193,7 +193,7 @@ It is sometimes convenient to invoke multiple generators with the same set of ar
 
 ## Contributing
 
-We welcome your contributions. Read more [here](https://github.com/lorefnon/InGenR/blob/master/contributing/README.md).
+We welcome your contributions. Read more [here](https://github.com/lorefnon/InGenR/blob/master/CONTRIBUTING.md).
 
 ## FAQs
 

@@ -34,7 +34,6 @@
     "test:prod": "yarn run lint && yarn run test -- --no-cache",
     "deploy-docs": "ts-node tools/gh-pages-publish",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
-    "commit": "git-cz",
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare"
   },
@@ -45,11 +44,6 @@
       "yarn run test",
       "git add"
     ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-conventional-changelog"
-    }
   },
   "jest": {
     "transform": {
@@ -79,14 +73,7 @@
   "prettier": {
     "semi": false
   },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
   "devDependencies": {
-    "@commitlint/cli": "^7.2.0",
-    "@commitlint/config-conventional": "^7.1.2",
     "@types/bufferstream": "^0.6.35",
     "@types/chalk": "^2.2.0",
     "@types/cosmiconfig": "^5.0.3",
@@ -102,10 +89,8 @@
     "@types/node": "^10.11.4",
     "@types/tmp": "^0.0.33",
     "colors": "^1.3.2",
-    "commitizen": "^3.0.2",
     "coveralls": "^3.0.2",
     "cross-env": "^5.2.0",
-    "cz-conventional-changelog": "^2.1.0",
     "husky": "^1.1.1",
     "jest": "^23.6.0",
     "jest-config": "^23.6.0",

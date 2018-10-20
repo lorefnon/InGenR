@@ -6,8 +6,13 @@ import * as rl from "readline"
 import * as yaml from "js-yaml"
 import * as path from "path"
 import _debug from "debug"
-import { WarningEntry, warnInterpolated, warnInvalidArgBody, warnInvalidExpandArgs } from "./warnings"
-import { last } from "lodash";
+import {
+  WarningEntry,
+  warnInterpolated,
+  warnInvalidArgBody,
+  warnInvalidExpandArgs
+} from "./warnings"
+import { last } from "lodash"
 
 const debug = _debug("InGenR:CommentParser")
 
@@ -60,23 +65,23 @@ enum ParserState {
 export class CommentParser extends EventEmitter {
   private matchers: Matchers
   private candidatesQ: CandidateBlock[] = []
-  constructor(public inputStream: Readable, private filePath: string, private parseOptions = defaultParserOptions) {
+  constructor(
+    public inputStream: Readable,
+    private filePath: string,
+    private parseOptions = defaultParserOptions
+  ) {
     super()
-    const expandRegex = '\\s+InGenR:expand\\s+(.*)\\s*';
+    const expandRegex = "\\s+InGenR:expand\\s+(.*)\\s*"
     const p = parseOptions
     this.matchers = {
       directiveStartRegex: new RegExp(
         `${p.commentStartRegex}${expandRegex}($|${p.commentEndRegex}|${p.commentRBoundRegEx})`
       ),
-      directiveEndRegex: new RegExp(
-        `${p.commentStartRegex}\\s+InGenR:end\\s*${p.commentEndRegex}`
-      ),
+      directiveEndRegex: new RegExp(`${p.commentStartRegex}\\s+InGenR:end\\s*${p.commentEndRegex}`),
       secondaryExpandStartRegex: new RegExp(
         `${p.commentStartRegex}${expandRegex}($|${p.commentEndRegex}|${p.commentRBoundRegEx})`
       ),
-      blockArgsBodyLineRegex: new RegExp(
-        `${p.commentLBoundRegEx}(.*)${p.commentRBoundRegEx}`
-      ),
+      blockArgsBodyLineRegex: new RegExp(`${p.commentLBoundRegEx}(.*)${p.commentRBoundRegEx}`),
       commentEndRegex: new RegExp(`${p.commentEndRegex}`)
     }
     debug("Matchers:", this.matchers)
@@ -109,7 +114,11 @@ export class CommentParser extends EventEmitter {
         this.emitLine(lineIndex, line, prevParserState, warnings)
         break
       case ParserState.IN_ARGS_BLOCK:
-        const didSecondaryExpandStart = await this.checkSecondaryExpandStart(lineIndex, line, warnings);
+        const didSecondaryExpandStart = await this.checkSecondaryExpandStart(
+          lineIndex,
+          line,
+          warnings
+        )
         if (!didSecondaryExpandStart) {
           this.accumulateArgs(lineIndex, line, warnings)
         }
@@ -165,27 +174,36 @@ export class CommentParser extends EventEmitter {
     return this.checkExpandStart(lineIndex, line, warnings, match)
   }
 
-  private async checkSecondaryExpandStart(lineIndex: number, line: string, warnings: WarningEntry[]) {
+  private async checkSecondaryExpandStart(
+    lineIndex: number,
+    line: string,
+    warnings: WarningEntry[]
+  ) {
     const match = line.match(this.matchers.secondaryExpandStartRegex)
     if (!match || !match[1]) return false
-    this.currentCandidate!.endLineIndex = lineIndex - 1;
+    this.currentCandidate.endLineIndex = lineIndex - 1
     return this.checkExpandStart(lineIndex, line, warnings, match)
   }
 
-  private async checkExpandStart(lineIndex: number, line: string, warnings: WarningEntry[], match: RegExpMatchArray) {
+  private async checkExpandStart(
+    lineIndex: number,
+    line: string,
+    warnings: WarningEntry[],
+    match: RegExpMatchArray
+  ) {
     const inlineExpandArgs = match[1].trim().split(/(,|\s)\s*/)
-    const templateNames: string[] = [];
-    const extraneousArgs: string[] = [];
-    let currentTarget = templateNames;
+    const templateNames: string[] = []
+    const extraneousArgs: string[] = []
+    let currentTarget = templateNames
     for (const arg of inlineExpandArgs) {
-      if (arg === ',') {
-        continue;
-      } else if (arg === ' ') {
-        currentTarget = extraneousArgs;
+      if (arg === ",") {
+        continue
+      } else if (arg === " ") {
+        currentTarget = extraneousArgs
       } else {
         currentTarget.push(arg)
       }
-    } 
+    }
     if (extraneousArgs.length > 1 || templateNames.length < 1) {
       warnings.push(warnInvalidExpandArgs(match.index))
       return false
@@ -201,7 +219,7 @@ export class CommentParser extends EventEmitter {
     if (extraneousArgs[0]) {
       const argsFilePath = path.resolve(path.dirname(this.filePath), extraneousArgs[0])
       const body = await fs.readFile(argsFilePath, {
-        encoding: 'utf8'
+        encoding: "utf8"
       })
       const parsedBody = this.parseArgsBody(body)
       currentCandidate.templates!.forEach(t => {
@@ -216,11 +234,11 @@ export class CommentParser extends EventEmitter {
   private accumulateArgs(lineIndex: number, line: string, warnings: WarningEntry[]) {
     const match = line.match(this.matchers.blockArgsBodyLineRegex)
     if (line.match(this.matchers.commentEndRegex)) {
-      this.currentCandidate!.startLineIndex = lineIndex + 1
+      this.currentCandidate.startLineIndex = lineIndex + 1
       return
     }
     if (match) {
-      this.currentCandidate!.argsLines.push(match[1])
+      this.currentCandidate.argsLines.push(match[1])
       return
     }
     warnings.push(warnInvalidArgBody())
@@ -241,10 +259,15 @@ export class CommentParser extends EventEmitter {
     for (const candidate of this.candidatesQ) {
       this.finishProcessingCandidate(lineIndex, line, warnings, candidate)
     }
-    this.candidatesQ = [] 
+    this.candidatesQ = []
   }
 
-  private finishProcessingCandidate(lineIndex: number, line: string, warnings: WarningEntry[], candidate: CandidateBlock) {
+  private finishProcessingCandidate(
+    lineIndex: number,
+    line: string,
+    warnings: WarningEntry[],
+    candidate: CandidateBlock
+  ) {
     try {
       this.parseArgs(candidate, warnings)
     } catch (e) {
@@ -261,7 +284,7 @@ export class CommentParser extends EventEmitter {
           args: candidate.args,
           startLineIndex: candidate.startLineIndex!,
           endLineIndex: candidate.endLineIndex || lineIndex,
-          currentContent: candidate.contentLines  
+          currentContent: candidate.contentLines
         },
         parserState: this.parserState
       })
@@ -269,26 +292,29 @@ export class CommentParser extends EventEmitter {
   }
 
   private parseArgs(candidate: CandidateBlock, warnings: WarningEntry[]) {
-    const {argsLines, templates} = candidate
+    const { argsLines, templates } = candidate
     if (!templates) {
       return
     }
-    const sections = argsLines.reduce((sectionsAccumulator: string[][], line: string) => {
-      if (line.trim() === "---") {
-        sectionsAccumulator.push([])
-      } else {
-        last(sectionsAccumulator)!.push(line)
-      }
-      return sectionsAccumulator
-    }, [[]]);
+    const sections = argsLines.reduce(
+      (sectionsAccumulator: string[][], line: string) => {
+        if (line.trim() === "---") {
+          sectionsAccumulator.push([])
+        } else {
+          last(sectionsAccumulator)!.push(line)
+        }
+        return sectionsAccumulator
+      },
+      [[]]
+    )
     if (sections.length > 3) {
       warnings.push({
-        message: 'Unexpected number of sections encountered in directive body'
+        message: "Unexpected number of sections encountered in directive body"
       })
       return
     }
     if (sections.length === 0) {
-      return;
+      return
     }
     for (const template of templates) {
       if (sections.length === 1) {
@@ -320,13 +346,13 @@ export class CommentParser extends EventEmitter {
       })
       let lineIndex = 0
       let lineParseCompletionPromise = Promise.resolve()
-      lineReader.on("line", (line) => {
+      lineReader.on("line", line => {
         lineParseCompletionPromise = lineParseCompletionPromise
           .then(async () => {
             await this.parseLine(lineIndex, line)
-            lineIndex++;
+            lineIndex++
           })
-          .catch(reject);
+          .catch(reject)
       })
       lineReader.on("error", e => reject(e))
       lineReader.on("close", () => {
@@ -336,7 +362,7 @@ export class CommentParser extends EventEmitter {
           reject(new Error(`Unexpected End of File while parsing`))
           return
         }
-        lineParseCompletionPromise.then(resolve)
+        lineParseCompletionPromise.then(resolve).catch(reject)
       })
     })
   }
