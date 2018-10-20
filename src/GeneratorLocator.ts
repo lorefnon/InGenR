@@ -1,5 +1,5 @@
 import * as path from "path"
-import * as _fs from "fs"
+import * as fs from "fs-extra"
 import * as doT from "dot"
 import _debug from "debug"
 import { Directive, TemplateInvocation } from "./CommentParser"
@@ -7,7 +7,6 @@ import { Reporter } from "./ConsoleReporter"
 import { WarningEntry } from "./warnings"
 
 const debug = _debug("InGenR:GeneratorLocator")
-const fs = _fs.promises
 
 // @ts-ignore
 doT.templateSettings = {
@@ -54,8 +53,12 @@ export class GeneratorLocator {
     }
   }
 
-  async locate(name: string, filePath: string) {
-    debug("Locating template: %s", name)
+  async locate(template: TemplateInvocation, filePath: string) {
+    debug("Locating template: %O", template)
+    const {name, body} = template
+    if (body) {
+      return (input: TemplateInvocation) => doT.template(body)(input.args)
+    }
     if (!this.validateName(name, filePath)) return
     let generator = this.cache.get(name)
     if (generator) return generator

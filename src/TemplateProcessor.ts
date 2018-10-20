@@ -62,14 +62,13 @@ export class TemplateProcessor {
     this.didChange = false
     this.writeStream = fs.createWriteStream(this.tmpFile.filePath)
     const writeEndP = waitForEvent(this.writeStream, "close")
-    this.commentParser = new CommentParser(this.readStream, this.options.parser)
+    this.commentParser = new CommentParser(this.readStream, this.filePath, this.options.parser)
     let didParse = false
-    const parseCompletionPromise = this.commentParser.parse().then(() => {
-      didParse = true
-    })
+    const parseCompletionPromise = this.commentParser.parse()
     try {
       await this.processComments()
       await parseCompletionPromise
+      didParse = true
     } catch (e) {
       debug("Processing error:", e)
       console.error(`Failed to process file: ${this.filePath}`)
@@ -82,13 +81,15 @@ export class TemplateProcessor {
     this.writeStream.end()
     await Promise.all([readEndP, writeEndP])
     if (!didParse) return
+    debug("Renaming %s -> %s", this.tmpFile.filePath, this.filePath)
+    debugger
     await fs.rename(this.tmpFile.filePath, this.filePath)
   }
 
   private async processComments() {
     return new Promise((resolve, reject) => {
       let promise = Promise.resolve()
-      this.commentParser!.on("item", async item => {
+      this.commentParser!.on("item", item => {
         promise = promise.then(() => this.processItem(item)).catch(reject)
       })
       this.commentParser!.on("close", () => {
@@ -110,7 +111,7 @@ export class TemplateProcessor {
   }
 
   private async processTemplateInvocation(tmpl: TemplateInvocation, directive: Directive) {
-    const generate = await this.locator.locate(tmpl.name, this.filePath)
+    const generate = await this.locator.locate(tmpl, this.filePath)
     if (!generate) {
       debug("Failed to locate:", tmpl.name)
       return
@@ -160,11 +161,14 @@ export class TemplateProcessor {
 
   private write(content: string, stream = this.writeStream!) {
     return new Promise((resolve, reject) => {
-      if (!stream.write(content, "utf8")) {
-        stream.once("drain", () => resolve(true))
-      } else {
-        process.nextTick(() => resolve(true))
-      }
+      const shouldWaitTillDrain = !stream.write(content, "utf8", (err) => {
+        if (err) reject(err)
+        else if (shouldWaitTillDrain) {
+          stream.once("drain", () => resolve(true))
+        } else {
+          resolve(true)
+        }
+      })
     })
   }
 }

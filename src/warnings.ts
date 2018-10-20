@@ -20,3 +20,12 @@ export const warnInvalidArgBody = () => ({
     "Detected invalid line in the arguments body of an InGenR directive.\n" +
     "This line will be discarded."
 })
+
+export const warnInvalidExpandArgs = (index: number | undefined) => ({
+  index,
+  message: 
+    "Incorrect number of arguments specified to expand directive.\n" + 
+    "Supported usages:\n" + 
+    "InGenR:expand template-name\n" + 
+    "InGenR:expand template-name path/to/temlplate-data.yml\n"
+})

@@ -20,7 +20,7 @@ const populateFixtures = async (projDir: string, filePaths: string[]) => {
 
 const getTmpDir = () =>
   new Promise<string>((resolve, reject) => {
-    tmp.dir({ keep: true }, (err, dir) => {
+    tmp.dir((err, dir) => {
       if (err) reject(err)
       else resolve(dir)
     })
@@ -31,37 +31,48 @@ describe("InGenR", () => {
   let originalCwd: string | null = null
 
   const readFromProjDir = (filePath: string) =>
-    fs.readFile(path.join(projDir!, filePath), {
-      encoding: "utf8"
-    })
+    fs.readFile(path.join(projDir!, filePath), { encoding: "utf8" })
+
+  const readFromFixturesDir = (filePath: string) =>
+    fs.readFile(path.join(__dirname, "__fixtures__", filePath), { encoding: "utf8" })
 
   beforeEach(async () => {
     originalCwd = process.cwd()
     projDir = await getTmpDir()
+    debug("Switching to temporary project directory:", projDir)
     process.chdir(projDir)
   })
+
   afterEach(async () => {
+    debug("Switching to original directory:", originalCwd)
     process.chdir(originalCwd!)
     if (projDir) {
-      fs.remove(projDir).catch(e => {
-        console.error(`Failed to remove temporary directory created for tests: ${projDir}`)
-        debug("Error: ", e)
-      })
+      // tslint:disable-next-line
+      // fs.remove(projDir)
       projDir = null
     }
   })
+
   it("Injects generated content into annotated blocks", async () => {
     await populateFixtures(projDir!, ["src/index.ts", "ingenr-generators/knex-dal.dot"])
     await run()
     expect(await readFromProjDir("src/index.ts")).toMatchSnapshot()
   })
+
   it("Complains about missing generators", async () => {
-    const srcFiles = ["src/index.ts", "src/missing-generator.ts", "src/erroneous-template-name.ts"]
+    const erroneousFiles = ["src/missing-generator.ts", "src/erroneous-template-name.ts"]
+    const correctFiles = ["src/index.ts"]
+    const srcFiles = [...correctFiles, ...erroneousFiles]
     await populateFixtures(projDir!, [...srcFiles, "ingenr-generators/knex-dal.dot"])
     const reporter = new MockReporter()
     await processProject(srcFiles.map(p => path.join(projDir!, p)), undefined, undefined, reporter)
     expect(reporter.stripWarnings(projDir!)).toMatchSnapshot()
+    expect(await readFromProjDir("src/index.ts")).toMatchSnapshot()
+    for (const f of erroneousFiles) {
+      expect(await readFromProjDir(f)).toEqual(await readFromFixturesDir(f))
+    }
   })
+
   it("supports external template targets", async () => {
     await populateFixtures(projDir!, [
       "src/index.ts",
@@ -69,13 +80,11 @@ describe("InGenR", () => {
       "ingenr-generators/knex-dal.dot"
     ])
     await run()
-    const postProcessedContents = {
-      index: await readFromProjDir("src/index.ts"),
-      externalTarget: await readFromProjDir("src/external-target.ts"),
-      externalTargetGenerated: await readFromProjDir("src/users-table.ts")
-    }
-    expect(postProcessedContents).toMatchSnapshot()
+    expect(await readFromProjDir("src/index.ts")).toMatchSnapshot()
+    expect(await readFromProjDir("src/external-target.ts")).toMatchSnapshot()
+    expect(await readFromProjDir("src/users-table.ts")).toMatchSnapshot()
   })
+
   it("supports multiple targets and generator modules", async () => {
     const srcFiles = ["src/multiple-targets.ts"]
     await populateFixtures(projDir!, srcFiles)
@@ -97,10 +106,9 @@ describe("InGenR", () => {
       mockLocator,
       mockReporter
     )
-    const snapshot = {
-      src: await readFromProjDir("src/multiple-targets.ts"),
-      warnings: mockReporter.stripWarnings(projDir!)
-    }
-    expect(snapshot).toMatchSnapshot()
+    expect(await readFromProjDir("src/multiple-targets.ts")).toMatchSnapshot()
+    expect(mockReporter.stripWarnings(projDir!)).toMatchSnapshot()
   })
+
+  it("supports external configuration", async () => {})
 })

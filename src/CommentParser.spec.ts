@@ -4,7 +4,7 @@ import { CommentParser } from "./CommentParser"
 
 const parseContent = async (content: string) => {
   const stream = new BufferStream()
-  const parser = new CommentParser(stream)
+  const parser = new CommentParser(stream, "foo.js")
   const items: any[] = []
   parser.on("item", (item: any) => {
     items.push(item)
@@ -23,35 +23,35 @@ describe("Comment Parser", () => {
 
   it("parses files with no comment blocks", async () => {
     const items = await parseContent(`
-            import express from "express";
-            const app = express();
-            app.listen()
-        `)
+      import express from "express";
+      const app = express();
+      app.listen()
+    `)
     expect(items).toMatchSnapshot()
   })
 
   it("parses files with comment blocks", async () => {
     const items = await parseContent(`
-            /**! InGenR:expand sample */
-            /**! InGenR:end */
+      /**! InGenR:expand sample */
+      /**! InGenR:end */
 
-            /**! InGenR:expand knex-dal
-            *
-            * tableName: users
-            * columns:
-            *   - name: name
-            *     type: string
-            *   - name: email
-            *     type: string
-            */
-            /**! InGenR:end */
+      /**! InGenR:expand knex-dal
+      *
+      * tableName: users
+      * columns:
+      *   - name: name
+      *     type: string
+      *   - name: email
+      *     type: string
+      */
+      /**! InGenR:end */
 
-            /**! InGenR:expand products
-             *
-             * tableName: products
-             */
-            /**! InGenR:end */
-        `)
+      /**! InGenR:expand products
+       *
+       * tableName: products
+       */
+      /**! InGenR:end */
+    `)
     expect(items).toMatchSnapshot()
   })
 })
