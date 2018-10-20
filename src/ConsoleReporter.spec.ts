@@ -2,7 +2,9 @@ import { ConsoleReporter } from "./ConsoleReporter";
 
 describe("ConsoleReporter", () => {
     it('works as expected', () => {
-        const reporter = new ConsoleReporter();
+        const reporter = new ConsoleReporter({
+            enableColor: false
+        });
         const messages: any[] = []
         reporter.console = ['log', 'debug', 'info', 'warn', 'error'].reduce((result: any, type: string) => {
             result[type] = (...args: any[]) => {

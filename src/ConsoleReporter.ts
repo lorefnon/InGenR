@@ -1,4 +1,4 @@
-import chalk from "chalk"
+import chalk, { Chalk } from "chalk"
 import { isNumber } from "lodash"
 import { WarningEntry } from "./warnings"
 
@@ -19,15 +19,25 @@ export interface FileWarning {
   warnings: WarningEntry[]
 }
 
-export const defaultReporterOptions = {}
+interface ConsoleReporterOptions {
+  enableColor?: boolean
+}
+
+export const defaultReporterOptions: ConsoleReporterOptions = {
+  enableColor: !! process.stdout.isTTY
+}
 
 export class ConsoleReporter implements Reporter {
   warnings: Map<string, FileWarning[]>
   console: Console
+  chalk: Chalk;
 
   constructor(private options = defaultReporterOptions) {
     this.warnings = new Map()
     this.console = console
+    this.chalk = new chalk.constructor({
+      enabled: !!options.enableColor
+    })
   }
 
   bufferWarning(
@@ -48,7 +58,7 @@ export class ConsoleReporter implements Reporter {
         let preSpacer = ""
         if (isNumber(lineIndex)) {
           const lineNumRepr = `L:${lineIndex + 1} : `
-          this.console.log(chalk.gray(lineNumRepr) + chalk.blue(line!))
+          this.console.log(this.chalk.gray(lineNumRepr) + this.chalk.blue(line!))
           preSpacer = "^"
           let marginLeft = lineNumRepr.length
           if (entry.index) {
@@ -58,7 +68,7 @@ export class ConsoleReporter implements Reporter {
             preSpacer = ` ${preSpacer}`
           }
         }
-        this.console.log(chalk.red(`${preSpacer} ${entry.message}`))
+        this.console.log(this.chalk.red(`${preSpacer} ${entry.message}`))
         if (entry.error) {
           this.console.error(entry.error)
         }
@@ -69,7 +79,7 @@ export class ConsoleReporter implements Reporter {
   reportAllWarnings() {
     for (const [filePath, fileWarnings] of this.warnings) {
       const count = fileWarnings.reduce((sum, fileWarning) => sum + fileWarning.warnings.length, 0)
-      this.console.log(chalk.blue(`${filePath}: ${count} warnings`))
+      this.console.log(this.chalk.blue(`${filePath}: ${count} warnings`))
       this.reportFileWarnings(fileWarnings)
     }
   }
