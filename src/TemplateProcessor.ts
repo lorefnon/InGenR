@@ -63,7 +63,7 @@ export class TemplateProcessor {
     this.writeStream = fs.createWriteStream(this.tmpFile.filePath)
     const writeEndP = waitForEvent(this.writeStream, "close")
     this.commentParser = new CommentParser(this.readStream, this.options.parser)
-    let didParse = false;
+    let didParse = false
     const parseCompletionPromise = this.commentParser.parse().then(() => {
       didParse = true
     })
@@ -71,9 +71,13 @@ export class TemplateProcessor {
       await this.processComments()
       await parseCompletionPromise
     } catch (e) {
-      debug('Processing error:', e)
+      debug("Processing error:", e)
       console.error(`Failed to process file: ${this.filePath}`)
-      fs.remove(this.tmpFile.filePath);
+      // tslint:disable-next-line
+      fs.remove(this.tmpFile.filePath).catch(e => {
+        console.error(`Failed to delete temporary file: ${this.tmpFile!.filePath}`)
+        debug("Error:", e)
+      })
     }
     this.writeStream.end()
     await Promise.all([readEndP, writeEndP])

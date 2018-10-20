@@ -1,10 +1,12 @@
 import * as fs from "fs-extra"
 import * as path from "path"
 import * as tmp from "tmp"
-import { sortBy, flatten } from "lodash"
+import _debug from "debug"
 import { run, processProject } from "."
 import { MockReporter } from "./MockReporter"
 import { MockLocator } from "./MockLocator"
+
+const debug = _debug("InGenR:spec:index")
 
 const populateFixtures = async (projDir: string, filePaths: string[]) => {
   for (const filePath of filePaths) {
@@ -41,7 +43,10 @@ describe("InGenR", () => {
   afterEach(async () => {
     process.chdir(originalCwd!)
     if (projDir) {
-      // fs.remove(projDir)
+      fs.remove(projDir).catch(e => {
+        console.error(`Failed to remove temporary directory created for tests: ${projDir}`)
+        debug("Error: ", e)
+      })
       projDir = null
     }
   })
