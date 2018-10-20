@@ -38,7 +38,7 @@ InGenR aims to be a simple generic utility that solves this through a much simpl
 
     ```typescript
     /*! InGenR:expand knex-dal
-    *
+    * ---
     * tableName: users
     * columns:
     *   - name: name
@@ -102,7 +102,7 @@ InGenR aims to be a simple generic utility that solves this through a much simpl
 
     ```typescript
     /*! InGenR:expand knex-dal
-     *
+     * ---
      * tableName: users
      * - columns:
      *   - name: name
@@ -168,7 +168,7 @@ It is sometimes convenient to invoke multiple generators with the same set of ar
 
 ```typescript
 /*! InGenR:expand foo, bar
- *
+ * ---
  * tableName: users
  * columns:
  *   - name: name

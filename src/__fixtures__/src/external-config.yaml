@@ -1,0 +1,6 @@
+tableName: users
+columns:
+  - name: name
+    type: string
+  - name: email
+    type: string

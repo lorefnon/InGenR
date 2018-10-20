@@ -68,7 +68,7 @@
         "statements": 95
       }
     },
-    "collectCoverage": true
+    "collectCoverage": false
   },
   "prettier": {
     "semi": false
@@ -127,7 +127,8 @@
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.11",
     "minimist": "^1.2.0",
-    "tmp": "^0.0.33"
+    "tmp": "^0.0.33",
+    "xregexp": "^4.2.0"
   },
   "husky": {
     "hooks": {

@@ -18,7 +18,7 @@ const debug = _debug("InGenR:CommentParser")
 
 export const defaultParserOptions = {
   commentStartRegex: "\\/\\*!",
-  commentEndRegex: "\\*\\/",
+  commentEndRegex: "\\*\\/\\s*$",
   commentLBoundRegEx: "^\\s*\\*?",
   commentRBoundRegEx: "\\*?\\s*$"
 }
@@ -52,12 +52,13 @@ export interface Directive {
 }
 
 export interface CandidateBlock extends Partial<Directive> {
-  argsLines: string[]
+  bodyLines: string[]
   contentLines: string[]
 }
 
 enum ParserState {
   INIT = "INIT",
+  IN_COMMENT_BLOCK = "IN_COMMENT_BLOCK",
   IN_ARGS_BLOCK = "IN_ARGS_BLOCK",
   IN_GENERATED_BLOCK = "IN_GENERATED_BLOCK"
 }
@@ -71,11 +72,11 @@ export class CommentParser extends EventEmitter {
     private parseOptions = defaultParserOptions
   ) {
     super()
-    const expandRegex = "\\s+InGenR:expand\\s+(.*)\\s*"
+    const expandRegex = "\\s+InGenR:expand\\s+(.*?)\\s*"
     const p = parseOptions
     this.matchers = {
       directiveStartRegex: new RegExp(
-        `${p.commentStartRegex}${expandRegex}($|${p.commentEndRegex}|${p.commentRBoundRegEx})`
+        `${p.commentStartRegex}${expandRegex}(${p.commentEndRegex}|${p.commentRBoundRegEx}|$)`
       ),
       directiveEndRegex: new RegExp(`${p.commentStartRegex}\\s+InGenR:end\\s*${p.commentEndRegex}`),
       secondaryExpandStartRegex: new RegExp(
@@ -212,7 +213,7 @@ export class CommentParser extends EventEmitter {
       templates: templateNames.map(name => ({
         name
       })),
-      argsLines: [],
+      bodyLines: [],
       contentLines: [],
       startLineIndex: match[2] ? lineIndex + 1 : undefined
     }
@@ -238,7 +239,7 @@ export class CommentParser extends EventEmitter {
       return
     }
     if (match) {
-      this.currentCandidate.argsLines.push(match[1])
+      this.currentCandidate.bodyLines.push(match[1])
       return
     }
     warnings.push(warnInvalidArgBody())
@@ -292,11 +293,11 @@ export class CommentParser extends EventEmitter {
   }
 
   private parseArgs(candidate: CandidateBlock, warnings: WarningEntry[]) {
-    const { argsLines, templates } = candidate
+    const { bodyLines, templates } = candidate
     if (!templates) {
       return
     }
-    const sections = argsLines.reduce(
+    const sections = bodyLines.reduce(
       (sectionsAccumulator: string[][], line: string) => {
         if (line.trim() === "---") {
           sectionsAccumulator.push([])
@@ -307,6 +308,7 @@ export class CommentParser extends EventEmitter {
       },
       [[]]
     )
+    debug("Sections:", sections)
     if (sections.length > 3) {
       warnings.push({
         message: "Unexpected number of sections encountered in directive body"
@@ -316,19 +318,28 @@ export class CommentParser extends EventEmitter {
     if (sections.length === 0) {
       return
     }
-    for (const template of templates) {
-      if (sections.length === 1) {
-        if (template.argsFile) {
-          candidate.args = this.parseArgsBody(sections[0].join("\n"))
-        } else {
-          template.args = this.parseArgsBody(sections[0].join("\n"))
-        }
-      } else {
-        candidate.args = candidate.args || this.parseArgsBody(sections[0].join("\n"))
-        template.args = this.parseArgsBody(sections[1].join("\n"))
-        if (sections[2]) {
-          template.body = sections[2].join("\n")
-        }
+    if (sections[0]) {
+      candidate.args = this.parseArgsBody(sections[0].join("\n"))
+    }
+    if (sections[1]) {
+      const args = this.parseArgsBody(sections[1].join("\n"))
+      for (const template of templates) {
+        template.args = args
+      }
+    } else if (sections[0].length > 0) {
+      warnings.push({
+        message: 'Did you forget to add a separator (---) before template arguments ? '
+      })
+    }
+    if (sections[2]) {
+      if (sections[2].length > 5) {
+        warnings.push({
+          message: 'Usage of large inline templates is not recommended'
+        })
+      }
+      const body = sections[2].join("\n")
+      for (const template of templates) {
+        template.body = body;
       }
     }
   }
@@ -339,8 +350,11 @@ export class CommentParser extends EventEmitter {
     return yaml.safeLoad(body)
   }
 
-  parse(): Promise<void> {
-    return new Promise((resolve, reject) => {
+  relayError = (error: Error) => {
+    this.emit("error", error)
+  }
+
+  parse() {
       const lineReader = rl.createInterface({
         input: this.inputStream
       })
@@ -352,18 +366,18 @@ export class CommentParser extends EventEmitter {
             await this.parseLine(lineIndex, line)
             lineIndex++
           })
-          .catch(reject)
+          .catch(this.relayError)
       })
-      lineReader.on("error", e => reject(e))
+      lineReader.on("error", this.relayError)
       lineReader.on("close", () => {
         debug("[ParserState: %s] close", this.parserState)
-        this.emit("close")
         if (this.parserState !== ParserState.INIT) {
-          reject(new Error(`Unexpected End of File while parsing`))
-          return
+          this.emit("error", new Error("Unexpected End of File while parsing"))
+        } else {
+          lineParseCompletionPromise
+          .then(() => this.emit("end"))
+          .catch(this.relayError)
         }
-        lineParseCompletionPromise.then(resolve).catch(reject)
       })
-    })
   }
 }

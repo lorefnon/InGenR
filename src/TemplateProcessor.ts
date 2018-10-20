@@ -32,9 +32,12 @@ const getTmpFileAsync = () =>
     })
   })
 
-const waitForEvent = (stream: EventEmitter, event: string) =>
+const waitForEvent = (stream: EventEmitter, event: string, descriptor: string) =>
   new Promise((resolve, reject) => {
-    stream.on(event, resolve)
+    stream.on(event, (data) => {
+      debug("Encountered event:", descriptor, event, data)
+      resolve(data)
+    })
   })
 
 export class TemplateProcessor {
@@ -57,42 +60,49 @@ export class TemplateProcessor {
 
   async process() {
     this.readStream = fs.createReadStream(this.filePath, { encoding: "utf8" })
-    const readEndP = waitForEvent(this.readStream, "close")
+    const readEndP = waitForEvent(this.readStream, "close", "readStream")
     this.tmpFile = await getTmpFileAsync()
     this.didChange = false
     this.writeStream = fs.createWriteStream(this.tmpFile.filePath)
-    const writeEndP = waitForEvent(this.writeStream, "close")
     this.commentParser = new CommentParser(this.readStream, this.filePath, this.options.parser)
     let didParse = false
-    const parseCompletionPromise = this.commentParser.parse()
+    this.commentParser.parse()
     try {
       await this.processComments()
-      await parseCompletionPromise
       didParse = true
     } catch (e) {
       debug("Processing error:", e)
-      console.error(`Failed to process file: ${this.filePath}`)
-      // tslint:disable-next-line
+      this.reporter.bufferWarning(this.filePath, undefined, undefined, [{
+        message: `Failed to process file: ${this.filePath}`
+      }])
+    }
+    const writeEndP = waitForEvent(this.writeStream, "close", "writeStream")
+    this.writeStream.end()
+    await Promise.all([readEndP, writeEndP])
+    if (didParse) {
+      debug("Renaming %s -> %s", this.tmpFile.filePath, this.filePath)
+      await fs.rename(this.tmpFile.filePath, this.filePath)  
+    } else {
       fs.remove(this.tmpFile.filePath).catch(e => {
         console.error(`Failed to delete temporary file: ${this.tmpFile!.filePath}`)
         debug("Error:", e)
       })
     }
-    this.writeStream.end()
-    await Promise.all([readEndP, writeEndP])
-    if (!didParse) return
-    debug("Renaming %s -> %s", this.tmpFile.filePath, this.filePath)
-    debugger
-    await fs.rename(this.tmpFile.filePath, this.filePath)
   }
 
   private async processComments() {
     return new Promise((resolve, reject) => {
       let promise = Promise.resolve()
+      let error: Error | undefined
       this.commentParser!.on("item", item => {
+        if (error) return
         promise = promise.then(() => this.processItem(item)).catch(reject)
       })
-      this.commentParser!.on("close", () => {
+      this.commentParser!.on("error", (error) => {
+        reject(error)
+      })
+      this.commentParser!.on("end", () => {
+        debug("Comment parser finished")
         promise.then(() => resolve(true)).catch(reject)
       })
     })
@@ -105,6 +115,7 @@ export class TemplateProcessor {
     } else if (type === "DIRECTIVE") {
       await this.processDirective(data)
     }
+    debug("Finished processing item: %O", data)
     if (warnings && warnings.length > 0) {
       this.reporter.bufferWarning(this.filePath, lineIndex, data, warnings)
     }
@@ -142,6 +153,7 @@ export class TemplateProcessor {
       await this.write(generatedContent, targetStream)
     }
     if (isExternalTarget) targetStream.close()
+    debug("Finished processing template invocation")
   }
 
   private async postProcessGeneratedContent(content: string) {
@@ -160,8 +172,10 @@ export class TemplateProcessor {
   }
 
   private write(content: string, stream = this.writeStream!) {
+    debug("Writing content: ", content)
     return new Promise((resolve, reject) => {
       const shouldWaitTillDrain = !stream.write(content, "utf8", (err) => {
+        debug('Finished writing content:', err, content)
         if (err) reject(err)
         else if (shouldWaitTillDrain) {
           stream.once("drain", () => resolve(true))

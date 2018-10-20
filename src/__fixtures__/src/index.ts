@@ -3,7 +3,7 @@ import foo from "foo"
 const bar = "bar"
 
 /*! InGenR:expand knex-dal
- *
+ * ---
  * tableName: users
  * columns:
  *   - name: name

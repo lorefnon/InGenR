@@ -1,5 +1,294 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Comment Parser parses directives with embedded templates 1`] = `
+Array [
+  Object {
+    "data": "",
+    "didProcess": false,
+    "lineIndex": 0,
+    "parserState": "INIT",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": "    /*! InGenR:expand sample ",
+    "didProcess": true,
+    "lineIndex": 1,
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": "     * ---",
+    "didProcess": false,
+    "lineIndex": 2,
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": "     * name: lorefnon",
+    "didProcess": false,
+    "lineIndex": 3,
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": "     * ---",
+    "didProcess": false,
+    "lineIndex": 4,
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": "     * <div>{{=it.name}}</div>",
+    "didProcess": false,
+    "lineIndex": 5,
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": "     */",
+    "didProcess": true,
+    "lineIndex": 6,
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": Object {
+      "args": null,
+      "currentContent": Array [],
+      "endLineIndex": 7,
+      "startLineIndex": 7,
+      "templates": Array [
+        Object {
+          "args": Object {
+            "name": "lorefnon",
+          },
+          "body": " <div>{{=it.name}}</div>",
+          "name": "sample",
+        },
+      ],
+    },
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "DIRECTIVE",
+  },
+  Object {
+    "data": "    /*! InGenR:end */",
+    "didProcess": true,
+    "lineIndex": 7,
+    "parserState": "INIT",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": "    ",
+    "didProcess": false,
+    "lineIndex": 8,
+    "parserState": "INIT",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+]
+`;
+
+exports[`Comment Parser parses directives with external template args 1`] = `
+Array [
+  Object {
+    "data": "",
+    "didProcess": false,
+    "lineIndex": 0,
+    "parserState": "INIT",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": "    /*! InGenR:expand knex-dal external-config.yaml*/",
+    "didProcess": true,
+    "lineIndex": 1,
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": Object {
+      "args": null,
+      "currentContent": Array [],
+      "endLineIndex": 2,
+      "startLineIndex": 2,
+      "templates": Array [
+        Object {
+          "args": Object {
+            "columns": Array [
+              Object {
+                "name": "name",
+                "type": "string",
+              },
+              Object {
+                "name": "email",
+                "type": "string",
+              },
+            ],
+            "tableName": "users",
+          },
+          "name": "knex-dal",
+        },
+      ],
+    },
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "DIRECTIVE",
+  },
+  Object {
+    "data": "    /*! InGenR:end */",
+    "didProcess": true,
+    "lineIndex": 2,
+    "parserState": "INIT",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": "    ",
+    "didProcess": false,
+    "lineIndex": 3,
+    "parserState": "INIT",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+]
+`;
+
+exports[`Comment Parser parses directives with multiple templates 1`] = `
+Array [
+  Object {
+    "data": "",
+    "didProcess": false,
+    "lineIndex": 0,
+    "parserState": "INIT",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": "      /*! InGenR:expand sample-1, sample-2 */",
+    "didProcess": true,
+    "lineIndex": 1,
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": Object {
+      "args": null,
+      "currentContent": Array [],
+      "endLineIndex": 2,
+      "startLineIndex": 2,
+      "templates": Array [
+        Object {
+          "name": "sample-1",
+        },
+        Object {
+          "name": "sample-2",
+        },
+      ],
+    },
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "DIRECTIVE",
+  },
+  Object {
+    "data": "      /*! InGenR:end */",
+    "didProcess": true,
+    "lineIndex": 2,
+    "parserState": "INIT",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": "      ",
+    "didProcess": false,
+    "lineIndex": 3,
+    "parserState": "INIT",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": "      /*! InGenR:expand sample-3, sample-4",
+    "didProcess": true,
+    "lineIndex": 4,
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": "      * foo: bar",
+    "didProcess": false,
+    "lineIndex": 5,
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": "      * hello: world",
+    "didProcess": false,
+    "lineIndex": 6,
+    "parserState": "IN_ARGS_BLOCK",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": "      */",
+    "didProcess": true,
+    "lineIndex": 7,
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+  Object {
+    "data": Object {
+      "args": Object {
+        "foo": "bar",
+        "hello": "world",
+      },
+      "currentContent": Array [],
+      "endLineIndex": 8,
+      "startLineIndex": 8,
+      "templates": Array [
+        Object {
+          "name": "sample-3",
+        },
+        Object {
+          "name": "sample-4",
+        },
+      ],
+    },
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "DIRECTIVE",
+  },
+  Object {
+    "data": "      /*! InGenR:end */",
+    "didProcess": true,
+    "lineIndex": 8,
+    "parserState": "INIT",
+    "type": "LINE",
+    "warnings": Array [
+      Object {
+        "message": "Did you forget to add a separator (---) before template arguments ? ",
+      },
+    ],
+  },
+  Object {
+    "data": "    ",
+    "didProcess": false,
+    "lineIndex": 9,
+    "parserState": "INIT",
+    "type": "LINE",
+    "warnings": Array [],
+  },
+]
+`;
+
 exports[`Comment Parser parses files with comment blocks 1`] = `
 Array [
   Object {
@@ -11,32 +300,35 @@ Array [
     "warnings": Array [],
   },
   Object {
-    "data": "      /**! InGenR:expand sample */",
-    "didProcess": false,
+    "data": "      /*! InGenR:expand sample */",
+    "didProcess": true,
     "lineIndex": 1,
-    "parserState": "INIT",
+    "parserState": "IN_GENERATED_BLOCK",
     "type": "LINE",
-    "warnings": Array [
-      Object {
-        "index": 11,
-        "message": "Potentially unprocessed InGenR directive: InGenR:expand.
-If you expected this directive to be processed please recheck the syntax",
-      },
-    ],
+    "warnings": Array [],
   },
   Object {
-    "data": "      /**! InGenR:end */",
-    "didProcess": false,
+    "data": Object {
+      "args": null,
+      "currentContent": Array [],
+      "endLineIndex": 2,
+      "startLineIndex": 2,
+      "templates": Array [
+        Object {
+          "name": "sample",
+        },
+      ],
+    },
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "DIRECTIVE",
+  },
+  Object {
+    "data": "      /*! InGenR:end */",
+    "didProcess": true,
     "lineIndex": 2,
     "parserState": "INIT",
     "type": "LINE",
-    "warnings": Array [
-      Object {
-        "index": 11,
-        "message": "Potentially unprocessed InGenR directive: InGenR:end.
-If you expected this directive to be processed please recheck the syntax",
-      },
-    ],
+    "warnings": Array [],
   },
   Object {
     "data": "",
@@ -47,24 +339,18 @@ If you expected this directive to be processed please recheck the syntax",
     "warnings": Array [],
   },
   Object {
-    "data": "      /**! InGenR:expand knex-dal",
-    "didProcess": false,
+    "data": "      /*! InGenR:expand knex-dal",
+    "didProcess": true,
     "lineIndex": 4,
-    "parserState": "INIT",
+    "parserState": "IN_ARGS_BLOCK",
     "type": "LINE",
-    "warnings": Array [
-      Object {
-        "index": 11,
-        "message": "Potentially unprocessed InGenR directive: InGenR:expand.
-If you expected this directive to be processed please recheck the syntax",
-      },
-    ],
+    "warnings": Array [],
   },
   Object {
-    "data": "      *",
+    "data": "      * ---",
     "didProcess": false,
     "lineIndex": 5,
-    "parserState": "INIT",
+    "parserState": "IN_ARGS_BLOCK",
     "type": "LINE",
     "warnings": Array [],
   },
@@ -72,7 +358,7 @@ If you expected this directive to be processed please recheck the syntax",
     "data": "      * tableName: users",
     "didProcess": false,
     "lineIndex": 6,
-    "parserState": "INIT",
+    "parserState": "IN_ARGS_BLOCK",
     "type": "LINE",
     "warnings": Array [],
   },
@@ -80,7 +366,7 @@ If you expected this directive to be processed please recheck the syntax",
     "data": "      * columns:",
     "didProcess": false,
     "lineIndex": 7,
-    "parserState": "INIT",
+    "parserState": "IN_ARGS_BLOCK",
     "type": "LINE",
     "warnings": Array [],
   },
@@ -88,7 +374,7 @@ If you expected this directive to be processed please recheck the syntax",
     "data": "      *   - name: name",
     "didProcess": false,
     "lineIndex": 8,
-    "parserState": "INIT",
+    "parserState": "IN_ARGS_BLOCK",
     "type": "LINE",
     "warnings": Array [],
   },
@@ -96,7 +382,7 @@ If you expected this directive to be processed please recheck the syntax",
     "data": "      *     type: string",
     "didProcess": false,
     "lineIndex": 9,
-    "parserState": "INIT",
+    "parserState": "IN_ARGS_BLOCK",
     "type": "LINE",
     "warnings": Array [],
   },
@@ -104,7 +390,7 @@ If you expected this directive to be processed please recheck the syntax",
     "data": "      *   - name: email",
     "didProcess": false,
     "lineIndex": 10,
-    "parserState": "INIT",
+    "parserState": "IN_ARGS_BLOCK",
     "type": "LINE",
     "warnings": Array [],
   },
@@ -112,31 +398,53 @@ If you expected this directive to be processed please recheck the syntax",
     "data": "      *     type: string",
     "didProcess": false,
     "lineIndex": 11,
-    "parserState": "INIT",
+    "parserState": "IN_ARGS_BLOCK",
     "type": "LINE",
     "warnings": Array [],
   },
   Object {
     "data": "      */",
-    "didProcess": false,
+    "didProcess": true,
     "lineIndex": 12,
-    "parserState": "INIT",
+    "parserState": "IN_GENERATED_BLOCK",
     "type": "LINE",
     "warnings": Array [],
   },
   Object {
-    "data": "      /**! InGenR:end */",
-    "didProcess": false,
+    "data": Object {
+      "args": null,
+      "currentContent": Array [],
+      "endLineIndex": 13,
+      "startLineIndex": 13,
+      "templates": Array [
+        Object {
+          "args": Object {
+            "columns": Array [
+              Object {
+                "name": "name",
+                "type": "string",
+              },
+              Object {
+                "name": "email",
+                "type": "string",
+              },
+            ],
+            "tableName": "users",
+          },
+          "name": "knex-dal",
+        },
+      ],
+    },
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "DIRECTIVE",
+  },
+  Object {
+    "data": "      /*! InGenR:end */",
+    "didProcess": true,
     "lineIndex": 13,
     "parserState": "INIT",
     "type": "LINE",
-    "warnings": Array [
-      Object {
-        "index": 11,
-        "message": "Potentially unprocessed InGenR directive: InGenR:end.
-If you expected this directive to be processed please recheck the syntax",
-      },
-    ],
+    "warnings": Array [],
   },
   Object {
     "data": "",
@@ -147,24 +455,18 @@ If you expected this directive to be processed please recheck the syntax",
     "warnings": Array [],
   },
   Object {
-    "data": "      /**! InGenR:expand products",
-    "didProcess": false,
+    "data": "      /*! InGenR:expand products",
+    "didProcess": true,
     "lineIndex": 15,
-    "parserState": "INIT",
+    "parserState": "IN_ARGS_BLOCK",
     "type": "LINE",
-    "warnings": Array [
-      Object {
-        "index": 11,
-        "message": "Potentially unprocessed InGenR directive: InGenR:expand.
-If you expected this directive to be processed please recheck the syntax",
-      },
-    ],
+    "warnings": Array [],
   },
   Object {
-    "data": "       *",
+    "data": "       * ---",
     "didProcess": false,
     "lineIndex": 16,
-    "parserState": "INIT",
+    "parserState": "IN_ARGS_BLOCK",
     "type": "LINE",
     "warnings": Array [],
   },
@@ -172,31 +474,43 @@ If you expected this directive to be processed please recheck the syntax",
     "data": "       * tableName: products",
     "didProcess": false,
     "lineIndex": 17,
-    "parserState": "INIT",
+    "parserState": "IN_ARGS_BLOCK",
     "type": "LINE",
     "warnings": Array [],
   },
   Object {
     "data": "       */",
-    "didProcess": false,
+    "didProcess": true,
     "lineIndex": 18,
-    "parserState": "INIT",
+    "parserState": "IN_GENERATED_BLOCK",
     "type": "LINE",
     "warnings": Array [],
   },
   Object {
-    "data": "      /**! InGenR:end */",
-    "didProcess": false,
+    "data": Object {
+      "args": null,
+      "currentContent": Array [],
+      "endLineIndex": 19,
+      "startLineIndex": 19,
+      "templates": Array [
+        Object {
+          "args": Object {
+            "tableName": "products",
+          },
+          "name": "products",
+        },
+      ],
+    },
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "DIRECTIVE",
+  },
+  Object {
+    "data": "      /*! InGenR:end */",
+    "didProcess": true,
     "lineIndex": 19,
     "parserState": "INIT",
     "type": "LINE",
-    "warnings": Array [
-      Object {
-        "index": 11,
-        "message": "Potentially unprocessed InGenR directive: InGenR:end.
-If you expected this directive to be processed please recheck the syntax",
-      },
-    ],
+    "warnings": Array [],
   },
   Object {
     "data": "    ",

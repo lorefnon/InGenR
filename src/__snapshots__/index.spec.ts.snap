@@ -31,7 +31,7 @@ exports[`InGenR Complains about missing generators 2`] = `
 const bar = \\"bar\\"
 
 /*! InGenR:expand knex-dal
- *
+ * ---
  * tableName: users
  * columns:
  *   - name: name
@@ -64,7 +64,7 @@ exports[`InGenR Injects generated content into annotated blocks 1`] = `
 const bar = \\"bar\\"
 
 /*! InGenR:expand knex-dal
- *
+ * ---
  * tableName: users
  * columns:
  *   - name: name
@@ -97,7 +97,7 @@ exports[`InGenR supports external template targets 1`] = `
 const bar = \\"bar\\"
 
 /*! InGenR:expand knex-dal
- *
+ * ---
  * tableName: users
  * columns:
  *   - name: name
@@ -169,7 +169,7 @@ exports[`InGenR supports multiple targets and generator modules 1`] = `
 const bar = \\"bar\\"
 
 /*! InGenR:expand pg-dal,sqlite-dal
- *
+ * ---
  * tableName: users
  * columns:
  *   - name: name
