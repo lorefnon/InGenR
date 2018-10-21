@@ -33,9 +33,7 @@
     "test:watch": "jest --watch",
     "test:prod": "yarn run lint && yarn run test -- --no-cache",
     "deploy-docs": "ts-node tools/gh-pages-publish",
-    "report-coverage": "cat ./coverage/lcov.info | coveralls",
-    "semantic-release": "semantic-release",
-    "semantic-release-prepare": "ts-node tools/semantic-release-prepare"
+    "report-coverage": "cat ./coverage/lcov.info | coveralls"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
