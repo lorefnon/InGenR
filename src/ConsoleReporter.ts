@@ -79,7 +79,7 @@ export class ConsoleReporter implements Reporter {
   reportAllWarnings() {
     for (const [filePath, fileWarnings] of this.warnings) {
       const count = fileWarnings.reduce((sum, fileWarning) => sum + fileWarning.warnings.length, 0)
-      this.console.log(this.chalk.blue(`${filePath}: ${count} warnings`))
+      this.console.log(this.chalk.blue(`[InGenR] ${filePath}: ${count} warnings`))
       this.reportFileWarnings(fileWarnings)
     }
   }

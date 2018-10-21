@@ -55,9 +55,17 @@ export class GeneratorLocator {
 
   async locate(template: TemplateInvocation, filePath: string) {
     debug("Locating template: %O", template)
-    const {name, body} = template
+    const { name, body } = template
     if (body) {
       return (input: TemplateInvocation) => doT.template(body)(input.args)
+    }
+    if (!name) {
+      this.reporter.bufferWarning(filePath, undefined, undefined, [
+        {
+          message: "Encountered template with neither name nor body"
+        }
+      ])
+      return
     }
     if (!this.validateName(name, filePath)) return
     let generator = this.cache.get(name)

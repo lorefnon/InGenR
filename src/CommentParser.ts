@@ -6,33 +6,22 @@ import * as rl from "readline"
 import * as yaml from "js-yaml"
 import * as path from "path"
 import _debug from "debug"
-import {
-  WarningEntry,
-  warnInterpolated,
-  warnInvalidArgBody,
-  warnInvalidExpandArgs
-} from "./warnings"
+import { WarningEntry, warnInvalidArgBody } from "./warnings"
 import { last } from "lodash"
+import { ParseOptions, getMatchers } from "./matchers"
+import * as XRegExp from "xregexp"
 
 const debug = _debug("InGenR:CommentParser")
 
-export const defaultParserOptions = {
+export const defaultParserOptions: ParseOptions = {
   commentStartRegex: "\\/\\*!",
-  commentEndRegex: "\\*\\/\\s*$",
-  commentLBoundRegEx: "^\\s*\\*?",
-  commentRBoundRegEx: "\\*?\\s*$"
-}
-
-interface Matchers {
-  directiveStartRegex: RegExp
-  directiveEndRegex: RegExp
-  secondaryExpandStartRegex: RegExp
-  blockArgsBodyLineRegex: RegExp
-  commentEndRegex: RegExp
+  commentEndRegex: "\\*\\/",
+  commentLBoundRegEx: "\\*?",
+  commentRBoundRegEx: "\\*?"
 }
 
 export interface TemplateInvocation {
-  name: string
+  name?: string
   argsFile?: string
   args?: any
   body?: string
@@ -52,6 +41,7 @@ export interface Directive {
 }
 
 export interface CandidateBlock extends Partial<Directive> {
+  templates: TemplateInvocation[]
   bodyLines: string[]
   contentLines: string[]
 }
@@ -59,41 +49,35 @@ export interface CandidateBlock extends Partial<Directive> {
 enum ParserState {
   INIT = "INIT",
   IN_COMMENT_BLOCK = "IN_COMMENT_BLOCK",
-  IN_ARGS_BLOCK = "IN_ARGS_BLOCK",
   IN_GENERATED_BLOCK = "IN_GENERATED_BLOCK"
 }
 
 export class CommentParser extends EventEmitter {
-  private matchers: Matchers
-  private candidatesQ: CandidateBlock[] = []
+  private candidateStack: CandidateBlock[] = []
+  private matchers: {
+    commentStartRegex: RegExp
+    expandDirectiveRegex: RegExp
+    directiveEndRegex: RegExp
+    blockBodyLineRegex: RegExp
+    commentEndRegex: RegExp
+  }
+
   constructor(
     public inputStream: Readable,
     private filePath: string,
     private parseOptions = defaultParserOptions
   ) {
     super()
-    const expandRegex = "\\s+InGenR:expand\\s+(.*?)\\s*"
-    const p = parseOptions
-    this.matchers = {
-      directiveStartRegex: new RegExp(
-        `${p.commentStartRegex}${expandRegex}(${p.commentEndRegex}|${p.commentRBoundRegEx}|$)`
-      ),
-      directiveEndRegex: new RegExp(`${p.commentStartRegex}\\s+InGenR:end\\s*${p.commentEndRegex}`),
-      secondaryExpandStartRegex: new RegExp(
-        `${p.commentStartRegex}${expandRegex}($|${p.commentEndRegex}|${p.commentRBoundRegEx})`
-      ),
-      blockArgsBodyLineRegex: new RegExp(`${p.commentLBoundRegEx}(.*)${p.commentRBoundRegEx}`),
-      commentEndRegex: new RegExp(`${p.commentEndRegex}`)
-    }
+    this.matchers = getMatchers(parseOptions)
     debug("Matchers:", this.matchers)
   }
 
   get currentCandidate() {
-    return this.candidatesQ[this.candidatesQ.length - 1]
+    return this.candidateStack[this.candidateStack.length - 1]
   }
 
   get parserState() {
-    if (this.candidatesQ.length === 0) {
+    if (this.candidateStack.length === 0) {
       return ParserState.INIT
     } else if (isNumber(this.currentCandidate.startLineIndex)) {
       if (isNumber(this.currentCandidate.endLineIndex)) {
@@ -101,7 +85,7 @@ export class CommentParser extends EventEmitter {
       }
       return ParserState.IN_GENERATED_BLOCK
     } else {
-      return ParserState.IN_ARGS_BLOCK
+      return ParserState.IN_COMMENT_BLOCK
     }
   }
 
@@ -109,28 +93,18 @@ export class CommentParser extends EventEmitter {
     debug("[ParserState: %s] Processing line %d: %s", this.parserState, lineIndex, line)
     const prevParserState = this.parserState
     let warnings: WarningEntry[] = []
-    switch (prevParserState) {
-      case ParserState.INIT:
-        await this.checkBlockStart(lineIndex, line, warnings)
+    if (prevParserState === ParserState.IN_COMMENT_BLOCK) {
+      await this.processBlockBodyLine(lineIndex, line, warnings)
+      this.emitLine(lineIndex, line, prevParserState, warnings)
+    } else {
+      const didBlockStart = await this.checkBlockStart(lineIndex, line, warnings)
+      if (didBlockStart || this.parserState === ParserState.INIT) {
         this.emitLine(lineIndex, line, prevParserState, warnings)
-        break
-      case ParserState.IN_ARGS_BLOCK:
-        const didSecondaryExpandStart = await this.checkSecondaryExpandStart(
-          lineIndex,
-          line,
-          warnings
-        )
-        if (!didSecondaryExpandStart) {
-          this.accumulateArgs(lineIndex, line, warnings)
+      } else if (this.parserState === ParserState.IN_GENERATED_BLOCK) {
+        for (const candidate of this.candidateStack) {
+          candidate.contentLines.push(line)
         }
-        this.emitLine(lineIndex, line, prevParserState, warnings)
-        break
-      case ParserState.IN_GENERATED_BLOCK:
-        this.checkGeneratedEnd(lineIndex, line, warnings)
-        // @ts-ignore
-        if (this.parserState === ParserState.INIT) {
-          this.emitLine(lineIndex, line, prevParserState, warnings)
-        }
+      }
     }
   }
 
@@ -166,101 +140,113 @@ export class CommentParser extends EventEmitter {
   }
 
   private async checkBlockStart(lineIndex: number, line: string, warnings: WarningEntry[]) {
-    const match = line.match(this.matchers.directiveStartRegex)
-    if (!match || !match[1]) return false
-    if (match[0].trim().length !== line.trim().length) {
-      warnings.push(warnInterpolated(match.index))
-      return false
-    }
-    return this.checkExpandStart(lineIndex, line, warnings, match)
+    const match = XRegExp.exec(line, this.matchers.commentStartRegex)
+    if (!match) return false
+    await this.processBlockStart(lineIndex, line, warnings, match)
+    return true
   }
 
-  private async checkSecondaryExpandStart(
-    lineIndex: number,
-    line: string,
-    warnings: WarningEntry[]
-  ) {
-    const match = line.match(this.matchers.secondaryExpandStartRegex)
-    if (!match || !match[1]) return false
-    this.currentCandidate.endLineIndex = lineIndex - 1
-    return this.checkExpandStart(lineIndex, line, warnings, match)
-  }
-
-  private async checkExpandStart(
+  private async processBlockStart(
     lineIndex: number,
     line: string,
     warnings: WarningEntry[],
-    match: RegExpMatchArray
+    match: any
   ) {
-    const inlineExpandArgs = match[1].trim().split(/(,|\s)\s*/)
-    const templateNames: string[] = []
-    const extraneousArgs: string[] = []
-    let currentTarget = templateNames
-    for (const arg of inlineExpandArgs) {
-      if (arg === ",") {
-        continue
-      } else if (arg === " ") {
-        currentTarget = extraneousArgs
+    if (XRegExp.exec(match.lineBody, this.matchers.directiveEndRegex)) {
+      if (this.candidateStack.length === 0) {
+        warnings.push({
+          message: "There is no active InGenR directive to end"
+        })
       } else {
-        currentTarget.push(arg)
+        this.processCandidates(lineIndex, line, warnings)
       }
+      return true
     }
-    if (extraneousArgs.length > 1 || templateNames.length < 1) {
-      warnings.push(warnInvalidExpandArgs(match.index))
-      return false
+    const expandDirMatch = XRegExp.exec(match.lineBody, this.matchers.expandDirectiveRegex)
+    if (expandDirMatch && this.candidateStack.length > 0) {
+      warnings.push({
+        message: "Nesting of directives is not allowed",
+        index: match.index
+      })
+      return true
     }
-    const currentCandidate: CandidateBlock = {
-      templates: templateNames.map(name => ({
-        name
-      })),
+    this.candidateStack.push({
+      templates: [],
       bodyLines: [],
       contentLines: [],
-      startLineIndex: match[2] ? lineIndex + 1 : undefined
+      startLineIndex: undefined
+    })
+    if (expandDirMatch) {
+      await this.checkExpandStart(expandDirMatch)
     }
-    if (extraneousArgs[0]) {
-      const argsFilePath = path.resolve(path.dirname(this.filePath), extraneousArgs[0])
+    if (match.commentEnd) {
+      if (expandDirMatch) {
+        this.currentCandidate.startLineIndex = lineIndex + 1
+      } else {
+        this.candidateStack.pop()
+        warnings.push({
+          message: "Encountered single line comment block without any directive",
+          index: match.index
+        })
+      }
+    }
+    return true
+  }
+
+  private async checkExpandStart(match: any) {
+    const templateNames: string[] = []
+    if (match.templateName) templateNames.push(match.templateName.trim())
+    if (match.additionalTemplateNames) {
+      templateNames.push(...(match.additionalTemplateNames as string).split(",").map(n => n.trim()))
+    }
+    this.currentCandidate.templates.push(...templateNames.filter(Boolean).map(name => ({ name })))
+    if (match.configFilePath) {
+      const argsFilePath = path.resolve(path.dirname(this.filePath), match.configFilePath)
       const body = await fs.readFile(argsFilePath, {
         encoding: "utf8"
       })
       const parsedBody = this.parseArgsBody(body)
-      currentCandidate.templates!.forEach(t => {
+      this.currentCandidate.templates.forEach(t => {
         t.argsFile = argsFilePath
         t.args = parsedBody
       })
     }
-    this.candidatesQ.push(currentCandidate)
     return true
   }
 
-  private accumulateArgs(lineIndex: number, line: string, warnings: WarningEntry[]) {
-    const match = line.match(this.matchers.blockArgsBodyLineRegex)
-    if (line.match(this.matchers.commentEndRegex)) {
+  private async processBlockBodyLine(lineIndex: number, line: string, warnings: WarningEntry[]) {
+    const match: any = XRegExp.exec(line, this.matchers.blockBodyLineRegex)
+    if (!match) {
+      warnings.push(warnInvalidArgBody())
+      return
+    }
+    const expandDirMatch = XRegExp.exec(match.lineBody, this.matchers.expandDirectiveRegex)
+    if (expandDirMatch) {
+      this.candidateStack.push({
+        templates: [],
+        bodyLines: [],
+        contentLines: []
+      })
+      await this.checkExpandStart(expandDirMatch)
+    } else {
+      this.currentCandidate.bodyLines.push(match.lineBody)
+    }
+    if (match.preCommentEnd || match.postCommentEnd) {
       this.currentCandidate.startLineIndex = lineIndex + 1
-      return
     }
-    if (match) {
-      this.currentCandidate.bodyLines.push(match[1])
-      return
-    }
-    warnings.push(warnInvalidArgBody())
   }
 
-  private checkGeneratedEnd(lineIndex: number, line: string, warnings: WarningEntry[]) {
-    const match = line.match(this.matchers.directiveEndRegex)
-    if (!match) {
-      for (const candidate of this.candidatesQ) {
-        candidate.contentLines.push(line)
+  private processCandidates(lineIndex: number, line: string, warnings: WarningEntry[]) {
+    debug("Processing current stack of %d candidates", this.candidateStack.length)
+    for (const candidate of this.candidateStack) {
+      if (candidate.templates.length === 0) {
+        debug("Skipping candidate having no templates: %O", candidate)
+        continue
       }
-      return
-    }
-    if (match[0].trim().length !== line.trim().length) {
-      warnings.push(warnInterpolated(match.index))
-      return
-    }
-    for (const candidate of this.candidatesQ) {
       this.finishProcessingCandidate(lineIndex, line, warnings, candidate)
     }
-    this.candidatesQ = []
+    debug("Finished processing candidates: Resetting candidateStack")
+    this.candidateStack = []
   }
 
   private finishProcessingCandidate(
@@ -269,15 +255,17 @@ export class CommentParser extends EventEmitter {
     warnings: WarningEntry[],
     candidate: CandidateBlock
   ) {
+    debug("Processing candidate: %O", candidate)
     try {
       this.parseArgs(candidate, warnings)
     } catch (e) {
+      debug("exception when parsing args:", e)
       warnings.push({
         message: "Failed to parse template arguments. This directive will be discarded."
       })
       return
     }
-    for (const candidate of this.candidatesQ) {
+    for (const candidate of this.candidateStack) {
       this.emit("item", {
         type: "DIRECTIVE",
         data: {
@@ -299,10 +287,12 @@ export class CommentParser extends EventEmitter {
     }
     const sections = bodyLines.reduce(
       (sectionsAccumulator: string[][], line: string) => {
-        if (line.trim() === "---") {
-          sectionsAccumulator.push([])
-        } else {
-          last(sectionsAccumulator)!.push(line)
+        if (line) {
+          if (line.trim() === "---") {
+            sectionsAccumulator.push([])
+          } else {
+            last(sectionsAccumulator)!.push(line)
+          }
         }
         return sectionsAccumulator
       },
@@ -321,6 +311,22 @@ export class CommentParser extends EventEmitter {
     if (sections[0]) {
       candidate.args = this.parseArgsBody(sections[0].join("\n"))
     }
+    if (sections[2]) {
+      if (sections[2].length > 5) {
+        warnings.push({
+          message: "Usage of large inline templates is not recommended"
+        })
+      }
+      const body = sections[2].join("\n")
+      const template = { body }
+      if (candidate.templates.length > 0) {
+        warnings.push({
+          message:
+            "Inline template will not override the named template. InGenR will try to resolve both."
+        })
+      }
+      candidate.templates.push(template)
+    }
     if (sections[1]) {
       const args = this.parseArgsBody(sections[1].join("\n"))
       for (const template of templates) {
@@ -328,19 +334,8 @@ export class CommentParser extends EventEmitter {
       }
     } else if (sections[0].length > 0) {
       warnings.push({
-        message: 'Did you forget to add a separator (---) before template arguments ? '
+        message: "Did you forget to add a separator (---) before template arguments ? "
       })
-    }
-    if (sections[2]) {
-      if (sections[2].length > 5) {
-        warnings.push({
-          message: 'Usage of large inline templates is not recommended'
-        })
-      }
-      const body = sections[2].join("\n")
-      for (const template of templates) {
-        template.body = body;
-      }
     }
   }
 
@@ -355,29 +350,33 @@ export class CommentParser extends EventEmitter {
   }
 
   parse() {
-      const lineReader = rl.createInterface({
-        input: this.inputStream
-      })
-      let lineIndex = 0
-      let lineParseCompletionPromise = Promise.resolve()
-      lineReader.on("line", line => {
-        lineParseCompletionPromise = lineParseCompletionPromise
-          .then(async () => {
-            await this.parseLine(lineIndex, line)
-            lineIndex++
-          })
-          .catch(this.relayError)
-      })
-      lineReader.on("error", this.relayError)
-      lineReader.on("close", () => {
+    const lineReader = rl.createInterface({
+      input: this.inputStream
+    })
+    let lineIndex = 0
+    let lineParseCompletionPromise = Promise.resolve()
+    lineReader.on("line", line => {
+      lineParseCompletionPromise = lineParseCompletionPromise
+        .then(async () => {
+          await this.parseLine(lineIndex, line)
+          lineIndex++
+        })
+        .catch(this.relayError)
+    })
+    lineReader.on("error", this.relayError)
+    lineReader.on("close", async () => {
+      try {
+        await lineParseCompletionPromise
         debug("[ParserState: %s] close", this.parserState)
         if (this.parserState !== ParserState.INIT) {
+          debug("Unexpected parserState: %s", this.parserState)
           this.emit("error", new Error("Unexpected End of File while parsing"))
         } else {
-          lineParseCompletionPromise
-          .then(() => this.emit("end"))
-          .catch(this.relayError)
+          this.emit("end")
         }
-      })
+      } catch (e) {
+        this.relayError(e)
+      }
+    })
   }
 }

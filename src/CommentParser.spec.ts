@@ -90,7 +90,7 @@ describe("Comment Parser", () => {
 
   it("parses directives with embedded templates", async () => {
     const items = await parseContent(`
-    /*! InGenR:expand sample 
+    /*! InGenR:expand
      * ---
      * name: lorefnon
      * ---

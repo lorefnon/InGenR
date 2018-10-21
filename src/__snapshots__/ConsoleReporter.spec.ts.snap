@@ -4,7 +4,7 @@ exports[`ConsoleReporter works as expected 1`] = `
 Array [
   Object {
     "args": Array [
-      "/tmp/foo.js: 2 warnings",
+      "[InGenR] /tmp/foo.js: 2 warnings",
     ],
     "type": "log",
   },
@@ -34,7 +34,7 @@ Array [
   },
   Object {
     "args": Array [
-      "/tmp/bar.js: 1 warnings",
+      "[InGenR] /tmp/bar.js: 1 warnings",
     ],
     "type": "log",
   },

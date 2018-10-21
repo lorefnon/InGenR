@@ -1,14 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`warnings warnInterpolated works as expected 1`] = `
-Object {
-  "index": 10,
-  "message": "Detected extraneous content surrounding an InGenR directive.
-InGenR directives are expected to be specified in a dedicated line.
-This directive will be discarded.",
-}
-`;
-
 exports[`warnings warnInvalidArgBody works as expected 1`] = `
 Object {
   "message": "Detected invalid line in the arguments body of an InGenR directive.
