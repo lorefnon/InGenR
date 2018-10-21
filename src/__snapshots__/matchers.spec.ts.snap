@@ -11,10 +11,6 @@ Array [
     "*",
   ],
   Array [
-    "2",
-    undefined,
-  ],
-  Array [
     "3",
     "*",
   ],
@@ -27,10 +23,6 @@ Array [
     "",
   ],
   Array [
-    "6",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
@@ -39,20 +31,8 @@ Array [
     "*",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
-    "preCommentEnd",
-    undefined,
-  ],
-  Array [
     "lineBody",
     "",
-  ],
-  Array [
-    "postCommentEnd",
-    undefined,
   ],
 ]
 `;
@@ -68,10 +48,6 @@ Array [
     "*",
   ],
   Array [
-    "2",
-    undefined,
-  ],
-  Array [
     "3",
     "*",
   ],
@@ -84,10 +60,6 @@ Array [
     "",
   ],
   Array [
-    "6",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
@@ -96,20 +68,8 @@ Array [
     "* ",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
-    "preCommentEnd",
-    undefined,
-  ],
-  Array [
     "lineBody",
     "",
-  ],
-  Array [
-    "postCommentEnd",
-    undefined,
   ],
 ]
 `;
@@ -125,10 +85,6 @@ Array [
     "* foo *",
   ],
   Array [
-    "2",
-    undefined,
-  ],
-  Array [
     "3",
     "* foo *",
   ],
@@ -141,10 +97,6 @@ Array [
     "*",
   ],
   Array [
-    "6",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
@@ -153,20 +105,8 @@ Array [
     "* foo *",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
-    "preCommentEnd",
-    undefined,
-  ],
-  Array [
     "lineBody",
     " foo ",
-  ],
-  Array [
-    "postCommentEnd",
-    undefined,
   ],
 ]
 `;
@@ -182,10 +122,6 @@ Array [
     "* key: value1, value2 *",
   ],
   Array [
-    "2",
-    undefined,
-  ],
-  Array [
     "3",
     "* key: value1, value2 *",
   ],
@@ -198,10 +134,6 @@ Array [
     "*",
   ],
   Array [
-    "6",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
@@ -210,20 +142,8 @@ Array [
     "* key: value1, value2 *",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
-    "preCommentEnd",
-    undefined,
-  ],
-  Array [
     "lineBody",
     " key: value1, value2 ",
-  ],
-  Array [
-    "postCommentEnd",
-    undefined,
   ],
 ]
 `;
@@ -239,10 +159,6 @@ Array [
     "* key: {a: value1, b: value2} *",
   ],
   Array [
-    "2",
-    undefined,
-  ],
-  Array [
     "3",
     "* key: {a: value1, b: value2} *",
   ],
@@ -255,10 +171,6 @@ Array [
     "*",
   ],
   Array [
-    "6",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
@@ -267,20 +179,8 @@ Array [
     "* key: {a: value1, b: value2} *",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
-    "preCommentEnd",
-    undefined,
-  ],
-  Array [
     "lineBody",
     " key: {a: value1, b: value2} ",
-  ],
-  Array [
-    "postCommentEnd",
-    undefined,
   ],
 ]
 `;
@@ -296,10 +196,6 @@ Array [
     "* key: {a: value1, b: value2}",
   ],
   Array [
-    "2",
-    undefined,
-  ],
-  Array [
     "3",
     "* key: {a: value1, b: value2}",
   ],
@@ -312,10 +208,6 @@ Array [
     "",
   ],
   Array [
-    "6",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
@@ -324,20 +216,8 @@ Array [
     "* key: {a: value1, b: value2}",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
-    "preCommentEnd",
-    undefined,
-  ],
-  Array [
     "lineBody",
     " key: {a: value1, b: value2}",
-  ],
-  Array [
-    "postCommentEnd",
-    undefined,
   ],
 ]
 `;
@@ -353,10 +233,6 @@ Array [
     "**/",
   ],
   Array [
-    "2",
-    undefined,
-  ],
-  Array [
     "3",
     "**/",
   ],
@@ -379,14 +255,6 @@ Array [
   Array [
     "input",
     "**/",
-  ],
-  Array [
-    "groups",
-    undefined,
-  ],
-  Array [
-    "preCommentEnd",
-    undefined,
   ],
   Array [
     "lineBody",
@@ -410,10 +278,6 @@ Array [
     "* */",
   ],
   Array [
-    "2",
-    undefined,
-  ],
-  Array [
     "3",
     "* */",
   ],
@@ -436,14 +300,6 @@ Array [
   Array [
     "input",
     "* */",
-  ],
-  Array [
-    "groups",
-    undefined,
-  ],
-  Array [
-    "preCommentEnd",
-    undefined,
   ],
   Array [
     "lineBody",
@@ -467,10 +323,6 @@ Array [
     "* foo */",
   ],
   Array [
-    "2",
-    undefined,
-  ],
-  Array [
     "3",
     "* foo */",
   ],
@@ -495,14 +347,6 @@ Array [
     "* foo */",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
-    "preCommentEnd",
-    undefined,
-  ],
-  Array [
     "lineBody",
     " foo ",
   ],
@@ -522,10 +366,6 @@ Array [
   Array [
     "1",
     "* key: value1, value2 */",
-  ],
-  Array [
-    "2",
-    undefined,
   ],
   Array [
     "3",
@@ -550,14 +390,6 @@ Array [
   Array [
     "input",
     "* key: value1, value2 */",
-  ],
-  Array [
-    "groups",
-    undefined,
-  ],
-  Array [
-    "preCommentEnd",
-    undefined,
   ],
   Array [
     "lineBody",
@@ -585,22 +417,6 @@ Array [
     "*/",
   ],
   Array [
-    "3",
-    undefined,
-  ],
-  Array [
-    "4",
-    undefined,
-  ],
-  Array [
-    "5",
-    undefined,
-  ],
-  Array [
-    "6",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
@@ -609,20 +425,8 @@ Array [
     "*/",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
     "preCommentEnd",
     "*/",
-  ],
-  Array [
-    "lineBody",
-    undefined,
-  ],
-  Array [
-    "postCommentEnd",
-    undefined,
   ],
 ]
 `;
@@ -638,10 +442,6 @@ Array [
     "",
   ],
   Array [
-    "2",
-    undefined,
-  ],
-  Array [
     "3",
     "",
   ],
@@ -654,10 +454,6 @@ Array [
     "",
   ],
   Array [
-    "6",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
@@ -666,20 +462,8 @@ Array [
     "",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
-    "preCommentEnd",
-    undefined,
-  ],
-  Array [
     "lineBody",
     "",
-  ],
-  Array [
-    "postCommentEnd",
-    undefined,
   ],
 ]
 `;
@@ -713,10 +497,6 @@ Array [
   Array [
     "input",
     "/*!*/",
-  ],
-  Array [
-    "groups",
-    undefined,
   ],
   Array [
     "leadingSpace",
@@ -764,10 +544,6 @@ Array [
     "/*! foo */",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
     "leadingSpace",
     "",
   ],
@@ -813,10 +589,6 @@ Array [
     "/*! foo bar baz */",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
     "leadingSpace",
     "",
   ],
@@ -850,10 +622,6 @@ Array [
     "",
   ],
   Array [
-    "4",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
@@ -862,20 +630,12 @@ Array [
     "/*! foo",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
     "leadingSpace",
     "",
   ],
   Array [
     "lineBody",
     " foo",
-  ],
-  Array [
-    "commentEnd",
-    undefined,
   ],
 ]
 `;
@@ -899,10 +659,6 @@ Array [
     "*",
   ],
   Array [
-    "4",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
@@ -911,20 +667,12 @@ Array [
     "/*! foo bar *",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
     "leadingSpace",
     "",
   ],
   Array [
     "lineBody",
     " foo bar ",
-  ],
-  Array [
-    "commentEnd",
-    undefined,
   ],
 ]
 `;
@@ -948,10 +696,6 @@ Array [
     "*",
   ],
   Array [
-    "4",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
@@ -960,20 +704,12 @@ Array [
     "   /*! foo bar * ",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
     "leadingSpace",
     "   ",
   ],
   Array [
     "lineBody",
     " foo bar ",
-  ],
-  Array [
-    "commentEnd",
-    undefined,
   ],
 ]
 `;
@@ -1007,10 +743,6 @@ Array [
   Array [
     "input",
     "   /*! foo bar */ ",
-  ],
-  Array [
-    "groups",
-    undefined,
   ],
   Array [
     "leadingSpace",
@@ -1058,10 +790,6 @@ Array [
     "   /*! foo bar    */ ",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
     "leadingSpace",
     "   ",
   ],
@@ -1090,10 +818,6 @@ Array [
     "input",
     "InGenR:end",
   ],
-  Array [
-    "groups",
-    undefined,
-  ],
 ]
 `;
 
@@ -1111,10 +835,6 @@ Array [
     "input",
     " InGenR:end ",
   ],
-  Array [
-    "groups",
-    undefined,
-  ],
 ]
 `;
 
@@ -1125,52 +845,12 @@ Array [
     "InGenR:expand",
   ],
   Array [
-    "1",
-    undefined,
-  ],
-  Array [
-    "2",
-    undefined,
-  ],
-  Array [
-    "3",
-    undefined,
-  ],
-  Array [
-    "4",
-    undefined,
-  ],
-  Array [
-    "5",
-    undefined,
-  ],
-  Array [
-    "6",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
   Array [
     "input",
     "InGenR:expand",
-  ],
-  Array [
-    "groups",
-    undefined,
-  ],
-  Array [
-    "templateName",
-    undefined,
-  ],
-  Array [
-    "additionalTemplateNames",
-    undefined,
-  ],
-  Array [
-    "configFilePath",
-    undefined,
   ],
 ]
 `;
@@ -1182,52 +862,12 @@ Array [
     "   InGenR:expand  ",
   ],
   Array [
-    "1",
-    undefined,
-  ],
-  Array [
-    "2",
-    undefined,
-  ],
-  Array [
-    "3",
-    undefined,
-  ],
-  Array [
-    "4",
-    undefined,
-  ],
-  Array [
-    "5",
-    undefined,
-  ],
-  Array [
-    "6",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
   Array [
     "input",
     "   InGenR:expand  ",
-  ],
-  Array [
-    "groups",
-    undefined,
-  ],
-  Array [
-    "templateName",
-    undefined,
-  ],
-  Array [
-    "additionalTemplateNames",
-    undefined,
-  ],
-  Array [
-    "configFilePath",
-    undefined,
   ],
 ]
 `;
@@ -1251,18 +891,6 @@ Array [
     "",
   ],
   Array [
-    "4",
-    undefined,
-  ],
-  Array [
-    "5",
-    undefined,
-  ],
-  Array [
-    "6",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
@@ -1271,20 +899,12 @@ Array [
     "InGenR:expand tmplName",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
     "templateName",
     "tmplName",
   ],
   Array [
     "additionalTemplateNames",
     "",
-  ],
-  Array [
-    "configFilePath",
-    undefined,
   ],
 ]
 `;
@@ -1312,14 +932,6 @@ Array [
     ",templ2",
   ],
   Array [
-    "5",
-    undefined,
-  ],
-  Array [
-    "6",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
@@ -1328,20 +940,12 @@ Array [
     "InGenR:expand tmpl1,templ2",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
     "templateName",
     "tmpl1",
   ],
   Array [
     "additionalTemplateNames",
     ",templ2",
-  ],
-  Array [
-    "configFilePath",
-    undefined,
   ],
 ]
 `;
@@ -1369,14 +973,6 @@ Array [
     ", tmpl2",
   ],
   Array [
-    "5",
-    undefined,
-  ],
-  Array [
-    "6",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
@@ -1385,20 +981,12 @@ Array [
     "InGenR:expand tmpl1, tmpl2",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
     "templateName",
     "tmpl1",
   ],
   Array [
     "additionalTemplateNames",
     ", tmpl2",
-  ],
-  Array [
-    "configFilePath",
-    undefined,
   ],
 ]
 `;
@@ -1426,14 +1014,6 @@ Array [
     ", baz/Tmpl_9",
   ],
   Array [
-    "5",
-    undefined,
-  ],
-  Array [
-    "6",
-    undefined,
-  ],
-  Array [
     "index",
     0,
   ],
@@ -1442,20 +1022,12 @@ Array [
     "InGenR:expand tmpl1, tmpl2, tmpl3,   tmpl4,tmpl5,foo/tmpl6,bar/tmpl-7, baz/Tmpl_9",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
     "templateName",
     "tmpl1",
   ],
   Array [
     "additionalTemplateNames",
     ", tmpl2, tmpl3,   tmpl4,tmpl5,foo/tmpl6,bar/tmpl-7, baz/Tmpl_9",
-  ],
-  Array [
-    "configFilePath",
-    undefined,
   ],
 ]
 `;
@@ -1479,10 +1051,6 @@ Array [
     "",
   ],
   Array [
-    "4",
-    undefined,
-  ],
-  Array [
     "5",
     " some-config.yml",
   ],
@@ -1497,10 +1065,6 @@ Array [
   Array [
     "input",
     " InGenR:expand tmpl-1 some-config.yml ",
-  ],
-  Array [
-    "groups",
-    undefined,
   ],
   Array [
     "templateName",
@@ -1556,10 +1120,6 @@ Array [
     "InGenR:expand tmpl1, tmpl2 some-config.yml",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
     "templateName",
     "tmpl1",
   ],
@@ -1611,10 +1171,6 @@ Array [
   Array [
     "input",
     "InGenR:expand tmpl1, tmpl2 someDir/some_sub_dir/some-config.yml",
-  ],
-  Array [
-    "groups",
-    undefined,
   ],
   Array [
     "templateName",
@@ -1670,10 +1226,6 @@ Array [
     "  InGenR:expand tmpl1, tmpl2 someDir/some_sub_dir/some-config.yml  ",
   ],
   Array [
-    "groups",
-    undefined,
-  ],
-  Array [
     "templateName",
     "tmpl1",
   ],
@@ -1707,10 +1259,6 @@ Array [
     "",
   ],
   Array [
-    "4",
-    undefined,
-  ],
-  Array [
     "5",
     " config.yml",
   ],
@@ -1725,10 +1273,6 @@ Array [
   Array [
     "input",
     " InGenR:expand knex-table-interface config.yml ",
-  ],
-  Array [
-    "groups",
-    undefined,
   ],
   Array [
     "templateName",

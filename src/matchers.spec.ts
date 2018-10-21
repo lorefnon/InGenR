@@ -1,11 +1,18 @@
+import * as XRegExp from "xregexp"
+import { isNil } from "lodash";
+
 import { getMatchers } from "./matchers"
 import { defaultParserOptions } from "./CommentParser"
-import * as XRegExp from "xregexp"
+
+const getEntries = (obj: object) => {
+    if (!obj) return []
+    return (Object as any).entries(obj).filter(([k, v]: any) => !isNil(v))
+}
 
 describe("getMatchers", () => {
   const matchers = getMatchers(defaultParserOptions)
   const testSnapshot = (obj: object) => {
-    expect(obj ? Object.entries(obj) : obj).toMatchSnapshot()
+    expect(getEntries(obj)).toMatchSnapshot()
   }
   test("commentStartRegex", () => {
     const exec = (str: string) => XRegExp.exec(str, matchers.commentStartRegex)
