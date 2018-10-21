@@ -59,6 +59,24 @@ Array [
     "warnings": Array [],
   },
   Object {
+    "data": Object {
+      "args": null,
+      "currentContent": Array [],
+      "endLineIndex": 7,
+      "startLineIndex": 7,
+      "templates": Array [
+        Object {
+          "args": Object {
+            "name": "lorefnon",
+          },
+          "body": " <div>{{=it.name}}</div>",
+        },
+      ],
+    },
+    "parserState": "IN_GENERATED_BLOCK",
+    "type": "DIRECTIVE",
+  },
+  Object {
     "data": "    /*! InGenR:end */",
     "didProcess": true,
     "lineIndex": 7,

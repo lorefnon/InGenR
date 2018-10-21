@@ -76,6 +76,10 @@ export class CommentParser extends EventEmitter {
     return this.candidateStack[this.candidateStack.length - 1]
   }
 
+  get numTemplates() {
+    return this.candidateStack.reduce((sum, c) => sum + c.templates.length, 0)
+  }
+
   get parserState() {
     if (this.candidateStack.length === 0) {
       return ParserState.INIT
@@ -92,14 +96,15 @@ export class CommentParser extends EventEmitter {
   private async parseLine(lineIndex: number, line: string) {
     debug("[ParserState: %s] Processing line %d: %s", this.parserState, lineIndex, line)
     const prevParserState = this.parserState
+    const prevNumTemplates = this.numTemplates
     let warnings: WarningEntry[] = []
     if (prevParserState === ParserState.IN_COMMENT_BLOCK) {
       await this.processBlockBodyLine(lineIndex, line, warnings)
-      this.emitLine(lineIndex, line, prevParserState, warnings)
+      this.emitLine(lineIndex, line, prevParserState, prevNumTemplates, warnings)
     } else {
       const didBlockStart = await this.checkBlockStart(lineIndex, line, warnings)
       if (didBlockStart || this.parserState === ParserState.INIT) {
-        this.emitLine(lineIndex, line, prevParserState, warnings)
+        this.emitLine(lineIndex, line, prevParserState, prevNumTemplates, warnings)
       } else if (this.parserState === ParserState.IN_GENERATED_BLOCK) {
         for (const candidate of this.candidateStack) {
           candidate.contentLines.push(line)
@@ -112,9 +117,11 @@ export class CommentParser extends EventEmitter {
     lineIndex: number,
     line: string,
     prevParserState: ParserState,
+    prevNumTemplates: number,
     warnings: WarningEntry[]
   ) {
-    const unprocessed = prevParserState === this.parserState
+    const unprocessed =
+      prevParserState === this.parserState && prevNumTemplates === this.numTemplates
     if (unprocessed) {
       this.checkUnprocessedDirectives(line, warnings)
     }
@@ -153,13 +160,7 @@ export class CommentParser extends EventEmitter {
     match: any
   ) {
     if (XRegExp.exec(match.lineBody, this.matchers.directiveEndRegex)) {
-      if (this.candidateStack.length === 0) {
-        warnings.push({
-          message: "There is no active InGenR directive to end"
-        })
-      } else {
-        this.processCandidates(lineIndex, line, warnings)
-      }
+      await this.handleDirectiveEnd(lineIndex, line, warnings)
       return true
     }
     const expandDirMatch = XRegExp.exec(match.lineBody, this.matchers.expandDirectiveRegex)
@@ -201,17 +202,32 @@ export class CommentParser extends EventEmitter {
     }
     this.currentCandidate.templates.push(...templateNames.filter(Boolean).map(name => ({ name })))
     if (match.configFilePath) {
-      const argsFilePath = path.resolve(path.dirname(this.filePath), match.configFilePath)
-      const body = await fs.readFile(argsFilePath, {
-        encoding: "utf8"
-      })
-      const parsedBody = this.parseArgsBody(body)
+      const { filePath, args } = await this.getArgsFromConfigFile(match.configFilePath)
       this.currentCandidate.templates.forEach(t => {
-        t.argsFile = argsFilePath
-        t.args = parsedBody
+        t.argsFile = filePath
+        t.args = args
       })
     }
     return true
+  }
+
+  private async getArgsFromConfigFile(configFilePath: string) {
+    const filePath = path.resolve(path.dirname(this.filePath), configFilePath)
+    const body = await fs.readFile(filePath, {
+      encoding: "utf8"
+    })
+    const args = this.parseArgsBody(body)
+    return { filePath, args }
+  }
+
+  private async handleDirectiveEnd(lineIndex: number, line: string, warnings: WarningEntry[]) {
+    if (this.candidateStack.length === 0) {
+      warnings.push({
+        message: "There is no active InGenR directive to end"
+      })
+    } else {
+      await this.processCandidates(lineIndex, line, warnings)
+    }
   }
 
   private async processBlockBodyLine(lineIndex: number, line: string, warnings: WarningEntry[]) {
@@ -236,20 +252,20 @@ export class CommentParser extends EventEmitter {
     }
   }
 
-  private processCandidates(lineIndex: number, line: string, warnings: WarningEntry[]) {
+  private async processCandidates(lineIndex: number, line: string, warnings: WarningEntry[]) {
     debug("Processing current stack of %d candidates", this.candidateStack.length)
     for (const candidate of this.candidateStack) {
-      if (candidate.templates.length === 0) {
-        debug("Skipping candidate having no templates: %O", candidate)
+      if (candidate.templates.length === 0 && candidate.bodyLines.length === 0) {
+        debug("Skipping candidate having no templates and no body: %O", candidate)
         continue
       }
-      this.finishProcessingCandidate(lineIndex, line, warnings, candidate)
+      await this.processCandidate(lineIndex, line, warnings, candidate)
     }
     debug("Finished processing candidates: Resetting candidateStack")
     this.candidateStack = []
   }
 
-  private finishProcessingCandidate(
+  private async processCandidate(
     lineIndex: number,
     line: string,
     warnings: WarningEntry[],
@@ -257,7 +273,7 @@ export class CommentParser extends EventEmitter {
   ) {
     debug("Processing candidate: %O", candidate)
     try {
-      this.parseArgs(candidate, warnings)
+      await this.parseArgs(candidate, warnings)
     } catch (e) {
       debug("exception when parsing args:", e)
       warnings.push({
@@ -265,22 +281,20 @@ export class CommentParser extends EventEmitter {
       })
       return
     }
-    for (const candidate of this.candidateStack) {
-      this.emit("item", {
-        type: "DIRECTIVE",
-        data: {
-          templates: candidate.templates,
-          args: candidate.args,
-          startLineIndex: candidate.startLineIndex!,
-          endLineIndex: candidate.endLineIndex || lineIndex,
-          currentContent: candidate.contentLines
-        },
-        parserState: this.parserState
-      })
-    }
+    this.emit("item", {
+      type: "DIRECTIVE",
+      data: {
+        templates: candidate.templates,
+        args: candidate.args,
+        startLineIndex: candidate.startLineIndex!,
+        endLineIndex: candidate.endLineIndex || lineIndex,
+        currentContent: candidate.contentLines
+      },
+      parserState: this.parserState
+    })
   }
 
-  private parseArgs(candidate: CandidateBlock, warnings: WarningEntry[]) {
+  private async parseArgs(candidate: CandidateBlock, warnings: WarningEntry[]) {
     const { bodyLines, templates } = candidate
     if (!templates) {
       return
@@ -318,7 +332,17 @@ export class CommentParser extends EventEmitter {
         })
       }
       const body = sections[2].join("\n")
-      const template = { body }
+      const template: TemplateInvocation = { body }
+
+      if (candidate.templates.length === 1) {
+        const tmpl = candidate.templates[0]
+        if (tmpl.name && tmpl.name.match(/\.(json|yaml|yml)$/)) {
+          const { filePath, args } = await this.getArgsFromConfigFile(tmpl.name)
+          template.args = args
+          template.argsFile = filePath
+          candidate.templates.pop()
+        }
+      }
       if (candidate.templates.length > 0) {
         warnings.push({
           message:
@@ -328,9 +352,12 @@ export class CommentParser extends EventEmitter {
       candidate.templates.push(template)
     }
     if (sections[1]) {
-      const args = this.parseArgsBody(sections[1].join("\n"))
-      for (const template of templates) {
-        template.args = args
+      const content = sections[1].join("\n")
+      if (content.trim().length > 0) {
+        const args = this.parseArgsBody(content)
+        for (const template of templates) {
+          template.args = args
+        }
       }
     } else if (sections[0].length > 0) {
       warnings.push({

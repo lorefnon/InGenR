@@ -33,7 +33,7 @@ const getTmpFileAsync = () =>
 
 const waitForEvent = (stream: EventEmitter, event: string, descriptor: string) =>
   new Promise((resolve, reject) => {
-    stream.on(event, (data) => {
+    stream.on(event, data => {
       debug("Encountered event:", descriptor, event, data)
       resolve(data)
     })
@@ -71,16 +71,18 @@ export class TemplateProcessor {
       didParse = true
     } catch (e) {
       debug("Processing error:", e)
-      this.reporter.bufferWarning(this.filePath, undefined, undefined, [{
-        message: `Failed to process file: ${this.filePath}`
-      }])
+      this.reporter.bufferWarning(this.filePath, undefined, undefined, [
+        {
+          message: `Failed to process file: ${this.filePath}`
+        }
+      ])
     }
     const writeEndP = waitForEvent(this.writeStream, "close", "writeStream")
     this.writeStream.end()
     await Promise.all([readEndP, writeEndP])
     if (didParse) {
       debug("Renaming %s -> %s", this.tmpFile.filePath, this.filePath)
-      await fs.rename(this.tmpFile.filePath, this.filePath)  
+      await fs.rename(this.tmpFile.filePath, this.filePath)
     } else {
       fs.remove(this.tmpFile.filePath).catch(e => {
         console.error(`Failed to delete temporary file: ${this.tmpFile!.filePath}`)
@@ -97,7 +99,7 @@ export class TemplateProcessor {
         if (error) return
         promise = promise.then(() => this.processItem(item)).catch(reject)
       })
-      this.commentParser!.on("error", (error) => {
+      this.commentParser!.on("error", error => {
         reject(error)
       })
       this.commentParser!.on("end", () => {
@@ -172,7 +174,7 @@ export class TemplateProcessor {
 
   private write(content: string, stream = this.writeStream!) {
     return new Promise((resolve, reject) => {
-      const shouldWaitTillDrain = !stream.write(content, "utf8", (err) => {
+      const shouldWaitTillDrain = !stream.write(content, "utf8", err => {
         if (err) reject(err)
         else if (shouldWaitTillDrain) {
           stream.once("drain", () => resolve(true))

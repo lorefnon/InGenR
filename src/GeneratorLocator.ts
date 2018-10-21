@@ -112,7 +112,7 @@ export class GeneratorLocator {
 
   private validateName(name: string, filePath: string) {
     if (
-      !name.match(/^([.a-zA-Z0-9@_-]+\/?)+$/) || 
+      !name.match(/^([.a-zA-Z0-9@_-]+\/?)+$/) ||
       name.charAt(name.length - 1) === "/" ||
       name.indexOf("..") >= 0
     ) {
