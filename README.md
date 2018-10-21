@@ -181,6 +181,31 @@ It is sometimes convenient to invoke multiple generators with the same set of ar
 /*! InGenR:end */
 ```
 
+### Passing template arguments through external file
+
+```typescript
+/*! InGenR:expand knex-dal config.yml */
+/*! InGenR:end */
+```
+
+This is helpful for sharing config among multiple directives.
+
+### Embedded templates
+
+In some cases, for some very small templates it is convenient to embed the template in place within the comment.
+
+While this is available as a convenience feature, it is recommended that larger templates reside in their own files.
+
+```typescript
+/*! InGenR:expand
+* ---
+* name: lorefnon
+* ---
+* <div>{{=it.name}}</div>
+*/
+/*! InGenR:end */
+```
+
 ## Caveats
 
 - To be safe, ensure that your files are checked in before running the generator. While InGenR is in beta, we don't recommend running it in pre-commit hooks or as a part of automated pipelines. 
@@ -195,7 +220,7 @@ It is sometimes convenient to invoke multiple generators with the same set of ar
 
 ## Non-goals
 
-InGenR templates are not reentrant. You can not nest InGenR templates. You can not generate InGenR templates through InGenR templates and expect them to be evaluated. There is no way to compose InGenR expand directives or make them inter-dependant.
+InGenR templates are **not** reentrant. You can not nest InGenR templates. You can not generate InGenR templates through InGenR templates and expect them to be evaluated. There is no way to compose InGenR expand directives or make them inter-dependant.
 
 **This is by design.** PRs to change this behavior are not welcome.
 
