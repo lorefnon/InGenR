@@ -5,8 +5,7 @@ import { file as getTmpFile } from "tmp"
 import { GeneratorLocator } from "./GeneratorLocator"
 import { CommentParser, Directive, TemplateInvocation } from "./CommentParser"
 import { TopLevelOptions } from "."
-import { WriteStream } from "tty"
-import { ConsoleReporter, Reporter } from "./ConsoleReporter"
+import { Reporter } from "./ConsoleReporter"
 import { EventEmitter } from "stream"
 
 const debug = _debug("InGenR:TemplateProcessor")
@@ -172,10 +171,8 @@ export class TemplateProcessor {
   }
 
   private write(content: string, stream = this.writeStream!) {
-    debug("Writing content: ", content)
     return new Promise((resolve, reject) => {
       const shouldWaitTillDrain = !stream.write(content, "utf8", (err) => {
-        debug('Finished writing content:', err, content)
         if (err) reject(err)
         else if (shouldWaitTillDrain) {
           stream.once("drain", () => resolve(true))
