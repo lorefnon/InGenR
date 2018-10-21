@@ -8,33 +8,35 @@ Features like [Higher kinded polymorphism](https://sidburn.github.io/blog/2016/0
 
 InGenR aims to be a simple generic utility that solves this through a much simpler and crude approach: **code generation**. For many use cases this is a much more practical and simple solution. You can [get started](#how-does-it-work-) in a matter of seconds, or browse  available [features](#features).
 
-## :sparkles: InGenR deeply cares about the developer experience:
+## InGenR cares about the developer experience
 
-  :sunny: Clear unambiguous error messages.
+  - Clear unambiguous error messages.
 
-  :sunny: There is a small clear set of rules - no complex DSLs to learn, no surprises, no magic.
+  - Minimal Configuration: no surprises, no magic.
 
-  :sunny: Plays well with the tools (linters, type-checkers, loaders, etc.) which you already have in place.
-
-  :sunny: Utilities to ensure generated code doesn't look malformatted, incorrectly indented or out of place in your code. (**TODO**)
+  - Plays well with the tools (linters, type-checkers, loaders, etc.) which you already have in place.
 
   It is heavily inspired by [Crystal Macros](https://crystal-lang.org/docs/syntax_and_semantics/macros.html) and [Sinaps](https://github.com/janestreet/cinaps).
 
 ## Development Status
 
-:warning: Beta :hatched_chick:
+:warning: Beta
 
 [![Build Status](https://travis-ci.org/lorefnon/InGenR.svg?branch=master)](https://travis-ci.org/lorefnon/InGenR) 
+[![Known Vulnerabilities](https://snyk.io/test/github/lorefnon/InGenR/badge.svg?targetFile=package.json)](https://snyk.io/test/github/lorefnon/InGenR?targetFile=package.json)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Florefnon%2FInGenR.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Florefnon%2FInGenR?ref=badge_shield)
+
 [![SonarCloud badge](https://sonarcloud.io/api/project_badges/measure?project=lorefnon_InGenR&metric=alert_status)](https://sonarcloud.io/dashboard?id=lorefnon_InGenR)
 [![Greenkeeper badge](https://badges.greenkeeper.io/lorefnon/InGenR.svg)](https://greenkeeper.io/) 
 [![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/lorefnon/InGenR/blob/master/LICENSE) 
 [![Join the chat at https://gitter.im/InGenR/Lobby](https://badges.gitter.im/InGenR/Lobby.svg)](https://gitter.im/InGenR/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+
 ## How does it work ?
 
 1. **Add InGenR directives to your source files in comment blocks:**
 
-    Eg. In `src/data-layer/users.ts`:`
+    Eg. In `src/data-layer/users.ts`:
 
     ```typescript
     /*! InGenR:expand knex-dal
@@ -131,7 +133,7 @@ InGenR aims to be a simple generic utility that solves this through a much simpl
 
     You can commit the generated code, and verify the correctness of generated code through any linters, type checkers etc. that you are already familiar with.
     
-## :gem: Features
+## Features
 
 The usage outlined above is pretty much all you need to use and get productive with InGenR. 
 
@@ -227,7 +229,7 @@ Writing AST transformations is often more cumbersome than text based templates.
 
 Making them play well with TypeScript (or other type systems) and static analyzers can be difficult.
 
-### What languages are supported ?
+### Supported languages
 
 InGenR itself is language agnostic and can be used with any language.
 

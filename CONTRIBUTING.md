@@ -6,16 +6,18 @@ Like all projects InGenR can have bugs and can benefit from enhancements.
 
 InGenR is built around following goals:
 
-- **Minimal Core:** The core is extremely small and supports only code generation support. Any integrations for specific frameworks, libraries, etc. should be implemented in "userland" packages.
-- **Extensible:** While InGenR is happy to exist as a standalone CLI utility, it should also be easy to plug it in as a part of an automated pipeline, so all features must be exposed through an easy to use public API.
-- **Forever Backward Compatible:** Upgrades should be trivial. Existing templates should never break.
+  - **Minimal Core:** The core is extremely small and supports only code generation support. Any integrations for specific frameworks, libraries, etc. should be implemented in "userland" packages.
+  
+  - **Extensible:** While InGenR is happy to exist as a standalone CLI utility, it should also be easy to plug it in as a part of an automated pipeline, so all features must be exposed through an easy to use public API.
+  
+  - **Forever Backward Compatible:** Upgrades should be trivial. Existing templates should never break.
 
 ## Instructions
 
 These steps will guide you through contributing to this project:
 
-- Fork the repo
-- Clone it and install dependencies
+  - Fork the repo
+  - Clone it and install dependencies
 
         git clone https://github.com/lorefnon/ingenr
         npm install
