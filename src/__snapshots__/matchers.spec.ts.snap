@@ -1,0 +1,1746 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getMatchers blockBodyLineRegex 1`] = `
+Array [
+  Array [
+    "0",
+    "*",
+  ],
+  Array [
+    "1",
+    "*",
+  ],
+  Array [
+    "2",
+    undefined,
+  ],
+  Array [
+    "3",
+    "*",
+  ],
+  Array [
+    "4",
+    "",
+  ],
+  Array [
+    "5",
+    "",
+  ],
+  Array [
+    "6",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "*",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "preCommentEnd",
+    undefined,
+  ],
+  Array [
+    "lineBody",
+    "",
+  ],
+  Array [
+    "postCommentEnd",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers blockBodyLineRegex 2`] = `
+Array [
+  Array [
+    "0",
+    "* ",
+  ],
+  Array [
+    "1",
+    "*",
+  ],
+  Array [
+    "2",
+    undefined,
+  ],
+  Array [
+    "3",
+    "*",
+  ],
+  Array [
+    "4",
+    "",
+  ],
+  Array [
+    "5",
+    "",
+  ],
+  Array [
+    "6",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "* ",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "preCommentEnd",
+    undefined,
+  ],
+  Array [
+    "lineBody",
+    "",
+  ],
+  Array [
+    "postCommentEnd",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers blockBodyLineRegex 3`] = `
+Array [
+  Array [
+    "0",
+    "* foo *",
+  ],
+  Array [
+    "1",
+    "* foo *",
+  ],
+  Array [
+    "2",
+    undefined,
+  ],
+  Array [
+    "3",
+    "* foo *",
+  ],
+  Array [
+    "4",
+    " foo ",
+  ],
+  Array [
+    "5",
+    "*",
+  ],
+  Array [
+    "6",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "* foo *",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "preCommentEnd",
+    undefined,
+  ],
+  Array [
+    "lineBody",
+    " foo ",
+  ],
+  Array [
+    "postCommentEnd",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers blockBodyLineRegex 4`] = `
+Array [
+  Array [
+    "0",
+    "* key: value1, value2 *",
+  ],
+  Array [
+    "1",
+    "* key: value1, value2 *",
+  ],
+  Array [
+    "2",
+    undefined,
+  ],
+  Array [
+    "3",
+    "* key: value1, value2 *",
+  ],
+  Array [
+    "4",
+    " key: value1, value2 ",
+  ],
+  Array [
+    "5",
+    "*",
+  ],
+  Array [
+    "6",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "* key: value1, value2 *",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "preCommentEnd",
+    undefined,
+  ],
+  Array [
+    "lineBody",
+    " key: value1, value2 ",
+  ],
+  Array [
+    "postCommentEnd",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers blockBodyLineRegex 5`] = `
+Array [
+  Array [
+    "0",
+    "* key: {a: value1, b: value2} *",
+  ],
+  Array [
+    "1",
+    "* key: {a: value1, b: value2} *",
+  ],
+  Array [
+    "2",
+    undefined,
+  ],
+  Array [
+    "3",
+    "* key: {a: value1, b: value2} *",
+  ],
+  Array [
+    "4",
+    " key: {a: value1, b: value2} ",
+  ],
+  Array [
+    "5",
+    "*",
+  ],
+  Array [
+    "6",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "* key: {a: value1, b: value2} *",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "preCommentEnd",
+    undefined,
+  ],
+  Array [
+    "lineBody",
+    " key: {a: value1, b: value2} ",
+  ],
+  Array [
+    "postCommentEnd",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers blockBodyLineRegex 6`] = `
+Array [
+  Array [
+    "0",
+    "* key: {a: value1, b: value2}",
+  ],
+  Array [
+    "1",
+    "* key: {a: value1, b: value2}",
+  ],
+  Array [
+    "2",
+    undefined,
+  ],
+  Array [
+    "3",
+    "* key: {a: value1, b: value2}",
+  ],
+  Array [
+    "4",
+    " key: {a: value1, b: value2}",
+  ],
+  Array [
+    "5",
+    "",
+  ],
+  Array [
+    "6",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "* key: {a: value1, b: value2}",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "preCommentEnd",
+    undefined,
+  ],
+  Array [
+    "lineBody",
+    " key: {a: value1, b: value2}",
+  ],
+  Array [
+    "postCommentEnd",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers blockBodyLineRegex 7`] = `
+Array [
+  Array [
+    "0",
+    "**/",
+  ],
+  Array [
+    "1",
+    "**/",
+  ],
+  Array [
+    "2",
+    undefined,
+  ],
+  Array [
+    "3",
+    "**/",
+  ],
+  Array [
+    "4",
+    "",
+  ],
+  Array [
+    "5",
+    "*/",
+  ],
+  Array [
+    "6",
+    "*/",
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "**/",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "preCommentEnd",
+    undefined,
+  ],
+  Array [
+    "lineBody",
+    "",
+  ],
+  Array [
+    "postCommentEnd",
+    "*/",
+  ],
+]
+`;
+
+exports[`getMatchers blockBodyLineRegex 8`] = `
+Array [
+  Array [
+    "0",
+    "* */",
+  ],
+  Array [
+    "1",
+    "* */",
+  ],
+  Array [
+    "2",
+    undefined,
+  ],
+  Array [
+    "3",
+    "* */",
+  ],
+  Array [
+    "4",
+    " ",
+  ],
+  Array [
+    "5",
+    "*/",
+  ],
+  Array [
+    "6",
+    "*/",
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "* */",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "preCommentEnd",
+    undefined,
+  ],
+  Array [
+    "lineBody",
+    " ",
+  ],
+  Array [
+    "postCommentEnd",
+    "*/",
+  ],
+]
+`;
+
+exports[`getMatchers blockBodyLineRegex 9`] = `
+Array [
+  Array [
+    "0",
+    "* foo */",
+  ],
+  Array [
+    "1",
+    "* foo */",
+  ],
+  Array [
+    "2",
+    undefined,
+  ],
+  Array [
+    "3",
+    "* foo */",
+  ],
+  Array [
+    "4",
+    " foo ",
+  ],
+  Array [
+    "5",
+    "*/",
+  ],
+  Array [
+    "6",
+    "*/",
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "* foo */",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "preCommentEnd",
+    undefined,
+  ],
+  Array [
+    "lineBody",
+    " foo ",
+  ],
+  Array [
+    "postCommentEnd",
+    "*/",
+  ],
+]
+`;
+
+exports[`getMatchers blockBodyLineRegex 10`] = `
+Array [
+  Array [
+    "0",
+    "* key: value1, value2 */",
+  ],
+  Array [
+    "1",
+    "* key: value1, value2 */",
+  ],
+  Array [
+    "2",
+    undefined,
+  ],
+  Array [
+    "3",
+    "* key: value1, value2 */",
+  ],
+  Array [
+    "4",
+    " key: value1, value2 ",
+  ],
+  Array [
+    "5",
+    "*/",
+  ],
+  Array [
+    "6",
+    "*/",
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "* key: value1, value2 */",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "preCommentEnd",
+    undefined,
+  ],
+  Array [
+    "lineBody",
+    " key: value1, value2 ",
+  ],
+  Array [
+    "postCommentEnd",
+    "*/",
+  ],
+]
+`;
+
+exports[`getMatchers blockBodyLineRegex 11`] = `
+Array [
+  Array [
+    "0",
+    "*/",
+  ],
+  Array [
+    "1",
+    "*/",
+  ],
+  Array [
+    "2",
+    "*/",
+  ],
+  Array [
+    "3",
+    undefined,
+  ],
+  Array [
+    "4",
+    undefined,
+  ],
+  Array [
+    "5",
+    undefined,
+  ],
+  Array [
+    "6",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "*/",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "preCommentEnd",
+    "*/",
+  ],
+  Array [
+    "lineBody",
+    undefined,
+  ],
+  Array [
+    "postCommentEnd",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers blockBodyLineRegex 12`] = `
+Array [
+  Array [
+    "0",
+    "",
+  ],
+  Array [
+    "1",
+    "",
+  ],
+  Array [
+    "2",
+    undefined,
+  ],
+  Array [
+    "3",
+    "",
+  ],
+  Array [
+    "4",
+    "",
+  ],
+  Array [
+    "5",
+    "",
+  ],
+  Array [
+    "6",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "preCommentEnd",
+    undefined,
+  ],
+  Array [
+    "lineBody",
+    "",
+  ],
+  Array [
+    "postCommentEnd",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers commentStartRegex 1`] = `
+Array [
+  Array [
+    "0",
+    "/*!*/",
+  ],
+  Array [
+    "1",
+    "",
+  ],
+  Array [
+    "2",
+    "",
+  ],
+  Array [
+    "3",
+    "*/",
+  ],
+  Array [
+    "4",
+    "*/",
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "/*!*/",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "leadingSpace",
+    "",
+  ],
+  Array [
+    "lineBody",
+    "",
+  ],
+  Array [
+    "commentEnd",
+    "*/",
+  ],
+]
+`;
+
+exports[`getMatchers commentStartRegex 2`] = `
+Array [
+  Array [
+    "0",
+    "/*! foo */",
+  ],
+  Array [
+    "1",
+    "",
+  ],
+  Array [
+    "2",
+    " foo ",
+  ],
+  Array [
+    "3",
+    "*/",
+  ],
+  Array [
+    "4",
+    "*/",
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "/*! foo */",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "leadingSpace",
+    "",
+  ],
+  Array [
+    "lineBody",
+    " foo ",
+  ],
+  Array [
+    "commentEnd",
+    "*/",
+  ],
+]
+`;
+
+exports[`getMatchers commentStartRegex 3`] = `
+Array [
+  Array [
+    "0",
+    "/*! foo bar baz */",
+  ],
+  Array [
+    "1",
+    "",
+  ],
+  Array [
+    "2",
+    " foo bar baz ",
+  ],
+  Array [
+    "3",
+    "*/",
+  ],
+  Array [
+    "4",
+    "*/",
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "/*! foo bar baz */",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "leadingSpace",
+    "",
+  ],
+  Array [
+    "lineBody",
+    " foo bar baz ",
+  ],
+  Array [
+    "commentEnd",
+    "*/",
+  ],
+]
+`;
+
+exports[`getMatchers commentStartRegex 4`] = `
+Array [
+  Array [
+    "0",
+    "/*! foo",
+  ],
+  Array [
+    "1",
+    "",
+  ],
+  Array [
+    "2",
+    " foo",
+  ],
+  Array [
+    "3",
+    "",
+  ],
+  Array [
+    "4",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "/*! foo",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "leadingSpace",
+    "",
+  ],
+  Array [
+    "lineBody",
+    " foo",
+  ],
+  Array [
+    "commentEnd",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers commentStartRegex 5`] = `
+Array [
+  Array [
+    "0",
+    "/*! foo bar *",
+  ],
+  Array [
+    "1",
+    "",
+  ],
+  Array [
+    "2",
+    " foo bar ",
+  ],
+  Array [
+    "3",
+    "*",
+  ],
+  Array [
+    "4",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "/*! foo bar *",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "leadingSpace",
+    "",
+  ],
+  Array [
+    "lineBody",
+    " foo bar ",
+  ],
+  Array [
+    "commentEnd",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers commentStartRegex 6`] = `
+Array [
+  Array [
+    "0",
+    "   /*! foo bar * ",
+  ],
+  Array [
+    "1",
+    "   ",
+  ],
+  Array [
+    "2",
+    " foo bar ",
+  ],
+  Array [
+    "3",
+    "*",
+  ],
+  Array [
+    "4",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "   /*! foo bar * ",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "leadingSpace",
+    "   ",
+  ],
+  Array [
+    "lineBody",
+    " foo bar ",
+  ],
+  Array [
+    "commentEnd",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers commentStartRegex 7`] = `
+Array [
+  Array [
+    "0",
+    "   /*! foo bar */ ",
+  ],
+  Array [
+    "1",
+    "   ",
+  ],
+  Array [
+    "2",
+    " foo bar ",
+  ],
+  Array [
+    "3",
+    "*/",
+  ],
+  Array [
+    "4",
+    "*/",
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "   /*! foo bar */ ",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "leadingSpace",
+    "   ",
+  ],
+  Array [
+    "lineBody",
+    " foo bar ",
+  ],
+  Array [
+    "commentEnd",
+    "*/",
+  ],
+]
+`;
+
+exports[`getMatchers commentStartRegex 8`] = `
+Array [
+  Array [
+    "0",
+    "   /*! foo bar    */ ",
+  ],
+  Array [
+    "1",
+    "   ",
+  ],
+  Array [
+    "2",
+    " foo bar    ",
+  ],
+  Array [
+    "3",
+    "*/",
+  ],
+  Array [
+    "4",
+    "*/",
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "   /*! foo bar    */ ",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "leadingSpace",
+    "   ",
+  ],
+  Array [
+    "lineBody",
+    " foo bar    ",
+  ],
+  Array [
+    "commentEnd",
+    "*/",
+  ],
+]
+`;
+
+exports[`getMatchers directiveEndRegex 1`] = `
+Array [
+  Array [
+    "0",
+    "InGenR:end",
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "InGenR:end",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers directiveEndRegex 2`] = `
+Array [
+  Array [
+    "0",
+    " InGenR:end ",
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    " InGenR:end ",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers expandDirectiveRegex 1`] = `
+Array [
+  Array [
+    "0",
+    "InGenR:expand",
+  ],
+  Array [
+    "1",
+    undefined,
+  ],
+  Array [
+    "2",
+    undefined,
+  ],
+  Array [
+    "3",
+    undefined,
+  ],
+  Array [
+    "4",
+    undefined,
+  ],
+  Array [
+    "5",
+    undefined,
+  ],
+  Array [
+    "6",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "InGenR:expand",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "templateName",
+    undefined,
+  ],
+  Array [
+    "additionalTemplateNames",
+    undefined,
+  ],
+  Array [
+    "configFilePath",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers expandDirectiveRegex 2`] = `
+Array [
+  Array [
+    "0",
+    "   InGenR:expand  ",
+  ],
+  Array [
+    "1",
+    undefined,
+  ],
+  Array [
+    "2",
+    undefined,
+  ],
+  Array [
+    "3",
+    undefined,
+  ],
+  Array [
+    "4",
+    undefined,
+  ],
+  Array [
+    "5",
+    undefined,
+  ],
+  Array [
+    "6",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "   InGenR:expand  ",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "templateName",
+    undefined,
+  ],
+  Array [
+    "additionalTemplateNames",
+    undefined,
+  ],
+  Array [
+    "configFilePath",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers expandDirectiveRegex 3`] = `
+Array [
+  Array [
+    "0",
+    "InGenR:expand tmplName",
+  ],
+  Array [
+    "1",
+    " tmplName",
+  ],
+  Array [
+    "2",
+    "tmplName",
+  ],
+  Array [
+    "3",
+    "",
+  ],
+  Array [
+    "4",
+    undefined,
+  ],
+  Array [
+    "5",
+    undefined,
+  ],
+  Array [
+    "6",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "InGenR:expand tmplName",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "templateName",
+    "tmplName",
+  ],
+  Array [
+    "additionalTemplateNames",
+    "",
+  ],
+  Array [
+    "configFilePath",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers expandDirectiveRegex 4`] = `
+Array [
+  Array [
+    "0",
+    "InGenR:expand tmpl1,templ2",
+  ],
+  Array [
+    "1",
+    " tmpl1,templ2",
+  ],
+  Array [
+    "2",
+    "tmpl1",
+  ],
+  Array [
+    "3",
+    ",templ2",
+  ],
+  Array [
+    "4",
+    ",templ2",
+  ],
+  Array [
+    "5",
+    undefined,
+  ],
+  Array [
+    "6",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "InGenR:expand tmpl1,templ2",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "templateName",
+    "tmpl1",
+  ],
+  Array [
+    "additionalTemplateNames",
+    ",templ2",
+  ],
+  Array [
+    "configFilePath",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers expandDirectiveRegex 5`] = `
+Array [
+  Array [
+    "0",
+    "InGenR:expand tmpl1, tmpl2",
+  ],
+  Array [
+    "1",
+    " tmpl1, tmpl2",
+  ],
+  Array [
+    "2",
+    "tmpl1",
+  ],
+  Array [
+    "3",
+    ", tmpl2",
+  ],
+  Array [
+    "4",
+    ", tmpl2",
+  ],
+  Array [
+    "5",
+    undefined,
+  ],
+  Array [
+    "6",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "InGenR:expand tmpl1, tmpl2",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "templateName",
+    "tmpl1",
+  ],
+  Array [
+    "additionalTemplateNames",
+    ", tmpl2",
+  ],
+  Array [
+    "configFilePath",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers expandDirectiveRegex 6`] = `
+Array [
+  Array [
+    "0",
+    "InGenR:expand tmpl1, tmpl2, tmpl3,   tmpl4,tmpl5,foo/tmpl6,bar/tmpl-7, baz/Tmpl_9",
+  ],
+  Array [
+    "1",
+    " tmpl1, tmpl2, tmpl3,   tmpl4,tmpl5,foo/tmpl6,bar/tmpl-7, baz/Tmpl_9",
+  ],
+  Array [
+    "2",
+    "tmpl1",
+  ],
+  Array [
+    "3",
+    ", tmpl2, tmpl3,   tmpl4,tmpl5,foo/tmpl6,bar/tmpl-7, baz/Tmpl_9",
+  ],
+  Array [
+    "4",
+    ", baz/Tmpl_9",
+  ],
+  Array [
+    "5",
+    undefined,
+  ],
+  Array [
+    "6",
+    undefined,
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "InGenR:expand tmpl1, tmpl2, tmpl3,   tmpl4,tmpl5,foo/tmpl6,bar/tmpl-7, baz/Tmpl_9",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "templateName",
+    "tmpl1",
+  ],
+  Array [
+    "additionalTemplateNames",
+    ", tmpl2, tmpl3,   tmpl4,tmpl5,foo/tmpl6,bar/tmpl-7, baz/Tmpl_9",
+  ],
+  Array [
+    "configFilePath",
+    undefined,
+  ],
+]
+`;
+
+exports[`getMatchers expandDirectiveRegex 7`] = `
+Array [
+  Array [
+    "0",
+    " InGenR:expand tmpl-1 some-config.yml ",
+  ],
+  Array [
+    "1",
+    " tmpl-1 some-config.yml",
+  ],
+  Array [
+    "2",
+    "tmpl-1",
+  ],
+  Array [
+    "3",
+    "",
+  ],
+  Array [
+    "4",
+    undefined,
+  ],
+  Array [
+    "5",
+    " some-config.yml",
+  ],
+  Array [
+    "6",
+    "some-config.yml",
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    " InGenR:expand tmpl-1 some-config.yml ",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "templateName",
+    "tmpl-1",
+  ],
+  Array [
+    "additionalTemplateNames",
+    "",
+  ],
+  Array [
+    "configFilePath",
+    "some-config.yml",
+  ],
+]
+`;
+
+exports[`getMatchers expandDirectiveRegex 8`] = `
+Array [
+  Array [
+    "0",
+    "InGenR:expand tmpl1, tmpl2 some-config.yml",
+  ],
+  Array [
+    "1",
+    " tmpl1, tmpl2 some-config.yml",
+  ],
+  Array [
+    "2",
+    "tmpl1",
+  ],
+  Array [
+    "3",
+    ", tmpl2",
+  ],
+  Array [
+    "4",
+    ", tmpl2",
+  ],
+  Array [
+    "5",
+    " some-config.yml",
+  ],
+  Array [
+    "6",
+    "some-config.yml",
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "InGenR:expand tmpl1, tmpl2 some-config.yml",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "templateName",
+    "tmpl1",
+  ],
+  Array [
+    "additionalTemplateNames",
+    ", tmpl2",
+  ],
+  Array [
+    "configFilePath",
+    "some-config.yml",
+  ],
+]
+`;
+
+exports[`getMatchers expandDirectiveRegex 9`] = `
+Array [
+  Array [
+    "0",
+    "InGenR:expand tmpl1, tmpl2 someDir/some_sub_dir/some-config.yml",
+  ],
+  Array [
+    "1",
+    " tmpl1, tmpl2 someDir/some_sub_dir/some-config.yml",
+  ],
+  Array [
+    "2",
+    "tmpl1",
+  ],
+  Array [
+    "3",
+    ", tmpl2",
+  ],
+  Array [
+    "4",
+    ", tmpl2",
+  ],
+  Array [
+    "5",
+    " someDir/some_sub_dir/some-config.yml",
+  ],
+  Array [
+    "6",
+    "someDir/some_sub_dir/some-config.yml",
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "InGenR:expand tmpl1, tmpl2 someDir/some_sub_dir/some-config.yml",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "templateName",
+    "tmpl1",
+  ],
+  Array [
+    "additionalTemplateNames",
+    ", tmpl2",
+  ],
+  Array [
+    "configFilePath",
+    "someDir/some_sub_dir/some-config.yml",
+  ],
+]
+`;
+
+exports[`getMatchers expandDirectiveRegex 10`] = `
+Array [
+  Array [
+    "0",
+    "  InGenR:expand tmpl1, tmpl2 someDir/some_sub_dir/some-config.yml  ",
+  ],
+  Array [
+    "1",
+    " tmpl1, tmpl2 someDir/some_sub_dir/some-config.yml",
+  ],
+  Array [
+    "2",
+    "tmpl1",
+  ],
+  Array [
+    "3",
+    ", tmpl2",
+  ],
+  Array [
+    "4",
+    ", tmpl2",
+  ],
+  Array [
+    "5",
+    " someDir/some_sub_dir/some-config.yml",
+  ],
+  Array [
+    "6",
+    "someDir/some_sub_dir/some-config.yml",
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    "  InGenR:expand tmpl1, tmpl2 someDir/some_sub_dir/some-config.yml  ",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "templateName",
+    "tmpl1",
+  ],
+  Array [
+    "additionalTemplateNames",
+    ", tmpl2",
+  ],
+  Array [
+    "configFilePath",
+    "someDir/some_sub_dir/some-config.yml",
+  ],
+]
+`;
+
+exports[`getMatchers expandDirectiveRegex 11`] = `
+Array [
+  Array [
+    "0",
+    " InGenR:expand knex-table-interface config.yml ",
+  ],
+  Array [
+    "1",
+    " knex-table-interface config.yml",
+  ],
+  Array [
+    "2",
+    "knex-table-interface",
+  ],
+  Array [
+    "3",
+    "",
+  ],
+  Array [
+    "4",
+    undefined,
+  ],
+  Array [
+    "5",
+    " config.yml",
+  ],
+  Array [
+    "6",
+    "config.yml",
+  ],
+  Array [
+    "index",
+    0,
+  ],
+  Array [
+    "input",
+    " InGenR:expand knex-table-interface config.yml ",
+  ],
+  Array [
+    "groups",
+    undefined,
+  ],
+  Array [
+    "templateName",
+    "knex-table-interface",
+  ],
+  Array [
+    "additionalTemplateNames",
+    "",
+  ],
+  Array [
+    "configFilePath",
+    "config.yml",
+  ],
+]
+`;
