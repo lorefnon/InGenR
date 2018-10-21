@@ -111,7 +111,11 @@ export class GeneratorLocator {
   }
 
   private validateName(name: string, filePath: string) {
-    if (!name.match(/^([a-zA-Z0-9@_-]+\/?)+$/) || name.charAt(name.length - 1) === "/") {
+    if (
+      !name.match(/^([.a-zA-Z0-9@_-]+\/?)+$/) || 
+      name.charAt(name.length - 1) === "/" ||
+      name.indexOf("..") >= 0
+    ) {
       this.reporter.bufferWarning(filePath, undefined, undefined, [
         {
           message: `Invalid template name: ${name}`
