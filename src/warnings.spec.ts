@@ -1,9 +1,9 @@
-import { warnInvalidArgBody } from "./warnings";
+import { warnInvalidArgBody } from "./warnings"
 
-describe('warnings', () => {
-    describe('warnInvalidArgBody', () => {
-        it('works as expected', () => {
-            expect(warnInvalidArgBody()).toMatchSnapshot()
-        })
+describe("warnings", () => {
+  describe("warnInvalidArgBody", () => {
+    it("works as expected", () => {
+      expect(warnInvalidArgBody()).toMatchSnapshot()
     })
+  })
 })

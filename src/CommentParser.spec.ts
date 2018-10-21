@@ -3,7 +3,10 @@ import * as BufferStream from "node-bufferstream"
 import * as path from "path"
 import { CommentParser } from "./CommentParser"
 
-const parseContent = async (content: string, filePath = path.join(__dirname, "__fixtures__", "src", "index.ts")) => {
+const parseContent = async (
+  content: string,
+  filePath = path.join(__dirname, "__fixtures__", "src", "index.ts")
+) => {
   const stream = new BufferStream()
   const parser = new CommentParser(stream, filePath)
   const items: any[] = []
@@ -12,7 +15,7 @@ const parseContent = async (content: string, filePath = path.join(__dirname, "__
       if (item && item.data && item.data.templates) {
         item.data.templates.forEach((t: any) => {
           delete t.argsFile
-        });
+        })
       }
       items.push(item)
     })
@@ -75,16 +78,16 @@ describe("Comment Parser", () => {
       * hello: world
       */
       /*! InGenR:end */
-    `);
+    `)
     expect(items).toMatchSnapshot()
-  });
+  })
 
   it("parses directives with external template args", async () => {
     const items = await parseContent(`
     /*! InGenR:expand knex-dal external-config.yaml*/
     /*! InGenR:end */
     `)
-    
+
     expect(items).toMatchSnapshot()
   })
 
@@ -100,5 +103,4 @@ describe("Comment Parser", () => {
     `)
     expect(items).toMatchSnapshot()
   })
-
 })

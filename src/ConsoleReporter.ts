@@ -24,13 +24,13 @@ interface ConsoleReporterOptions {
 }
 
 export const defaultReporterOptions: ConsoleReporterOptions = {
-  enableColor: !! process.stdout.isTTY
+  enableColor: !!process.stdout.isTTY
 }
 
 export class ConsoleReporter implements Reporter {
   warnings: Map<string, FileWarning[]>
   console: Console
-  chalk: Chalk;
+  chalk: Chalk
 
   constructor(private options = defaultReporterOptions) {
     this.warnings = new Map()

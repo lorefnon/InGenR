@@ -11,4 +11,3 @@ export const warnInvalidArgBody = () => ({
     "Detected invalid line in the arguments body of an InGenR directive.\n" +
     "This line will be discarded."
 })
-
