@@ -1,4 +1,5 @@
 [![InGenR](https://raw.githubusercontent.com/lorefnon/InGenR/master/assets/banner.png)](https://github.com/lorefnon/InGenR)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Florefnon%2FInGenR.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Florefnon%2FInGenR?ref=badge_shield)
 
 ## InGenR (pronounced *in-gen-are*) is a generic utility for inline code generation.
 
@@ -239,3 +240,6 @@ It is strongly advised that generated code be run through a linter / syntax-chec
 
 Not at all. Run InGenR once and after your code has been generated, feel free to just remove all (or some) InGenR directives.
 You are now free to edit and modify the generated code manually.
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Florefnon%2FInGenR.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Florefnon%2FInGenR?ref=badge_large)
