@@ -8,6 +8,20 @@ Features like [Higher kinded polymorphism](https://sidburn.github.io/blog/2016/0
 
 InGenR aims to be a simple generic utility that solves this through a much simpler and crude approach: **code generation**. For many use cases this is a much more practical and simple solution. You can [get started](#how-does-it-work-) in a matter of seconds, or browse  available [features](#features).
 
+<p align="center">
+    <table>
+        <tr>
+          <td><a href="#development-status">Status</a></td>
+          <td><a href="#how-does-it-work-">How does it work?</a></td>
+          <td><a href="#features">Features</a></td>
+          <td><a href="#caveats">Caveats</a></td>
+          <td><a href="#non-goals">Non Goals</a></td>
+          <td><a href="#potentially-interesting-alternatives">Alternatives</a></td>
+          <td><a href="#faqs">FAQs</a></td>
+        </tr>
+    </table>
+</p>
+
 ## InGenR cares about the developer experience
 
   - Clear unambiguous error messages.
@@ -233,6 +247,12 @@ While it is possible to re-use doT templates across generators, but *seriously*,
 ## Contributing
 
 We welcome your contributions. Read more [here](https://github.com/lorefnon/InGenR/blob/master/CONTRIBUTING.md).
+
+## Potentially Interesting Alternatives
+
+- [ttyscript](https://github.com/cevek/ttypescript) (For typescript)
+- [M4](https://www.gnu.org/software/m4/manual/m4.html)
+- [babel-plugin-macros](https://github.com/kentcdodds/babel-plugin-macros)
 
 ## FAQs
 
