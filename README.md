@@ -1,5 +1,17 @@
 [![InGenR](https://raw.githubusercontent.com/lorefnon/InGenR/master/assets/banner.png)](https://github.com/lorefnon/InGenR)
 
+<table>
+    <tr>
+      <td><a href="#development-status">Status</a></td>
+      <td><a href="#how-does-it-work-">How does it work?</a></td>
+      <td><a href="#features">Features</a></td>
+      <td><a href="#caveats">Caveats</a></td>
+      <td><a href="#non-goals">Non Goals</a></td>
+      <td><a href="#potentially-interesting-alternatives">Alternatives</a></td>
+      <td><a href="#faqs">FAQs</a></td>
+    </tr>
+</table>
+
 ## InGenR (pronounced *in-gen-are*) is a generic utility for inline code generation.
 
 When working with large codebases, esp. those involving (one or more) type systems it is often the case that reusing code (while retaining end-to-end type-safety) becomes difficult and repetitive boilerplate is required in some cases to satisfy the type system. Not sure what this means ? Check out the [typescript definitions](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/df80e09009547e5556c09a16f3c715ecf9aff325/types/node/index.d.ts#L6839-L6858) for some node APIs, the [repetitive boilerplate](https://github.com/rtfeldman/elm-css/blob/master/src/Css.elm) in elm-css, etc.
@@ -7,20 +19,6 @@ When working with large codebases, esp. those involving (one or more) type syste
 Features like [Higher kinded polymorphism](https://sidburn.github.io/blog/2016/03/24/higher-kinded-polymorphism) largely alleviate this problem, but if your language of choice doesn't have such features, then you are pretty much stuck. It is not always feasible or practical to switch to a language with an advanced type system to eliminate redundancy in some parts of your application.
 
 InGenR aims to be a simple generic utility that solves this through a much simpler and crude approach: **code generation**. For many use cases this is a much more practical and simple solution. You can [get started](#how-does-it-work-) in a matter of seconds, or browse  available [features](#features).
-
-<p align="center">
-    <table>
-        <tr>
-          <td><a href="#development-status">Status</a></td>
-          <td><a href="#how-does-it-work-">How does it work?</a></td>
-          <td><a href="#features">Features</a></td>
-          <td><a href="#caveats">Caveats</a></td>
-          <td><a href="#non-goals">Non Goals</a></td>
-          <td><a href="#potentially-interesting-alternatives">Alternatives</a></td>
-          <td><a href="#faqs">FAQs</a></td>
-        </tr>
-    </table>
-</p>
 
 ## InGenR cares about the developer experience
 
@@ -40,7 +38,6 @@ InGenR aims to be a simple generic utility that solves this through a much simpl
 [![Known Vulnerabilities](https://snyk.io/test/github/lorefnon/InGenR/badge.svg?targetFile=package.json)](https://snyk.io/test/github/lorefnon/InGenR?targetFile=package.json)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Florefnon%2FInGenR.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Florefnon%2FInGenR?ref=badge_shield)
 
-[![SonarCloud badge](https://sonarcloud.io/api/project_badges/measure?project=lorefnon_InGenR&metric=alert_status)](https://sonarcloud.io/dashboard?id=lorefnon_InGenR)
 [![Greenkeeper badge](https://badges.greenkeeper.io/lorefnon/InGenR.svg)](https://greenkeeper.io/) 
 [![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/lorefnon/InGenR/blob/master/LICENSE) 
 [![Join the chat at https://gitter.im/InGenR/Lobby](https://badges.gitter.im/InGenR/Lobby.svg)](https://gitter.im/InGenR/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -151,7 +148,7 @@ InGenR aims to be a simple generic utility that solves this through a much simpl
 
 The usage outlined above is pretty much all you need to use and get productive with InGenR. 
 
-A few additional advanced features are summarized below:
+A few additional features are summarized below:
 
 ### In place expansion or external targets: 
 
