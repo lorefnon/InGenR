@@ -1,17 +1,5 @@
 [![InGenR](https://raw.githubusercontent.com/lorefnon/InGenR/master/assets/banner.png)](https://github.com/lorefnon/InGenR)
 
-<table>
-    <tr>
-      <td><a href="#development-status">Status</a></td>
-      <td><a href="#how-does-it-work-">How does it work?</a></td>
-      <td><a href="#features">Features</a></td>
-      <td><a href="#caveats">Caveats</a></td>
-      <td><a href="#non-goals">Non Goals</a></td>
-      <td><a href="#potentially-interesting-alternatives">Alternatives</a></td>
-      <td><a href="#faqs">FAQs</a></td>
-    </tr>
-</table>
-
 ## InGenR (pronounced *in-gen-are*) is a generic utility for inline code generation.
 
 When working with large codebases, esp. those involving (one or more) type systems it is often the case that reusing code (while retaining end-to-end type-safety) becomes difficult and repetitive boilerplate is required in some cases to satisfy the type system. Not sure what this means ? Check out the [typescript definitions](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/df80e09009547e5556c09a16f3c715ecf9aff325/types/node/index.d.ts#L6839-L6858) for some node APIs, the [repetitive boilerplate](https://github.com/rtfeldman/elm-css/blob/master/src/Css.elm) in elm-css, etc.
