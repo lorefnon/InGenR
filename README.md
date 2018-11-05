@@ -42,7 +42,7 @@ InGenR aims to be a simple generic utility that solves this through a much simpl
     * ---
     * tableName: users
     * columns:
-    *   - name: name
+    *   - name: user
     *     type: string
     *   - name: email
     *     type: string
@@ -106,9 +106,9 @@ InGenR aims to be a simple generic utility that solves this through a much simpl
      * ---
      * tableName: users
      * - columns:
-     *   - name: name
+     *   - name: user
      *     type: string
-     *   - type: email
+     *   - name: email
      *     type: string
      */
     interface IUser {
