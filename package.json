@@ -85,7 +85,7 @@
     "@types/lodash": "^4.14.116",
     "@types/minimist": "^1.2.0",
     "@types/node": "^10.12.14",
-    "@types/tmp": "^0.0.34",
+    "@types/tmp": "^0.1.0",
     "@types/xregexp": "^3.0.29",
     "colors": "^1.3.2",
     "coveralls": "^3.0.2",
