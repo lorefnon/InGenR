@@ -82,7 +82,7 @@
     "@types/glob": "^7.1.1",
     "@types/jest": "^24.0.0",
     "@types/js-yaml": "^3.11.2",
-    "@types/lodash": "^4.14.116",
+    "@types/lodash": "^4.14.134",
     "@types/minimist": "^1.2.0",
     "@types/node": "^11.13.1",
     "@types/tmp": "^0.1.0",
