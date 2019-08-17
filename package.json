@@ -93,7 +93,7 @@
     "husky": "^2.0.0",
     "jest": "^23.6.0",
     "jest-config": "^23.6.0",
-    "lint-staged": "^8.0.0",
+    "lint-staged": "^9.2.2",
     "lodash.camelcase": "^4.3.0",
     "node-bufferstream": "^0.1.1",
     "prettier": "^1.14.3",
