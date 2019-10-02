@@ -643,9 +643,10 @@ cli-cursor@^2.0.0:
   dependencies:
     restore-cursor "^2.0.0"
 
-cli-progress@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/cli-progress/-/cli-progress-2.1.0.tgz#a212e7e6b685687644ca703904ea49c34ee302c8"
+cli-progress@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/cli-progress/-/cli-progress-3.3.1.tgz#e08fb6853e269c3bc7e0ad8ad0ede59035f5fbce"
+  integrity sha512-cfvv/uuWblzSI6fvpmCNREWxwzI/luelp+P7zoPlguswswWVCfsq334/U6tmh+vusJ7yzbQ3xFni9JNqiF4fAA==
   dependencies:
     colors "^1.1.2"
     string-width "^2.1.1"
