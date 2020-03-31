@@ -109,7 +109,7 @@
   },
   "dependencies": {
     "chalk": "^2.4.1",
-    "cli-progress": "^2.1.0",
+    "cli-progress": "^3.6.1",
     "cosmiconfig": "^5.0.6",
     "debug": "^4.1.0",
     "dot": "^1.1.2",
